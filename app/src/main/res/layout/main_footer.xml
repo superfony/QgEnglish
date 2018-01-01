@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_linearlayout_footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/main_footbar_sj"
+        style="@style/main_footbar_radio"
+        android:drawableTop="@drawable/widget_bar_sj"
+        android:textColor="@color/white" />
+
+    <ImageView
+        style="@style/main_footbar_cutline"
+        android:src="@mipmap/widget_bar_cut_off"
+        android:visibility="gone" />
+
+    <RadioButton
+        android:id="@+id/main_footbar_fx"
+        style="@style/main_footbar_radio"
+        android:drawableTop="@drawable/widget_bar_fx"
+        android:textColor="@color/white" />
+
+    <ImageView
+        style="@style/main_footbar_cutline"
+        android:src="@mipmap/widget_bar_cut_off"
+        android:visibility="gone" />
+
+    <RadioButton
+        android:id="@+id/main_footbar_jc"
+        style="@style/main_footbar_radio"
+        android:drawableTop="@drawable/widget_bar_jc"
+        android:textColor="@color/white" />
+
+    <ImageView
+        style="@style/main_footbar_cutline"
+        android:src="@mipmap/widget_bar_cut_off"
+        android:visibility="gone" />
+
+    <RadioButton
+        android:id="@+id/main_footbar_tj"
+        style="@style/main_footbar_radio"
+        android:drawableTop="@drawable/widget_bar_tj"
+        android:textColor="@color/white" />
+
+</LinearLayout>

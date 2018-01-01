@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/menu_bg"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:context="qge.cn.com.qgenglish.StartMenuActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/menu1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/menu_jx_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp20"
+
+            />
+
+        <Button
+            android:id="@+id/menu2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:background="@drawable/menu_jc_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp20"
+
+            />
+
+        <Button
+            android:id="@+id/menu3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:background="@drawable/menu_ty_bg"
+
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp20"
+            />
+
+        <Button
+            android:id="@+id/menu4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:background="@mipmap/species"
+            android:text="@string/menu_name4"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:textSize="@dimen/dp20"
+            />
+    </LinearLayout>
+</LinearLayout>
