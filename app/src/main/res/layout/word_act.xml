@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/word_title_header_lay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:layout_alignParentTop="true"
+        android:background="@color/lightblue"
+        >
+
+        <TextView
+            android:id="@+id/word_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5.0dip"
+            android:text="识记"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp25" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/main_linearlayout_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/actionbar_background"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="-20dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/main_footbar_sj"
+            style="@style/main_footbar_radio"
+            android:drawableTop="@drawable/widget_bar_sj"
+            android:textColor="@color/white" />
+
+        <ImageView
+            style="@style/main_footbar_cutline"
+            android:src="@mipmap/widget_bar_cut_off"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:id="@+id/main_footbar_fx"
+            style="@style/main_footbar_radio"
+            android:drawableTop="@drawable/widget_bar_fx"
+            android:textColor="@color/white" />
+
+        <ImageView
+            style="@style/main_footbar_cutline"
+            android:src="@mipmap/widget_bar_cut_off"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:id="@+id/main_footbar_jc"
+            style="@style/main_footbar_radio"
+            android:drawableTop="@drawable/widget_bar_jc"
+            android:textColor="@color/white" />
+
+        <ImageView
+            style="@style/main_footbar_cutline"
+            android:src="@mipmap/widget_bar_cut_off"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:id="@+id/main_footbar_tj"
+            style="@style/main_footbar_radio"
+            android:drawableTop="@drawable/widget_bar_tj"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <qge.cn.com.qgenglish.view.ScrollLayout
+        android:id="@+id/word_scrolllayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/main_linearlayout_footer"
+        android:layout_below="@id/word_title_header_lay">
+        <!-- 底部菜单第一项       识记 -->
+        <include layout="@layout/sj" />
+        <!-- 底部菜单第二项        复习 -->
+        <include layout="@layout/fx_" />
+        <!-- 底部菜单第三项        检查 -->
+        <include layout="@layout/jc" />
+        <!--                 统计     -->
+        <include layout="@layout/tj"></include>
+    </qge.cn.com.qgenglish.view.ScrollLayout>
+</RelativeLayout>

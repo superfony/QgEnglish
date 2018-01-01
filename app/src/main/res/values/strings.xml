@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">奇谷英语</string>
+    <string name="menu_name1">超级记单词教学</string>
+    <string name="menu_name2">词汇量检测</string>
+    <string name="menu_name3">超级记单词体验</string>
+    <string name="menu_name4">学生信息列表</string>
+    <string name="menu_name5">超级记单词</string>
+    <string name="menu_name6">阅读训练</string>
+    <string name="menu_name7">我的生词本</string>
+
+</resources>

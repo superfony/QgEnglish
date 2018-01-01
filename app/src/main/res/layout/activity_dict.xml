@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5E6E0">
+
+    <RelativeLayout
+        android:id="@+id/edit_text_dict_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/account_input_color"
+        android:focusable="true"
+        android:layout_marginTop="10dp"
+        android:focusableInTouchMode="true">
+
+        <ImageButton
+            android:id="@+id/image_btn_dict_search"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_search" />
+
+        <EditText
+            android:id="@+id/edit_text_dict"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/image_btn_dict_search"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:hint="请在此输入单词"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:src="@android:drawable/edit_text"
+            />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/text_dict_word"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/edit_text_dict_search_bar"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="36dp"
+        android:gravity="bottom"
+        android:text="fabulous"
+        android:textColor="#3B3C3D"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/image_btn_dict_add_to_wordlist"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/text_dict_word"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/btn_back_blue" />
+
+
+    <RelativeLayout
+        android:id="@+id/phonetic_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/text_dict_word"
+        android:layout_marginLeft="22dp">
+
+        <ImageButton
+            android:id="@+id/image_btn_dict_horn_accent_eng"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="7dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            />
+
+        <TextView
+            android:id="@+id/text_dict_phosymbol_eng"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/image_btn_dict_horn_accent_eng"
+            android:gravity="center_vertical"
+            android:text="英[fanted]"
+            android:textColor="#6C6C6C"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/text_dict_phosymbol_divider"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/text_dict_phosymbol_eng"
+            android:gravity="center"
+            android:text="/"
+            android:textColor="#6C6C6C"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/image_btn_dict_horn_accent_usa"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="7dp"
+            android:layout_toRightOf="@id/text_dict_phosymbol_divider"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+             />
+
+        <TextView
+            android:id="@+id/text_dict_phosymbol_usa"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/image_btn_dict_horn_accent_usa"
+            android:gravity="center_vertical"
+            android:text="美[fan'ted]"
+            android:textColor="#6C6C6C"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/dict_interpret_divider"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/phonetic_bar"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <!--<ImageView-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/right_cursor" />-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="基本释义"
+            android:textColor="#00A2DC"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!--android:background="@drawable/layer_list_dict_item_back"-->
+    <TextView
+        android:id="@+id/text_dict_interpret"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dict_interpret_divider"
+        android:layout_margin="10dp"
+        android:lineSpacingMultiplier="1.2"
+        android:padding="12dp"
+        android:textColor="#3C3C3C"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/dict_sentence_divider"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/text_dict_interpret"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <!--<ImageView-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:src="@drawable/right_cursor" />-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="例句"
+                android:textColor="#00A2DC"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

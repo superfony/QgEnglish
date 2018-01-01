@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- share items -->
+    <string-array name="word_titles">
+        <item>识记</item>
+        <item>复习</item>
+        <item>检查</item>
+        <item>统计</item>
+    </string-array>
+
+    
+    <string-array name="date">
+        
+    </string-array>
+    
+</resources>
