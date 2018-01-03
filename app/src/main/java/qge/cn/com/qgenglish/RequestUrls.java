@@ -6,5 +6,8 @@ package qge.cn.com.qgenglish;
 
 public class RequestUrls {
     // 登录请求接口
-    public static String Login = "https://easy-mock.com/mock/5a11649a868584562f60d677/example/login";
+    public static String login = "https://easy-mock.com/mock/5a11649a868584562f60d677/example/login";
+    // 注册接口
+    public static String regist = "";
+
 }

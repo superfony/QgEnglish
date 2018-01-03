@@ -32,9 +32,7 @@ import android.widget.Toast;
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.common.AsyncHttp;
 import com.baiyang.android.http.common.ResponseProcessor;
-
 import java.util.ArrayList;
-
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.WorldHandler;

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,7 @@ import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.bean.Error;
 import qge.cn.com.qgenglish.app.bean.User;
 import qge.cn.com.qgenglish.app.word.WordMenuSecAct;
+import qge.cn.com.qgenglish.application.AppContext;
 
 /**
  * 登录页
@@ -73,17 +75,31 @@ public class LoginActivity extends BaseActivity {
     void login() {
         String pwd = passwordEt.getText().toString();
         String username = usernameEt.getText().toString();
+
+
+        if (TextUtils.isEmpty(username)) {
+            AppContext.showToast("请填写姓名");
+            return;
+        }
+
+        if (TextUtils.isEmpty(pwd)) {
+            AppContext.showToast("请输入密码");
+            return;
+        }
+
         RequestParams requestParams = new RequestParams();
-//        http = new AsyncHttp(this);
-//        pd = new ProgressDialog(this);
-//        pd.show();
-//        http.setDebug(true);
-//        http.setRequestCallback(requestCallback);
-//        http.setDataType(AsyncBase.ResponseDataType.JSON);
-//        http.post(RequestUrls.Login, requestParams, null, null);
-        Intent intent = new Intent();
-        intent.setClass(activity, WordMenuSecAct.class);
-        activity.startActivity(intent);
+        requestParams.put("name", username);
+        requestParams.put("pwd", pwd);
+        http = new AsyncHttp(this);
+        pd = new ProgressDialog(this);
+        pd.show();
+        http.setDebug(true);
+        http.setRequestCallback(requestCallback);
+        http.setDataType(AsyncBase.ResponseDataType.JSON);
+        http.post(RequestUrls.login, requestParams, null, null);
+//        Intent intent = new Intent();
+//        intent.setClass(activity, WordMenuSecAct.class);
+//        activity.startActivity(intent);
     }
 
     AsyncBase.RequestCallback requestCallback = new AsyncBase.RequestCallback() {
