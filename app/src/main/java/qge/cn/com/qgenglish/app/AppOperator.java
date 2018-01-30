@@ -2,9 +2,7 @@ package qge.cn.com.qgenglish.app;
 
 import android.os.Handler;
 import android.os.Looper;
-
 import com.google.gson.Gson;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +26,6 @@ public final class AppOperator {
         }
         return EXECUTORS_INSTANCE;
     }
-
 
     public static void runOnMainThread(Runnable runnable) {
         if (mHandler == null) {

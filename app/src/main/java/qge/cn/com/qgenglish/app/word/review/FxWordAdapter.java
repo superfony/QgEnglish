@@ -11,11 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
+import qge.cn.com.qgenglish.app.ChooseWordListion;
 import qge.cn.com.qgenglish.app.experience.WordBeanOlds;
 import qge.cn.com.qgenglish.app.word.check.JcChoseWordAct;
 
@@ -23,12 +25,14 @@ public class FxWordAdapter extends BaseAdapter {
     private List<WordBeanOlds> wordBeanOldLists = null;
     private Context mContext;
     public int chooseNum = 0;
+    //
+    private HashMap<Integer, View> lmap = new HashMap<Integer, View>();
 
-    public void setChooseWordListion(FxChoseWordAct.ChooseWordListion chooseWordListion) {
+    public void setChooseWordListion(ChooseWordListion chooseWordListion) {
         this.chooseWordListion = chooseWordListion;
     }
 
-    private FxChoseWordAct.ChooseWordListion chooseWordListion;
+    private ChooseWordListion chooseWordListion;
 
     public FxWordAdapter(Context mContext, List<WordBeanOlds> wordBeanOldLists) {
         this.mContext = mContext;
@@ -57,10 +61,13 @@ public class FxWordAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         final WordBeanOlds wordBeanOlds = wordBeanOldLists.get(position);
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.jc_adapter, null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.fx_adapter, null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
+//            lmap.put(position,view);
+
         } else {
+//            view=lmap.get(position);
             viewHolder = (ViewHolder) view.getTag();
         }
         viewHolder.word_value.setText(wordBeanOlds.wordBeanOld.english);
@@ -71,8 +78,6 @@ public class FxWordAdapter extends BaseAdapter {
             viewHolder.phonetic1.setText(wordBeanOlds.wordBeanOld1.phonetic);
             viewHolder.sense1.setText(wordBeanOlds.wordBeanOld1.sense);
         }
-
-
         viewHolder.expCbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -123,6 +128,9 @@ public class FxWordAdapter extends BaseAdapter {
                 chooseWordListion.switchChose1(position, v, wordBeanOlds.isShow1);
             }
         });
+        viewHolder.expCbox.setChecked(wordBeanOlds.state);
+        viewHolder.expCbox1.setChecked(wordBeanOlds.state1);
+
 
         return view;
     }

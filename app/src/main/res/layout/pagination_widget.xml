@@ -2,13 +2,12 @@
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pagination_widget_ctrl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_link_text_color"
          >
-
         <RelativeLayout
+            android:id="@+id/pagination_widget_ctrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" >
@@ -30,7 +29,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp40"
                 android:layout_toRightOf="@id/btn_firstPage"
-                android:background="@mipmap/prevpage_bg"
+                android:background="@drawable/prevpage_btn"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="@dimen/dp15"
                 android:enabled="false"
@@ -131,24 +130,23 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dip"
-                android:background="@mipmap/nextpage_bg"
+                android:background="@drawable/nextpage_btn"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dp40"
                 android:layout_marginBottom="@dimen/dp15"
                 android:enabled="false"
-
                 />
 
-            <Button
+
+            <ImageButton
                 android:id="@+id/btn_lastPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dip"
-                android:layout_toRightOf="@id/btn_nextPage"
-                android:background="@drawable/button_pagination"
-                android:enabled="false"
-                android:visibility="gone"
-                android:text="@string/lastPage" />
+                android:layout_marginRight="5dip"
+                android:layout_toLeftOf="@id/btn_nextPage"
+                android:background="@mipmap/random" />
+
+
         </RelativeLayout>
     </RelativeLayout>

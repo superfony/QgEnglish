@@ -18,17 +18,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
+import qge.cn.com.qgenglish.app.ChooseWordListion;
 import qge.cn.com.qgenglish.app.PaginationWidget;
 import qge.cn.com.qgenglish.app.experience.WordBeanOlds;
 import qge.cn.com.qgenglish.app.word.SjWordAct;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
+import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 
 /**
  * 复习
- * 选择关卡
  */
 
 public class FxChoseWordAct extends BaseActivity {
@@ -40,13 +41,12 @@ public class FxChoseWordAct extends BaseActivity {
     TextView choosedNum;
     @Bind(R.id.sure_btn)
     Button sureBtn;
-    private int curPage;// 当前页数
-    private int allCount;// 总页数
     private PaginationWidget paginationWidget;
     private FxWordAdapter fxWordAdapter;
     private List<Word_niujinban_7_1> wordBeanOldList = new ArrayList<Word_niujinban_7_1>();
     private ArrayList<Word_niujinban_7_1> wordBeanOldListSj = new ArrayList<Word_niujinban_7_1>();
-    ArrayList<WordBeanOlds> wordBeanOldsArrayList = new ArrayList<WordBeanOlds>();
+    private ArrayList<WordBeanOlds> wordBeanOldsArrayList = new ArrayList<WordBeanOlds>();
+    private ArrayList<CpointBean> cpointBeanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +58,26 @@ public class FxChoseWordAct extends BaseActivity {
     }
 
     private void initData() {
-        long count = DBManager.getWordManager().getCount(Word_niujinban_7_1.class);
-        paginationWidget = new PaginationWidget();
-        paginationWidget.init(activity, fxRoot);
-        paginationWidget.getPageBean().setAllCount((int) count);
-        paginationWidget.setPageSize(22);
-        paginationWidget.setPageIndicator((int) count);
-        paginationWidget.setHandler(wordHandler);
-        wordBeanOldList = DBManager.getWordManager().get(Word_niujinban_7_1.class, 0, paginationWidget.getPageBean().getPageSize());
+        // 测试数据
+        Intent intent = activity.getIntent();
+        cpointBeanList = (ArrayList<CpointBean>) intent.getSerializableExtra("cpointArray");
+        if (cpointBeanList == null)
+            return;
+        int n = cpointBeanList.size();
+        for (int i = 0; i < n; i++) {
+            CpointBean cpointBean = cpointBeanList.get(i);
+            cpointBean.tablename = cpointBean.tablename.substring(0, 1).toUpperCase() + cpointBean.tablename.substring(1);
+            Class<?> cls = null;
+            try {
+                cls = Class.forName("qge.cn.com.qgenglish.app.word.table." + cpointBean.tablename);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            // 需要注意最后一页数据
+            List<Word_niujinban_7_1> subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
+                    .get(cls, "_id", "asc", (cpointBean.code - 1) * 2 * 7, 14);
+            wordBeanOldList.addAll(subWordList);
+        }
         // 查询出来的单词列表变为两列的数据方式
         fxWordAdapter = new FxWordAdapter(activity, toWordBeanOlds(wordBeanOldList));
         fxWordAdapter.setChooseWordListion(chooseWordListion);
@@ -94,12 +106,19 @@ public class FxChoseWordAct extends BaseActivity {
                 }
 
                 Intent intent = new Intent();
-                intent.setClass(activity, SjWordAct.class);
-                // intent.putParcelableArrayListExtra("sjArray",wordBeanOldListSj);
+                intent.setClass(activity, FxSjWordAct.class);
                 intent.putExtra("sjArray", wordBeanOldListSj);
                 activity.startActivity(intent);
+
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+
+        wordBeanOldListSj.clear();
+        super.onResume();
     }
 
     private ChooseWordListion chooseWordListion = new ChooseWordListion() {
@@ -148,13 +167,13 @@ public class FxChoseWordAct extends BaseActivity {
         }
     };
 
-    interface ChooseWordListion {
-        void switchChose(int position, View view, boolean isShow);
-
-        void switchChose1(int position, View view, boolean isShow);
-
-        void chooseCount();
-    }
+//    interface ChooseWordListion {
+//        void switchChose(int position, View view, boolean isShow);
+//
+//        void switchChose1(int position, View view, boolean isShow);
+//
+//        void chooseCount();
+//    }
 
 
     private ArrayList<WordBeanOlds> toWordBeanOlds(List<Word_niujinban_7_1> wordBeanOldList) {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
@@ -180,7 +181,9 @@ public class ArticelAct extends BaseActivity {
     private void initData(int i) {
 
         QuestionText questionText = getQuestionText(i);
-        articelContent.setText(questionText.questionBody);
+        articelContent.setText(Html.fromHtml(questionText.questionBody));
+
+
         StringBuffer body = new StringBuffer();
         body.append(WEB_STYLE).append(WEB_LOAD_IMAGES);
         body.append(getWebViewBodyString());
@@ -190,9 +193,7 @@ public class ArticelAct extends BaseActivity {
 //        articel_webview.loadDataWithBaseURL(null,
 //                WEB_STYLE + body.toString(), "text/html",
 //                "utf-8", null);
-
 //       articel_webview.loadData(questionText.questionBody,"text/html", "utf-8");
-
         // 获取问题列表
         questionList = getQuestionList(questionText);
         question1 = questionList.get(0);//第一个问题

@@ -55,6 +55,7 @@ public class SjwordAdapter extends BaseAdapter {
         viewHolder.word_value.setText(wordBeanOld.english);
         viewHolder.phonetic.setText(wordBeanOld.phonetic);
         viewHolder.sense.setText(wordBeanOld.sense);
+        viewHolder.interpretationLay.setVisibility(View.INVISIBLE);
         return view;
     }
 

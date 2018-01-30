@@ -32,6 +32,7 @@
             android:maxLines="1"
             android:paddingLeft="80dp"
             android:hint="姓名/手机号"
+            android:text="school"
             android:textColor="@android:color/black"
             android:textSize="25sp" />
 
@@ -50,6 +51,7 @@
             android:paddingLeft="80dp"
             android:hint="密码"
             android:textSize="25sp"
+            android:text="test"
             android:textColor="@android:color/black" />
 
         <ImageView
@@ -91,12 +93,11 @@
         android:id="@+id/regist_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/regist_bg"
+        android:src="@drawable/regist_btn_bg"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/dp35"
         android:layout_marginBottom="@dimen/dp35"
+        android:visibility="gone"
         />
-
-
 </RelativeLayout>

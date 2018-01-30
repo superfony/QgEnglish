@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -42,13 +43,14 @@ public class JcCpointAdapter extends BaseAdapter {
 
 
     public View getView(final int position, View view, ViewGroup arg2) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         final CpointBean cpointBean = cpointBeanList.get(position);
         if (view == null) {
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.jc_cpoint_adapter, null);
             viewHolder.menuName = (TextView) view.findViewById(R.id.menu_name);
             viewHolder.checkBox = (CheckBox) view.findViewById(R.id.jc_cb);
+            viewHolder.jc_cpointitem = (RelativeLayout) view.findViewById(R.id.jc_cpointitem_bg);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -57,19 +59,33 @@ public class JcCpointAdapter extends BaseAdapter {
         viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (isChecked) {
-                    cpointBean.isChecked = true;
+                    cpointBean.ischecked = 1;
                 } else {
-                    cpointBean.isChecked = false;
+                    cpointBean.ischecked = 0;
                 }
             }
         });
+        if (cpointBean.state == 1) {
+            viewHolder.jc_cpointitem.setBackgroundResource(R.mipmap.item_c);
+            viewHolder.checkBox.setEnabled(true);
+        } else {
+            viewHolder.jc_cpointitem.setBackgroundResource(R.mipmap.item_d);
+            viewHolder.checkBox.setEnabled(false);
+        }
+
+        if (cpointBean.ischecked == 1) {
+            viewHolder.checkBox.setChecked(true);
+        } else {
+            viewHolder.checkBox.setChecked(false);
+
+        }
         return view;
     }
 
     static class ViewHolder {
         TextView menuName;
         CheckBox checkBox;
+        RelativeLayout jc_cpointitem;
     }
 }

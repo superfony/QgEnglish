@@ -44,4 +44,10 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+
+    <style name="UpInAndOutAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_up_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_up_out</item>
+    </style>
+
 </resources>

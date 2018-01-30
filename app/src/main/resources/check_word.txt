@@ -1,0 +1,1753 @@
+﻿{"data":[
+    {
+        "Answer": "D",
+        "QuestionBody": "carry",
+        "QuestionID": 1,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "抓住"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "快点"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "凯利"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "搬运"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "四轮马车"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "汽车"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "拿起来"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "art",
+        "QuestionID": 2,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "年龄"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "手臂"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "冰"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "上午"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "是"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "艺术"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "耳朵"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "knife",
+        "QuestionID": 3,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "风筝"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "生活"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "树叶"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "妻子"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "小偷"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "九"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "刀"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "lucky",
+        "QuestionID": 4,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "卡车"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "鸭子"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "吸允"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "幸运的"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "锁"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "生病"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "钟表"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "finger",
+        "QuestionID": 5,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "好的"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "纤维"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "花"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "修理"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "手指"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "朋友"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "歌手"
+            }
+        ]
+    },
+    {
+        "Answer": "A",
+        "QuestionBody": "boat",
+        "QuestionID": 6,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "小船"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "甲板"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "购买"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "吹嘘"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "下载"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "上传"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "登船"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "bread",
+        "QuestionID": 7,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "熊"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "胡子"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "建造"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "鸟儿"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "读"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "面包"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "爆炸"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "picture",
+        "QuestionID": 8,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "子弹"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "捡起"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "顶峰"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "讲座"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "文化"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "教师"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "图片"
+            }
+        ]
+    },
+    {
+        "Answer": "A",
+        "QuestionBody": "quiet",
+        "QuestionID": 9,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "安静的"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "相当"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "快速"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "放弃"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "辞职"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "孩子"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "正确的"
+            }
+        ]
+    },
+    {
+        "Answer": "A",
+        "QuestionBody": "sweet",
+        "QuestionID": 10,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "甜的"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "流汗"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "种子"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "摇摆"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "迅速"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "韭菜"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "喂养"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "interesting",
+        "QuestionID": 11,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "进入"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "独立"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "依靠"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "国际的"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "上网"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "休息"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "有趣的"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "library",
+        "QuestionID": 12,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "大脑"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "自由"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "泄露"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "文化"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "图书馆"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "解放"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "博物馆"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "present",
+        "QuestionID": 13,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "压力"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "过去"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "父母"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "礼物"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "送派"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "中心"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "世纪"
+            }
+        ]
+    },
+    {
+        "Answer": "C",
+        "QuestionBody": "tired",
+        "QuestionID": 14,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "趋势"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "尝试"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "累的"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "老虎"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "红色"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "缠绕"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "眼泪"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "bridge",
+        "QuestionID": 15,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "住宿"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "新娘"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "新郎"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "鸟儿"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "休息"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "早餐"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "桥"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "mirror",
+        "QuestionID": 16,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "吼叫"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "混合"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "字典"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "矿物"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "地雷"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "镜子"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "中间"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "warm",
+        "QuestionID": 17,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "战争"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "虫子"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "打蜡"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "温暖的"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "混乱"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "潮湿"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "丑陋"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "cancel",
+        "QuestionID": 18,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "能"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "蜡烛"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "癌症"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "正直"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "取消"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "克服"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "音乐会"
+            }
+        ]
+    },
+    {
+        "Answer": "B",
+        "QuestionBody": "object",
+        "QuestionID": 19,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "科目"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "物体，目标"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "拒绝"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "主观"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "观察"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "显然"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "贫穷"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "ancient",
+        "QuestionID": 20,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "祖先"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "焦虑"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "数量"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "病人"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "耐心"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "古代的"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "充足"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "trust",
+        "QuestionID": 21,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "正确"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "灰尘"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "除尘"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "信任"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "生锈"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "当然"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "测试"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "supply",
+        "QuestionID": 22,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "超级"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "柔软的"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "晚餐"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "能量"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "膝盖"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "糖果"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "提供"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "tourist",
+        "QuestionID": 23,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "卫生间"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "敬酒"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "折磨"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "乌龟"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "交通"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "艺术家"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "游客"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "compare",
+        "QuestionID": 24,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "公司"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "竞争"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "商品"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "计算机"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "比较"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "陪伴"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "合作"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "disease",
+        "QuestionID": 25,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "灾难"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "欺骗"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "撒谎"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "死亡"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "疾病"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "打败"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "大海"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "celebrate",
+        "QuestionID": 26,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "加强"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "日历"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "名人"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "恶化"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "庆祝"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "删除"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "故意地"
+            }
+        ]
+    },
+    {
+        "Answer": "C",
+        "QuestionBody": "explain",
+        "QuestionID": 27,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "扩展"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "飞机"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "解释"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "花费"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "上诉"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "计划"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "经验"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "brain",
+        "QuestionID": 28,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "胸脯"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "下雨"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "吹嘘"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "拿来"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "大脑"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "无聊的"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "增加"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "shape",
+        "QuestionID": 29,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "鲨鱼"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "无耻"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "希望"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "形状"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "猿猴"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "害羞"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "发光"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "progress",
+        "QuestionID": 30,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "程序"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "过程"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "促销"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "压力"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "快递"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "猜测"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "进步"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "encourage",
+        "QuestionID": 31,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "偶遇"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "勇气"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "遭遇"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "征服"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "事件"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "鼓励"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "入口"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "achieve",
+        "QuestionID": 32,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "疼痛"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "收到"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "赞扬"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "荣誉"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "相信"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "获得"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "超过"
+            }
+        ]
+    },
+    {
+        "Answer": "B",
+        "QuestionBody": "traffic",
+        "QuestionID": 33,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "轨道"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "交通"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "足迹"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "火车"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "麻烦"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "货车"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "警察"
+            }
+        ]
+    },
+    {
+        "Answer": "A",
+        "QuestionBody": "deliberately",
+        "QuestionID": 34,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "故意地"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "开心的"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "辩论"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "分开"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "解散"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "失望的"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "删除"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "advocate",
+        "QuestionID": 35,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "广告"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "进步的"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "撤回"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "提倡"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "精确的"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "投入"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "声音"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "random",
+        "QuestionID": 36,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "级别"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "原因"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "少数"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "随机的"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "自由"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "乐队"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "播放"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "optional",
+        "QuestionID": 37,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "客观"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "国际的"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "机遇"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "国家"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "主观"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "可选的"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "优先的"
+            }
+        ]
+    },
+    {
+        "Answer": "B",
+        "QuestionBody": "aspect",
+        "QuestionID": 38,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "尊敬"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "方面"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "昆虫"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "特别"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "速度"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "视察"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "监督"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "appeal",
+        "QuestionID": 39,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "申请"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "废除"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "重复"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "出现"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "珍珠"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "请求，上诉"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "应用"
+            }
+        ]
+    },
+    {
+        "Answer": "B",
+        "QuestionBody": "destination",
+        "QuestionID": 40,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "沮丧"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "目的地"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "命运"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "憎恶"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "地下室"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "疾病"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "遥远"
+            }
+        ]
+    },
+    {
+        "Answer": "C",
+        "QuestionBody": "reject",
+        "QuestionID": 41,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "科目"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "沮丧"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "拒绝"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "物体"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "允许"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "休息"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "覆盖"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "donate",
+        "QuestionID": 42,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "投入"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "点"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "扩展"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "捐赠"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "域名"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "行为"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "自然"
+            }
+        ]
+    },
+    {
+        "Answer": "B",
+        "QuestionBody": "stubborn",
+        "QuestionID": 43,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "坚强"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "固执的"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "出生"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "垃圾箱"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "学生"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "石头"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "坚持"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "association",
+        "QuestionID": 44,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "通信"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "关系"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "交通"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "申请"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "协会"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "社会"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "宇航员"
+            }
+        ]
+    },
+    {
+        "Answer": "D",
+        "QuestionBody": "punctual",
+        "QuestionID": 45,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "拒绝"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "重击"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "朋克"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "准时的"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "葬礼"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "枪"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "图片"
+            }
+        ]
+    },
+    {
+        "Answer": "G",
+        "QuestionBody": "aggressive",
+        "QuestionID": 46,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "友好的"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "进步的"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "成功"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "同意"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "愤怒"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "解决"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "侵略的"
+            }
+        ]
+    },
+    {
+        "Answer": "B",
+        "QuestionBody": "subjective",
+        "QuestionID": 47,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "客观的"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "主观的"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "科目"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "拒绝"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "结果"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "成功"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "公共的"
+            }
+        ]
+    },
+    {
+        "Answer": "F",
+        "QuestionBody": "reputation",
+        "QuestionID": 48,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "革命"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "驳回"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "静音"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "污染"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "替换"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "名声"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "空调"
+            }
+        ]
+    },
+    {
+        "Answer": "A",
+        "QuestionBody": "confirm",
+        "QuestionID": 49,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "证实"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "重申"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "暗示"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "联合"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "公司"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "坚固"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "冲突"
+            }
+        ]
+    },
+    {
+        "Answer": "E",
+        "QuestionBody": "contradict",
+        "QuestionID": 50,
+        "QuestionItem": [
+            {
+                "itemValue": "A",
+                "itemContent": "条件"
+            },
+            {
+                "itemValue": "B",
+                "itemContent": "城市"
+            },
+            {
+                "itemValue": "C",
+                "itemContent": "合作"
+            },
+            {
+                "itemValue": "D",
+                "itemContent": "反射"
+            },
+            {
+                "itemValue": "E",
+                "itemContent": "矛盾"
+            },
+            {
+                "itemValue": "F",
+                "itemContent": "信用卡"
+            },
+            {
+                "itemValue": "G",
+                "itemContent": "居民"
+            }
+        ]
+    }
+]
+}

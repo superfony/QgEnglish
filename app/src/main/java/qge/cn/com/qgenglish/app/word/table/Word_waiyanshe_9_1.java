@@ -13,7 +13,7 @@ import qge.cn.com.qgenglish.db.Table;
  * 外研版
  */
 @SuppressWarnings("all")
-@Table(tableName = "word_waiyanshe_8_2")
+@Table(tableName = "word_waiyanshe_9_1")
 public class Word_waiyanshe_9_1 implements Serializable {
     @PrimaryKey(autoincrement = true, column = "_id")
     @SerializedName("index")

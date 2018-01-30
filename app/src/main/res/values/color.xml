@@ -39,6 +39,7 @@
     <color name="swiperefresh_color4">#ffaa66cc</color>
     <color name="project_listitem_someinfo">#b6b6b6</color>
     <color name="user_info_option_pressed">#1EB050</color>
+
     <!-- 反馈 -->
     <color name="edittext_hint_color">#ffa9a9a9</color>
     <!-- 日历dialog -->
@@ -60,6 +61,8 @@
     <color name="text_secondary_color">#9d9d9d</color>
     <color name="tweet_indicator_text_color">#111111</color>
     <color name="tweet_indicator_text_color_error">#e35050</color>
+
+    <color name="red">#ff0000</color>
     <!-- 新版登录模块-->
     <color name="login_line_color">#dededf</color>
     <color name="login_input_active">#31b968</color>

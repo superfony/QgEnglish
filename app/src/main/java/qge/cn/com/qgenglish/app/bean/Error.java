@@ -13,15 +13,16 @@ public class Error {
      * message : 成功失败信息
      */
 
-    private String request;
+    private int code;
     private String message;
 
-    public String getRequest() {
-        return request;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setRequest(String request) {
-        this.request = request;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getMessage() {

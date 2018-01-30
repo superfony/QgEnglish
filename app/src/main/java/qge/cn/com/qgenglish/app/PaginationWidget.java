@@ -23,7 +23,12 @@ import com.baiyang.android.http.common.RequestAction;
 import com.baiyang.android.http.pagination.PageBean;
 import com.baiyang.android.http.pagination.PagerResponse;
 
+import java.util.List;
+
 import qge.cn.com.qgenglish.R;
+import qge.cn.com.qgenglish.app.word.SjWordAct;
+import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
+import qge.cn.com.qgenglish.db.DBManager;
 
 /**
  * @Title: 分页控件.
@@ -42,8 +47,8 @@ public class PaginationWidget<T> {
     /**
      * 分页按钮,首页,前一页,下一页,末页
      */
-    protected Button btn_firstPage, btn_lastPage;
-    protected ImageButton btn_prevPage, btn_nextPage;
+    protected Button btn_firstPage;
+    protected ImageButton btn_prevPage, btn_nextPage, btn_lastPage;
 
     /**
      * 当前页,总页数,已查看记录数,总记录数
@@ -55,7 +60,15 @@ public class PaginationWidget<T> {
         this.handler = handler;
     }
 
+    private int current;
     private Handler handler;
+
+    public void setCurrent(int current) {
+        this.current = current;
+    }
+
+
+
 
     //  分页显示指示器
     public void setPageIndicator(int allCount) {
@@ -101,7 +114,7 @@ public class PaginationWidget<T> {
                 .findViewById(R.id.btn_firstPage);
         btn_prevPage = (ImageButton) paginationView.findViewById(R.id.btn_prevPage);
         btn_nextPage = (ImageButton) paginationView.findViewById(R.id.btn_nextPage);
-        btn_lastPage = (Button) paginationView.findViewById(R.id.btn_lastPage);
+        btn_lastPage = (ImageButton) paginationView.findViewById(R.id.btn_lastPage);
         txt_currentPage = (TextView) paginationView
                 .findViewById(R.id.txt_currentPage);
         txt_pageCount = (TextView) paginationView
@@ -131,7 +144,8 @@ public class PaginationWidget<T> {
             } else if (vid == R.id.btn_nextPage) {
                 loadNextPage();
             } else if (vid == R.id.btn_lastPage) {
-                loadLastPage();
+                // loadLastPage();
+                confusionWord(); // 单词混淆
             }
         }
 
@@ -143,6 +157,8 @@ public class PaginationWidget<T> {
             showToast(R.string.isFirstPage);
             return;
         }
+
+
         requestAction.pageBean.setCurrentPage(1);
 
         handler.obtainMessage(100, requestAction.pageBean).sendToTarget();
@@ -156,6 +172,15 @@ public class PaginationWidget<T> {
         }
         requestAction.pageBean.setCurrentPage(requestAction.pageBean
                 .getCurrentPage() - 1);
+
+        if (requestAction.pageBean.getCurrentPage() <= ((current - 1) * 2 + 3) && requestAction.pageBean.getCurrentPage() >= (current - 1) * 2 + 1) {
+            handler.obtainMessage(100, requestAction.pageBean).sendToTarget();
+        } else {
+            requestAction.pageBean.setCurrentPage(requestAction.pageBean
+                    .getCurrentPage() + 1);
+        }
+
+
         handler.obtainMessage(100, requestAction.pageBean).sendToTarget();
     }
 
@@ -164,11 +189,26 @@ public class PaginationWidget<T> {
         if (requestAction.pageBean.getCurrentPage() == requestAction.pageBean
                 .getPageCount()) {
             showToast(R.string.isLastPage);
+            handler.obtainMessage(102).sendToTarget();
             return;
         }
+
         requestAction.pageBean.setCurrentPage(requestAction.pageBean
                 .getCurrentPage() + 1);
-        handler.obtainMessage(100, requestAction.pageBean).sendToTarget();
+
+        if (requestAction.pageBean.getCurrentPage() <= ((current - 1) * 2 + 3) && requestAction.pageBean.getCurrentPage() >= (current - 1) * 2 + 1) {
+            handler.obtainMessage(100, requestAction.pageBean).sendToTarget();
+        } else if (requestAction.pageBean.getCurrentPage() == ((current - 1) * 2 + 4)) {
+            requestAction.pageBean.setCurrentPage(requestAction.pageBean
+                    .getCurrentPage() - 1);
+            handler.obtainMessage(102).sendToTarget();
+        } else {
+            requestAction.pageBean.setCurrentPage(requestAction.pageBean
+                    .getCurrentPage() - 1);
+        }
+
+
+
     }
 
     // 最后一页
@@ -182,6 +222,13 @@ public class PaginationWidget<T> {
                 .getPageCount());
         handler.obtainMessage(100, requestAction.pageBean).sendToTarget();
     }
+
+    // 混淆单词顺序
+    private void confusionWord() {
+
+        handler.obtainMessage(101).sendToTarget();
+    }
+
 
 
     private void showToast(int message) {

@@ -10,11 +10,11 @@ import qge.cn.com.qgenglish.db.Table;
 
 /**
  * Created by fony on 2017/11/21.
- * 北师版 高中必修
+ * 小学短语
  */
 @SuppressWarnings("all")
-@Table(tableName = "word_bnu_compulsory_9")
-public class Word_bnu_compulsory_9 implements Serializable {
+@Table(tableName = "phrase_small")
+public class Phrase_small implements Serializable {
     @PrimaryKey(autoincrement = true, column = "_id")
     @SerializedName("index")
     private int _id;
@@ -36,4 +36,55 @@ public class Word_bnu_compulsory_9 implements Serializable {
     private String queue;
     @Column(column = "belong")
     private String belong;
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public void setBelong(String belong) {
+        this.belong = belong;
+    }
+
+    public void setEnglish(String english) {
+        this.english = english;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public void setPhonetic(String phonetic) {
+        this.phonetic = phonetic;
+    }
+
+    public void setQueue(String queue) {
+        this.queue = queue;
+    }
+
+    public void setSen(String sen) {
+        this.sen = sen;
+    }
+
+    public void setSense(String sense) {
+        this.sense = sense;
+    }
+
+    public void setSzh(String szh) {
+        this.szh = szh;
+    }
+
+    public void setVoicePath(String voicePath) {
+        this.voicePath = voicePath;
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

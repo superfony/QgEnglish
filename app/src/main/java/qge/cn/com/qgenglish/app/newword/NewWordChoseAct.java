@@ -162,8 +162,10 @@ public class NewWordChoseAct extends BaseActivity {
         for (int i = 0; i < word_unskilledList.size(); i++) {
             NewWordbeanS newWordbeanS = new NewWordbeanS();
             newWordbeanS.wordBeanOld = word_unskilledList.get(i);
-            if (i > word_unskilledList.size() - 1)
+            if (i >= word_unskilledList.size() - 1) {
+                wordBeanOldsArrayList.add(newWordbeanS);
                 return wordBeanOldsArrayList;
+            }
             newWordbeanS.wordBeanOld1 = word_unskilledList.get(++i);
             wordBeanOldsArrayList.add(newWordbeanS);
         }

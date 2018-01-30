@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -18,30 +17,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.baiyang.android.cache.CacheManager;
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.common.AsyncBase;
 import com.baiyang.android.http.common.AsyncHttp;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 import qge.cn.com.qgenglish.app.BaseActivity;
-import qge.cn.com.qgenglish.app.bean.Error;
+import qge.cn.com.qgenglish.app.Pub_method;
+import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.bean.User;
+import qge.cn.com.qgenglish.app.word.GradeMenuAct;
 import qge.cn.com.qgenglish.app.word.WordMenuSecAct;
 import qge.cn.com.qgenglish.application.AppContext;
 
 /**
- * 登录页
+ * 学校账号登录页
  */
-
 public class LoginActivity extends BaseActivity {
     protected String TAG = "LoginActivity";
     @Bind(R.id.username_et)
@@ -66,6 +61,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        SQLiteStudioService.instance().start(this);
     }
 
     private void init() {
@@ -73,8 +69,9 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.login_btn)
     void login() {
-        String pwd = passwordEt.getText().toString();
+
         String username = usernameEt.getText().toString();
+        String pwd = passwordEt.getText().toString();
 
 
         if (TextUtils.isEmpty(username)) {
@@ -88,51 +85,61 @@ public class LoginActivity extends BaseActivity {
         }
 
         RequestParams requestParams = new RequestParams();
-        requestParams.put("name", username);
-        requestParams.put("pwd", pwd);
-        http = new AsyncHttp(this);
-        pd = new ProgressDialog(this);
-        pd.show();
-        http.setDebug(true);
-        http.setRequestCallback(requestCallback);
-        http.setDataType(AsyncBase.ResponseDataType.JSON);
-        http.post(RequestUrls.login, requestParams, null, null);
-//        Intent intent = new Intent();
-//        intent.setClass(activity, WordMenuSecAct.class);
-//        activity.startActivity(intent);
+        requestParams.put("userName", "school");
+        requestParams.put("password", "test");
+        requestParams.put("padId", Pub_method.getDeviceID(activity));//
+//        http = new AsyncHttp(this);
+//        pd = new ProgressDialog(this);
+//        pd.show();
+//        http.setDebug(true);
+//        http.setRequestCallback(requestCallback);
+//        http.setDataType(AsyncBase.ResponseDataType.JSON);
+//        http.post(RequestUrls.login, requestParams, null, null);
+//        startIService();//开启服务
+
+
+        Intent intent = new Intent();
+        intent.setClass(activity, GradeMenuAct.class);
+        activity.startActivity(intent);
+
     }
 
     AsyncBase.RequestCallback requestCallback = new AsyncBase.RequestCallback() {
         @Override
         public void onSuccess(String json) {
             Log.i(TAG, json);
-            JSONObject jsonObj = null;
-            String request = null;
+//            JSONObject jsonObj = null;
+//            try {
+//                jsonObj = new JSONObject(json);
+//                code = jsonObj.getInt("code");
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
             Gson gson = new Gson();
-            try {
-                jsonObj = new JSONObject(json);
-                request = jsonObj.getString("request");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.i(TAG, request);
-            if ("1".equals(request)) {
-                User user = gson.fromJson(json, User.class);
-                Log.i(TAG, user.toString());
-                CacheManager.saveObject(activity, user, "user");
-                user = (User) CacheManager.readObject(activity, "user");
+//            Type typeToken= new TypeToken<Result<User>>() {}.getType();
+//            Result<User> result = gson.fromJson(json, typeToken);
+            Result result = gson.fromJson(json, Result.class);
+            int code = result.getCode();
+            String message = result.getMessage();
+            Log.i(TAG, "" + code + "message=" + message);
+            if (code == 200) {  // 200返回正确的结果
+//                User user = gson.fromJson(json, User.class);
+//                User user= result.getData();
+//                Log.i(TAG, user.toString());
+//                CacheManager.saveObject(activity, user, "user");
+//                user = (User) CacheManager.readObject(activity, "user");
+                User user = new User();
                 Log.i(TAG, user.toString());
                 handler.obtainMessage(1, user).sendToTarget();
-            } else if ("0".equals(request)) {
-                Error error = gson.fromJson(json, Error.class);
-                handler.obtainMessage(0, error).sendToTarget();
+            } else {
+                handler.obtainMessage(0, result.getMessage()).sendToTarget();
             }
         }
 
         @Override
         public void onFailure(Throwable throwable, String s) {
-            handler.obtainMessage(0).sendToTarget();
+
+            handler.obtainMessage(0, s).sendToTarget();
         }
     };
 
@@ -143,6 +150,7 @@ public class LoginActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    AppContext.showToast(msg.obj.toString());
                     break;
                 case 1:
                     Intent intent = new Intent();
@@ -170,9 +178,10 @@ public class LoginActivity extends BaseActivity {
         float density = dm.density;         // 屏幕密度（0.75 / 1.0 / 1.5）
         int densityDpi = dm.densityDpi;     // 屏幕密度dpi（120 / 160 / 240）
         // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
-        int screenWidth = (int) (width / density);  // 屏幕宽度(dp)
-        int screenHeight = (int) (height / density);// 屏幕高度(dp)
+        int screenWidth = (int) (width / density);   // 屏幕宽度(dp)
+        int screenHeight = (int) (height / density); // 屏幕高度(dp)
 
+        Log.d("h_bl", "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
         Log.d("h_bl", "屏幕宽度（像素）：" + width);
         Log.d("h_bl", "屏幕高度（像素）：" + height);
         Log.d("h_bl", "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
@@ -188,5 +197,12 @@ public class LoginActivity extends BaseActivity {
         WindowManager.LayoutParams params = _window.getAttributes();
         params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
         _window.setAttributes(params);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SQLiteStudioService.instance().start(this);
+//          stopIService();
     }
 }

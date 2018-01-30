@@ -6,6 +6,7 @@
     android:gravity="center">
 
     <RelativeLayout
+        android:id="@+id/jc_cpointitem_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/item_bg"

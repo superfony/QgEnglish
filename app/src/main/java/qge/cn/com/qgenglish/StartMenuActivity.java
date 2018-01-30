@@ -8,6 +8,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import qge.cn.com.qgenglish.app.BaseActivity;
+import qge.cn.com.qgenglish.app.CheckAct;
 import qge.cn.com.qgenglish.app.experience.ExpActivity;
 
 /**
@@ -15,7 +16,6 @@ import qge.cn.com.qgenglish.app.experience.ExpActivity;
  * 超级记单词
  * 词汇量检测
  * 超级记单词体验
- * 学生信息列表
  */
 
 public class StartMenuActivity extends BaseActivity {
@@ -43,9 +43,12 @@ public class StartMenuActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
+    //词汇量检测  收集学生信息
     @OnClick(R.id.menu2)
     void onclicMenu2() {
-
+        Intent intent = new Intent();
+        intent.setClass(activity, CheckAct.class);
+        activity.startActivity(intent);
     }
 
     @OnClick(R.id.menu3)

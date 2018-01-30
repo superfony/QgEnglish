@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,9 @@ import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.PaginationWidget;
 import qge.cn.com.qgenglish.app.experience.WordBeanOlds;
 import qge.cn.com.qgenglish.app.word.SjWordAct;
+import qge.cn.com.qgenglish.app.word.review.FxSjWordAct;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
+import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
@@ -44,9 +47,11 @@ public class JcChoseWordAct extends BaseActivity {
     private int allCount;// 总页数
     private PaginationWidget paginationWidget;
     private JcWordAdapter jcWordAdapter;
+    private List<CpointBean> cpointBeanList;
     private List<Word_niujinban_7_1> wordBeanOldList = new ArrayList<Word_niujinban_7_1>();
     private ArrayList<Word_niujinban_7_1> wordBeanOldListSj = new ArrayList<Word_niujinban_7_1>();
-    ArrayList<WordBeanOlds> wordBeanOldsArrayList = new ArrayList<WordBeanOlds>();
+    private ArrayList<WordBeanOlds> wordBeanOldsArrayList = new ArrayList<WordBeanOlds>();
+    private int allWordsNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +63,27 @@ public class JcChoseWordAct extends BaseActivity {
     }
 
     private void initData() {
-        long count = DBManager.getWordManager().getCount(Word_niujinban_7_1.class);
-        paginationWidget = new PaginationWidget();
-        paginationWidget.init(activity, sjRoot);
-        paginationWidget.getPageBean().setAllCount((int) count);
-        paginationWidget.setPageSize(22);
-        paginationWidget.setPageIndicator((int) count);
-        paginationWidget.setHandler(wordHandler);
-        wordBeanOldList = DBManager.getWordManager().get(Word_niujinban_7_1.class, 0, paginationWidget.getPageBean().getPageSize());
+
+        Intent intent = activity.getIntent();
+        cpointBeanList = (ArrayList<CpointBean>) intent.getSerializableExtra("cpointArray");
+        if (cpointBeanList == null)
+            return;
+        int n = cpointBeanList.size();
+        for (int i = 0; i < n; i++) {
+            CpointBean cpointBean = cpointBeanList.get(i);
+            cpointBean.tablename = cpointBean.tablename.substring(0, 1).toUpperCase() + cpointBean.tablename.substring(1);
+            Class<?> cls = null;
+            try {
+                cls = Class.forName("qge.cn.com.qgenglish.app.word.table." + cpointBean.tablename);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            // 需要注意最后一页数据
+            List<Word_niujinban_7_1> subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
+                    .get(cls, "_id", "asc", (cpointBean.code - 1) * 2 * 7, 14);
+            wordBeanOldList.addAll(subWordList);
+        }
+
         // 查询出来的单词列表变为两列的数据方式
         jcWordAdapter = new JcWordAdapter(activity, toWordBeanOlds(wordBeanOldList));
         jcWordAdapter.setChooseWordListion(chooseWordListion);
@@ -80,6 +98,10 @@ public class JcChoseWordAct extends BaseActivity {
 //                icibaHttp(word, wordHandler);
 //            }
 //        });
+
+        /**
+         * 重新识记
+         */
 //
         sureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,8 +116,7 @@ public class JcChoseWordAct extends BaseActivity {
                 }
 
                 Intent intent = new Intent();
-                intent.setClass(activity, SjWordAct.class);
-                // intent.putParcelableArrayListExtra("sjArray",wordBeanOldListSj);
+                intent.setClass(activity, FxSjWordAct.class);
                 intent.putExtra("sjArray", wordBeanOldListSj);
                 activity.startActivity(intent);
             }
@@ -103,8 +124,9 @@ public class JcChoseWordAct extends BaseActivity {
     }
 
     private ChooseWordListion chooseWordListion = new ChooseWordListion() {
+        // 记录学习的单词的个数
         @Override
-        public void switchChose(int position, View view, boolean isShow) {
+        public void switchChose(int position, View view, boolean isShow, boolean isClick) {
             LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
             TextView textView = (TextView) view.findViewById(R.id.word_value);
             TextView phonetic = (TextView) view.findViewById(R.id.phonetic);
@@ -119,11 +141,13 @@ public class JcChoseWordAct extends BaseActivity {
             }
             Word_niujinban_7_1 wordBeanOld = wordBeanOldList.get(position);
             String word = wordBeanOld.english;
+            wordHandler.obtainMessage(2).sendToTarget();
             icibaHttp(word, wordHandler);
+
         }
 
         @Override
-        public void switchChose1(int position, View view, boolean isShow) {
+        public void switchChose1(int position, View view, boolean isShow, boolean isClick) {
 
             LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay1);
             TextView textView = (TextView) view.findViewById(R.id.word_value1);
@@ -139,29 +163,34 @@ public class JcChoseWordAct extends BaseActivity {
             }
             Word_niujinban_7_1 wordBeanOld = wordBeanOldList.get(position + 1);
             String word = wordBeanOld.english;
+            wordHandler.obtainMessage(2).sendToTarget();
             icibaHttp(word, wordHandler);
+
         }
 
         @Override
-        public void chooseCount() {
+        public void chooseCount(int chooseNum) {
+
+            // 记录错误单词的个数
             //choosedNum.setText("已选择"+jcWordAdapter.chooseNum+"个单词");// 正则表达式
-            choosedNum.setText(String.format("已检查 %s /错误 %s /正确率 %s", jcWordAdapter.chooseNum, jcWordAdapter.chooseNum, jcWordAdapter.chooseNum).toString());
+            // choosedNum.setText(String.format("已检查 %s /错误 %s /正确率 %s", jcWordAdapter.chooseNum, chooseNum, jcWordAdapter.chooseNum).toString());
+            wordHandler.obtainMessage(2).sendToTarget();
         }
     };
 
     interface ChooseWordListion {
-        void switchChose(int position, View view, boolean isShow);
+        void switchChose(int position, View view, boolean isShow, boolean isClick);
 
-        void switchChose1(int position, View view, boolean isShow);
+        void switchChose1(int position, View view, boolean isShow, boolean isClick);
 
-        void chooseCount();
+        void chooseCount(int chooseNum);
     }
 
 
     private ArrayList<WordBeanOlds> toWordBeanOlds(List<Word_niujinban_7_1> wordBeanOldList) {
+        allWordsNum = wordBeanOldList.size();
 
-
-        for (int i = 0; i < wordBeanOldList.size(); i++) {
+        for (int i = 0; i < allWordsNum; i++) {
             WordBeanOlds wordBeanOlds = new WordBeanOlds();
             wordBeanOlds.wordBeanOld = wordBeanOldList.get(i);
             if (i > wordBeanOldList.size() - 1)
@@ -187,15 +216,23 @@ public class JcChoseWordAct extends BaseActivity {
                 mp3Play(word, Mp3Player.USA_ACCENT);
             } else if (msg.what == 1) {
 
-            } else if (msg.what == 100) {
-//                PageBean pageBean = (PageBean) msg.obj;
-//                wordBeanOldList = DBManager.getWordManager()
-//                        .get(WordBeanOld.class, (pageBean.getCurrentPage() - 1) * (pageBean.getPageSize()), pageBean.getPageSize());
-//                expWordAdapter.updateListView(wordBeanOldList);
-//                paginationWidget.setPageIndicator(pageBean.getAllCount());
+            } else if (msg.what == 2) {
+                if (jcWordAdapter.checkedNum == 0)
+                    return;
+                //
+                NumberFormat numberFormat = NumberFormat.getInstance();
+                numberFormat.setMaximumFractionDigits(2);
+                String result = numberFormat.format((float) (jcWordAdapter.checkedNum - jcWordAdapter.chooseNum) / (float) jcWordAdapter.checkedNum * 100);
+                choosedNum.setText(String.format("已检查 %s /错误 %s /正确率 %s", jcWordAdapter.checkedNum, jcWordAdapter.chooseNum, result + "%").toString());
+
             }
         }
     };
 
+    @Override
+    protected void onResume() {
+        wordBeanOldListSj.clear();
+        super.onResume();
+    }
 
 }

@@ -1,4 +1,5 @@
 package qge.cn.com.qgenglish.db;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -6,12 +7,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import qge.cn.com.qgenglish.app.word.table.Phrase_high;
+import qge.cn.com.qgenglish.app.word.table.Phrase_middle;
+import qge.cn.com.qgenglish.app.word.table.Phrase_small;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
+import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
 import qge.cn.com.qgenglish.iciba.WordBean;
 
 /**
@@ -34,8 +40,6 @@ class DBHelper extends SQLiteOpenHelper {
     DBHelper(Context context, String name) {
         super(context, name, null, DB_VERSION);
     }
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 在此位置创建数据库表
@@ -45,6 +49,11 @@ class DBHelper extends SQLiteOpenHelper {
         create(Behavior.class, db);
         create(User.class, db);
         create(WordBean.class, db);
+        create(CpointBean.class, db);
+//        create(Phrase_small.class,db); //小学短语
+//        create(Phrase_middle.class,db); //小学短语
+//        create(Phrase_high.class,db); //小学短语
+
         Log.i("", "");
     }
 
@@ -237,6 +246,7 @@ class DBHelper extends SQLiteOpenHelper {
         return isExist(tableName) && insertList(list, tableName);
     }
 
+    // 查询总记录数
     public long getCount(Class<?> cls) {
         String tableName = getTableName(cls);
         if (!isExist(tableName))
@@ -260,9 +270,58 @@ class DBHelper extends SQLiteOpenHelper {
         return 0;
     }
 
+    // 查询总记录数
+    public long getCount(String tableName) {
+
+        if (!isExist(tableName))
+            return -1;
+        SQLiteDatabase db;
+        Cursor cursor = null;
+        try {
+            db = getReadableDatabase();
+            cursor = db.rawQuery(String.format("select count(*) from %s", tableName), null);
+            cursor.moveToFirst();
+            long count = cursor.getLong(0);
+            cursor.close();
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return 0;
+    }
+
+    // 根据条件查询总数
+    public long getCount(Class<?> cls, String where) {
+        String tableName = getTableName(cls);
+        if (!isExist(tableName))
+            return -1;
+        SQLiteDatabase db;
+        Cursor cursor = null;
+        try {
+            db = getReadableDatabase();
+            cursor = db.rawQuery(String.format("select count(*) from %s  %s", tableName, where), null);
+            cursor.moveToFirst();
+            long count = cursor.getLong(0);
+            cursor.close();
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return 0;
+    }
+
     /**
      * 判断数据是否存在
      * 第二个参数填写具体的 where条件(where 字段名="");
+     *
      * @return isDataExist
      */
     @SuppressWarnings("LoopStatementThatDoesntLoop")
@@ -271,6 +330,7 @@ class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = null;
         try {
             String sql = String.format("SELECT * FROM %s %s", tableName, where);
+            Log.i("DBHelper", "sql=" + sql);
             cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()) {
                 return true;// //有城市在数据库已存在，返回true
@@ -450,8 +510,13 @@ class DBHelper extends SQLiteOpenHelper {
         return get(cls, where, null, null, 0, 0, 0, false);
     }
 
+
     public <T> List<T> get(Class<T> cls, int limit, int limit1) {
         return get(cls, null, null, null, limit, limit1, 0, true);
+    }
+
+    public <T> List<T> get(Class<T> cls, String orderColumn, String orderType, int limit, int limit1) {
+        return get(cls, null, orderColumn, orderType, limit, limit1, 0, true);
     }
 
     public <T> List<T> getWithOffset(Class<T> cls, int limit, int offset) {
@@ -485,15 +550,20 @@ class DBHelper extends SQLiteOpenHelper {
             String offsetStr = offset == 0 ? null : String.format(" offset %s", String.valueOf(offset));
             StringBuilder sb = new StringBuilder();
             sb.append(sql);
+            sb.append(TextUtils.isEmpty(orderBy) ? "" : orderBy);
             sb.append(TextUtils.isEmpty(limitStr) ? "" : limitStr);
             sb.append(TextUtils.isEmpty(limitStr1) ? "" : limitStr1);
             sb.append(TextUtils.isEmpty(offsetStr) ? "" : offsetStr);
             sb.append(TextUtils.isEmpty(whereAre) ? "" : whereAre);
-            sb.append(TextUtils.isEmpty(orderBy) ? "" : orderBy);
+
             sql = sb.toString();
+            System.out.println("sql=" + sql);
             cursor = db.rawQuery(sql, null);
+
+
             // 返回相同的对象TODO
-            cls = (Class<T>) Word_niujinban_7_1.class;
+            if (!("question_text".equals(tableName) || "question".equals(tableName) || "question_item".equals(tableName) || "word_unskilled".equals(tableName) || "cpointBean".equals(tableName)))
+                cls = (Class<T>) Word_niujinban_7_1.class;
             Field[] fields = cls.getDeclaredFields();
             while (cursor.moveToNext()) {
                 T t = cls.newInstance();
@@ -622,17 +692,36 @@ class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    //判断数据库中是否存在某个单词
+    public boolean isCpoinHave(String table) {
+        Cursor cursor = null;
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            cursor = db.query("cpointBean", new String[]{"tablename"}, "tablename=?", new String[]{table}, null, null, null);
+            if (cursor.getCount() > 0) {
+                cursor.close();
+                return true;
+            } else {
+                cursor.close();
+                return false;
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+    }
+
     /**********************
      * 对word的操作
      **********************/
 
-    public long getWordCount() {
+    public long getWordCount(String tableName) {
 
         SQLiteDatabase db;
         Cursor cursor = null;
         try {
             db = getReadableDatabase();
-            cursor = db.rawQuery(String.format("select count(*) from %s", "device_id"), null);
+            cursor = db.rawQuery(String.format("select count(*) from %s", tableName), null);
             cursor.moveToFirst();
             long count = cursor.getLong(0);
             cursor.close();
@@ -646,8 +735,6 @@ class DBHelper extends SQLiteOpenHelper {
         }
         return 0;
     }
-
-}
 
 
 //    在Android中查询数据是通过Cursor类来实现的，当我们使用SQLiteDatabase.query()方法时，会得到一个Cursor对象，Cursor指向的就是每一条数据。它提供了很多有关查询的方法，具体方法如下：
@@ -667,4 +754,148 @@ class DBHelper extends SQLiteOpenHelper {
 
 // 对 word_db数据库的操作
 
+//    public CpointBean getCpoint(String searchedWord) {
+//        CpointBean cpointBean = null;
+//        String[] columns = new String[]{"_id",
+//                "psE", "pronE", "psA", "pronA", "acceptation"};
+//        String[] strArray = new String[6];
+//        SQLiteDatabase db = getWritableDatabase();
+//        Cursor cursor = db.query("word", columns, "key=?", new String[]{searchedWord}, null, null, null);
+//        while (cursor.moveToNext()) {
+//
+//            for (int i = 0; i < strArray.length; i++) {
+//                strArray[i] = cursor.getString(cursor.getColumnIndex(columns[i]));
+//            }
+//            w = new WordBean(strArray[0], strArray[1], strArray[2], strArray[3], strArray[4], strArray[5]);
+//        }
+//        cursor.close();
+//        return w;
+//    }
 
+
+//   根据条件 返回单个对象的实例
+
+    public <T> T getT(Class<T> cls, String where) {
+        String tableName = getTableName(cls);// 这个地方添加分离操作
+        if (!isExist(tableName))
+            return null;
+
+        SQLiteDatabase db;
+        Cursor cursor = null;
+        T t;
+        try {
+            db = getReadableDatabase();
+            String sql = String.format("SELECT * from %s", tableName);
+            String whereAre = TextUtils.isEmpty(where) ? null : " " + where;
+            StringBuilder sb = new StringBuilder();
+            sb.append(sql);
+            sb.append(TextUtils.isEmpty(whereAre) ? "" : whereAre);
+            sql = sb.toString();
+            System.out.println("sql=" + sql);
+            cursor = db.rawQuery(sql, null);
+            Field[] fields = cls.getDeclaredFields();
+            cursor.moveToFirst();
+            t = cls.newInstance();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                String name = "";
+                if (field.isAnnotationPresent(Column.class))
+                    name = field.getAnnotation(Column.class).column();
+                else if (field.isAnnotationPresent(PrimaryKey.class))
+                    name = field.getAnnotation(PrimaryKey.class).column();
+                if (!TextUtils.isEmpty(name)) {
+                    Class<?> type = field.getType();
+                    if (type.equals(int.class)) {
+                        field.set(t, cursor.getInt(cursor.getColumnIndex(name)));
+                    } else if (type.equals(String.class)) {
+                        field.set(t, cursor.getString(cursor.getColumnIndex(name)));
+                    } else if (type.equals(long.class)) {
+                        field.set(t, cursor.getLong(cursor.getColumnIndex(name)));
+                    } else if (type.equals(float.class)) {
+                        field.set(t, cursor.getFloat(cursor.getColumnIndex(name)));
+                    } else if (type.equals(double.class)) {
+                        field.set(t, cursor.getDouble(cursor.getColumnIndex(name)));
+                    }
+                }
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return t;
+    }
+
+
+    // 复习 根据选择的关卡查询识记的单词
+    public <T> List<T> get(Class<T> cls, String where, String orderColumn, String orderType, int limit, int limit1) {
+        String tableName = getTableName(cls);
+        if (!isExist(tableName))
+            return null;
+        List<T> list = new ArrayList<>();
+        SQLiteDatabase db;
+        Cursor cursor = null;
+        try {
+            db = getReadableDatabase();
+
+
+            String sql = String.format("SELECT * from %s", tableName);
+            String whereAre = TextUtils.isEmpty(where) ? null : " " + where;
+            String orderBy = TextUtils.isEmpty(orderColumn) ? null : String.format(" ORDER BY %s %s", orderColumn, orderType);
+            // String limitStr = limit == 0 ? null : String.format(" limit %s offset %s", String.valueOf(limit), String.valueOf(offset));
+            String limitStr = null;
+            String limitStr1 = null;
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(sql);
+            sb.append(TextUtils.isEmpty(orderBy) ? "" : orderBy);
+            sb.append(TextUtils.isEmpty(limitStr) ? "" : limitStr);
+            sb.append(TextUtils.isEmpty(limitStr1) ? "" : limitStr1);
+
+            sb.append(TextUtils.isEmpty(whereAre) ? "" : whereAre);
+            sql = sb.toString();
+            System.out.println("sql=" + sql);
+            cursor = db.rawQuery(sql, null);
+            Field[] fields = cls.getDeclaredFields();
+            while (cursor.moveToNext()) {
+                T t = cls.newInstance();
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    String name = "";
+                    if (field.isAnnotationPresent(Column.class))
+                        name = field.getAnnotation(Column.class).column();
+                    else if (field.isAnnotationPresent(PrimaryKey.class))
+                        name = field.getAnnotation(PrimaryKey.class).column();
+                    if (!TextUtils.isEmpty(name)) {
+                        Class<?> type = field.getType();
+                        if (type.equals(int.class)) {
+                            field.set(t, cursor.getInt(cursor.getColumnIndex(name)));
+                        } else if (type.equals(String.class)) {
+                            field.set(t, cursor.getString(cursor.getColumnIndex(name)));
+                        } else if (type.equals(long.class)) {
+                            field.set(t, cursor.getLong(cursor.getColumnIndex(name)));
+                        } else if (type.equals(float.class)) {
+                            field.set(t, cursor.getFloat(cursor.getColumnIndex(name)));
+                        } else if (type.equals(double.class)) {
+                            field.set(t, cursor.getDouble(cursor.getColumnIndex(name)));
+                        }
+                    }
+                }
+                list.add(t);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return list;
+    }
+}

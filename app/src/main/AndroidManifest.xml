@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="qge.cn.com.qgenglish">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".application.FonyApplication"
@@ -13,31 +15,75 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--//LaunchActivity-->
+
+        <!-- //LaunchActivity -->
         <activity android:name=".LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".WordActivity"></activity>-->
-        <activity android:name=".GuideViewActivity"></activity>
-        <!--android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"-->
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".RegistActivity"></activity>
-        <activity android:name=".StartMenuActivity"></activity>
-        <activity android:name=".app.word.WordMenuSecAct"></activity>
-        <activity android:name=".app.word.WordMenuThAct"></activity>
-        <activity android:name=".app.word.WordMenuFAct"></activity>
-        <activity android:name=".app.word.WordAct"></activity>
-        <activity android:name=".app.articel.ArticelMenuAct"></activity>
-        <activity android:name=".app.articel.ArticelAct"></activity>
-        <activity android:name=".app.word.SjWordAct"></activity>
-        <activity android:name=".app.experience.ExpActivity"></activity>
-        <activity android:name=".app.experience.ExpChoseWordAct"></activity>
-        <activity android:name=".app.word.check.JcChoseWordAct"></activity>
-        <activity android:name=".app.word.review.FxChoseWordAct"></activity>
-        <activity android:name=".app.newword.NewWordChoseAct"></activity>
+        <!-- <activity android:name=".WordActivity"></activity> -->
+        <activity android:name=".GuideViewActivity" />
+        <!-- android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" -->
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegistActivity" />
+        <activity android:name=".StartMenuActivity" />
+        <activity android:name=".app.word.WordMenuSecAct" />
+        <activity android:name=".app.word.WordMenuThAct" />
+        <activity android:name=".app.word.WordMenuFAct" />
+        <activity android:name=".app.word.WordAct" />
+        <activity android:name=".app.articel.ArticelMenuAct" />
+        <activity android:name=".app.articel.ArticelAct" />
+        <activity android:name=".app.word.SjWordAct" />
+        <activity android:name=".app.experience.ExpActivity" />
+        <activity android:name=".app.experience.ExpChoseWordAct" />
+        <activity android:name=".app.word.check.JcChoseWordAct" />
+        <activity android:name=".app.word.review.FxChoseWordAct" />
+        <activity android:name=".app.newword.NewWordChoseAct" />
+        <!--学生账号登录-->
+        <activity android:name=".StuLoginActivity"></activity>
+        <activity android:name=".app.word.GradeMenuAct"></activity>
+        <activity android:name=".app.elementschool.EleMenu"></activity>
+        <activity android:name=".app.middleschool.MiddleMenu"></activity>
+        <activity android:name=".app.highschool.HighMenu"></activity>
+        <activity android:name=".app.fourlevel.FourLevelMenu"></activity>
+        <activity android:name=".app.sixlevel.SixLevelMenu"></activity>
+        <activity android:name=".app.thinkselegantly.ThinkSelegMenu"></activity>
+        <activity android:name=".app.receiving.ReceivingMenu"></activity>
+
+
+        <activity android:name=".app.middleschool.MiddleWordMenu"></activity>
+        <activity android:name=".app.middleschool.MiddleWordBsMenu"></activity>
+        <activity android:name=".app.middleschool.MiddleWordNjMenu"></activity>
+        <activity android:name=".app.middleschool.MiddleWordRjMenu"></activity>
+        <activity android:name=".app.middleschool.MiddleWordWyMenu"></activity>
+
+        <activity android:name=".app.highschool.HighWordBsMenu"></activity>
+        <activity android:name=".app.highschool.HighWordHighMenu"></activity>
+        <activity android:name=".app.highschool.HighWordNjMenu"></activity>
+        <activity android:name=".app.highschool.HighWordRjMenu"></activity>
+        <activity android:name=".app.highschool.HighWordWyMenu"></activity>
+
+        <activity android:name=".app.receiving.ReceivingWordMenu"></activity>
+        <activity android:name=".app.thinkselegantly.ThinkSelegWordMenu"></activity>
+        <activity android:name=".app.highschool.HighWordMenu"></activity>
+
+        <activity android:name=".app.word.review.FxSjWordAct"></activity>
+        <activity android:name=".app.phrase.PhraseAct"></activity>
+        <activity android:name=".app.phrase.SjPhraseAct"></activity>
+        <activity android:name=".app.CheckAct"></activity>
+        <activity android:name=".app.CheckChooseAct"></activity>
+
+
+        <service
+            android:name=".service.TimerService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".service.ReConnectService"
+            android:enabled="true"></service>
     </application>
 
 </manifest>

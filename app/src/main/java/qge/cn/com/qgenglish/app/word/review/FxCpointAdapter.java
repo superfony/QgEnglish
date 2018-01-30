@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -45,13 +46,29 @@ public class FxCpointAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         final CpointBean cpointBean = cpointBeanList.get(position);
         if (view == null) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.fx_cpoint_adapter, null);
             viewHolder = new ViewHolder();
-            view = LayoutInflater.from(mContext).inflate(R.layout.jc_cpoint_adapter, null);
             viewHolder.menuName = (TextView) view.findViewById(R.id.menu_name);
             viewHolder.checkBox = (CheckBox) view.findViewById(R.id.jc_cb);
+            viewHolder.fx_cpointitem = (RelativeLayout) view.findViewById(R.id.fx_cpoint_bg);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
+        }
+
+        if (cpointBean.state == 1) {
+            viewHolder.fx_cpointitem.setBackgroundResource(R.mipmap.item_c);
+            viewHolder.checkBox.setEnabled(true);
+        } else {
+            viewHolder.fx_cpointitem.setBackgroundResource(R.mipmap.item_d);
+            viewHolder.checkBox.setEnabled(false);
+        }
+
+        if (cpointBean.ischecked == 1) {
+            viewHolder.checkBox.setChecked(true);
+        } else {
+            viewHolder.checkBox.setChecked(false);
+
         }
         viewHolder.menuName.setText(cpointBean.name);
         viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -59,9 +76,9 @@ public class FxCpointAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-                    cpointBean.isChecked = true;
+                    cpointBean.ischecked = 1;
                 } else {
-                    cpointBean.isChecked = false;
+                    cpointBean.ischecked = 0;
                 }
             }
         });
@@ -71,5 +88,6 @@ public class FxCpointAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView menuName;
         CheckBox checkBox;
+        RelativeLayout fx_cpointitem;
     }
 }

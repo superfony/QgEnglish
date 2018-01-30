@@ -4,6 +4,7 @@ package qge.cn.com.qgenglish.application;
 import com.baiyang.android.crashexception.AppCrashHandler;
 
 import qge.cn.com.qgenglish.BuildConfig;
+import qge.cn.com.qgenglish.app.elementschool.EleMenu;
 import qge.cn.com.qgenglish.db.DBManager;
 
 /**
@@ -12,6 +13,12 @@ import qge.cn.com.qgenglish.db.DBManager;
  */
 public class FonyApplication extends AppContext {
     private static final String CONFIG_READ_STATE_PRE = "CONFIG_READ_STATE_PRE_";
+    public static boolean exercise = true;
+    public QGTYPE qgtype;
+
+    public enum QGTYPE {
+        WORD, PHRASE
+    }
 
     @Override
     public void onCreate() {

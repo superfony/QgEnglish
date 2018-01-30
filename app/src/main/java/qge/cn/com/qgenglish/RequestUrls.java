@@ -6,8 +6,15 @@ package qge.cn.com.qgenglish;
 
 public class RequestUrls {
     // 登录请求接口
-    public static String login = "https://easy-mock.com/mock/5a11649a868584562f60d677/example/login";
+    public static String IP = "http://116.196.98.96:9999";
+    public static String login = IP + "/app/school/login";
     // 注册接口
-    public static String regist = "";
+    public static String regist = IP + "/app/student/resgit";
+    //  计时定时任务
+    public static String sendTime = IP + "/app/student/timmer";
+
+
+
+
 
 }

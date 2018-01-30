@@ -20,6 +20,7 @@ import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.PaginationWidget;
 import qge.cn.com.qgenglish.app.word.SjWordAct;
+import qge.cn.com.qgenglish.app.word.review.FxSjWordAct;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
@@ -95,7 +96,7 @@ public class ExpChoseWordAct extends BaseActivity {
                 }
 
                 Intent intent = new Intent();
-                intent.setClass(activity, SjWordAct.class);
+                intent.setClass(activity, FxSjWordAct.class);  //
                 // intent.putParcelableArrayListExtra("sjArray",wordBeanOldListSj);
                 intent.putExtra("sjArray", wordBeanOldListSj);
                 activity.startActivity(intent);

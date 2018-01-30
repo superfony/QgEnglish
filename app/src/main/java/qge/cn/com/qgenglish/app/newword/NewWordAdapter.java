@@ -70,6 +70,9 @@ public class NewWordAdapter extends BaseAdapter {
             viewHolder.word_value1.setText(wordBeanOlds.wordBeanOld1.english);
             viewHolder.phonetic1.setText(wordBeanOlds.wordBeanOld1.phonetic);
             viewHolder.sense1.setText(wordBeanOlds.wordBeanOld1.sense);
+            viewHolder.exp_rela1.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.exp_rela1.setVisibility(View.INVISIBLE); // 单词格式为基数的时候
         }
 
 

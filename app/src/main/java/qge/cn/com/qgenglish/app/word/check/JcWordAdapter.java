@@ -19,10 +19,16 @@ import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.experience.ExpChoseWordAct;
 import qge.cn.com.qgenglish.app.experience.WordBeanOlds;
 
+/**
+ * 检查单词的操作
+ */
+
 public class JcWordAdapter extends BaseAdapter {
     private List<WordBeanOlds> wordBeanOldLists = null;
     private Context mContext;
-    public int chooseNum = 0;
+    public int chooseNum = 0; // 错误选择的
+    public int checkedNum = 0; // 计数的
+
 
     public void setChooseWordListion(JcChoseWordAct.ChooseWordListion chooseWordListion) {
         this.chooseWordListion = chooseWordListion;
@@ -77,13 +83,21 @@ public class JcWordAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    wordBeanOlds.state = true;
-                    chooseNum++;
+                    if (!wordBeanOlds.state) {
+                        wordBeanOlds.state = true;
+                        chooseNum++;
+                    }
+                    if (!wordBeanOlds.isClick) {
+                        checkedNum++;
+                        wordBeanOlds.isClick = true;
+                    }
                 } else {
-                    wordBeanOlds.state = false;
-                    chooseNum--;
+                    if (wordBeanOlds.state) {
+                        wordBeanOlds.state = false;
+                        chooseNum--;
+                    }
                 }
-                chooseWordListion.chooseCount();
+                chooseWordListion.chooseCount(chooseNum);
             }
         });
 
@@ -91,14 +105,22 @@ public class JcWordAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    wordBeanOlds.state1 = true;
-                    chooseNum++;
-                } else {
-                    wordBeanOlds.state1 = false;
-                    chooseNum--;
-                }
+                    if (!wordBeanOlds.state1) {
+                        chooseNum++;
+                        wordBeanOlds.state1 = true;
+                    }
 
-                chooseWordListion.chooseCount();
+                    if (!wordBeanOlds.isClick1) {
+                        checkedNum++;
+                        wordBeanOlds.isClick1 = true;
+                    }
+                } else {
+                    if (wordBeanOlds.state1) {
+                        wordBeanOlds.state1 = false;
+                        chooseNum--;
+                    }
+                }
+                chooseWordListion.chooseCount(chooseNum);
 
             }
         });
@@ -106,23 +128,38 @@ public class JcWordAdapter extends BaseAdapter {
         viewHolder.exp_rela.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wordBeanOlds.isShow)
+                if (wordBeanOlds.isShow) {
                     wordBeanOlds.isShow = false;
-                else
+                } else {
                     wordBeanOlds.isShow = true;
-                chooseWordListion.switchChose(position, v, wordBeanOlds.isShow);
+                }
+
+                if (!wordBeanOlds.isClick) {
+                    checkedNum++;
+                    wordBeanOlds.isClick = true;
+                }
+                chooseWordListion.switchChose(position, v, wordBeanOlds.isShow, wordBeanOlds.isClick);
             }
         });
         viewHolder.exp_rela1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wordBeanOlds.isShow1)
+                if (wordBeanOlds.isShow1) {
                     wordBeanOlds.isShow1 = false;
-                else
+                } else {
                     wordBeanOlds.isShow1 = true;
-                chooseWordListion.switchChose1(position, v, wordBeanOlds.isShow1);
+                }
+                if (!wordBeanOlds.isClick1) {
+                    checkedNum++;
+                    wordBeanOlds.isClick1 = true;
+                }
+
+                chooseWordListion.switchChose1(position, v, wordBeanOlds.isShow1, wordBeanOlds.isClick1);
             }
         });
+
+        viewHolder.expCbox.setChecked(wordBeanOlds.state);
+        viewHolder.expCbox1.setChecked(wordBeanOlds.state1);
 
         return view;
     }

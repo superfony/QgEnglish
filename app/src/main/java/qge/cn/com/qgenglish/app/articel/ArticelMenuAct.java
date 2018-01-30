@@ -25,6 +25,8 @@ public class ArticelMenuAct extends BaseActivity {
     private ArticelMenuAdapter articelMenuAdapter;
     private List<ArticelMenuBean> articelMenuBeanList = new ArrayList<ArticelMenuBean>();
 
+    private int articleTyp = 0; // 1 初中 2  高中
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class ArticelMenuAct extends BaseActivity {
         setContentView(R.layout.articelmenu_act);
         ButterKnife.bind(this);
         activity = this;
+        articleTyp = activity.getIntent().getIntExtra("articleType", 0);
         initData();
         articelMenuAdapter = new ArticelMenuAdapter(activity, articelMenuBeanList);
         articel_menu_lv.setAdapter(articelMenuAdapter);
@@ -48,16 +51,21 @@ public class ArticelMenuAct extends BaseActivity {
     }
 
     private void initData() {
-        for (int i = 1; i < 31; i++) {
-            ArticelMenuBean articelMenuBean = new ArticelMenuBean();
-            articelMenuBean.name = "初中阅读训练第" + i + "关";
-            articelMenuBeanList.add(articelMenuBean);
+        //
+        if (articleTyp == 1) {
+            for (int i = 1; i < 20; i++) {
+                ArticelMenuBean articelMenuBean = new ArticelMenuBean();
+                articelMenuBean.name = "初中阅读训练第" + i + "关";
+                articelMenuBeanList.add(articelMenuBean);
+            }
+        } else if (articleTyp == 2) {
+            for (int i = 1; i < 20; i++) {
+                ArticelMenuBean articelMenuBean = new ArticelMenuBean();
+                articelMenuBean.name = "高中阅读训练第" + i + "关";
+                articelMenuBeanList.add(articelMenuBean);
+            }
         }
 
-        for (int i = 1; i < 21; i++) {
-            ArticelMenuBean articelMenuBean = new ArticelMenuBean();
-            articelMenuBean.name = "高中阅读训练第" + i + "关";
-            articelMenuBeanList.add(articelMenuBean);
-        }
+
     }
 }

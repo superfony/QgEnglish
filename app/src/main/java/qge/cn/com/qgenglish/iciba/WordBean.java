@@ -12,7 +12,6 @@ import qge.cn.com.qgenglish.db.Table;
 
 /**
  * 用户习惯收集字段
- * Created by haibin on 2017/5/22.
  */
 @SuppressWarnings("all")
 @Table(tableName = "word")

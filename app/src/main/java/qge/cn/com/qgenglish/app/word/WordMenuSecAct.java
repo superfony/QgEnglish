@@ -38,7 +38,7 @@ public class WordMenuSecAct extends BaseActivity {
     @OnClick(R.id.menu1)
     void onclicMenu1() {
         Intent intent = new Intent();
-        intent.setClass(activity, WordMenuThAct.class);
+        intent.setClass(activity, GradeMenuAct.class);//WordMenuThAct
         activity.startActivity(intent);
     }
 

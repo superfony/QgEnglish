@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@mipmap/menu_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,6 +13,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp20"
         android:orientation="horizontal">
 
         <!--<CheckBox-->
@@ -27,7 +29,10 @@
             android:id="@+id/fx_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/sure_btn"
             android:text="确定"
+            android:textColor="@color/white"
+
 
            />
     </LinearLayout>

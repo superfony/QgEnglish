@@ -24,6 +24,7 @@ public class DBManager extends DBHelper {
     private static DBManager mInstance;
     private static DBManager wordManager;
 
+    // 自建数据库
     public static void init(Context context) {
         if (mInstance == null) {
             mInstance = new DBManager(context);
@@ -41,6 +42,7 @@ public class DBManager extends DBHelper {
         return mInstance;
     }
 
+    // 文件数据库
     public static DBManager getWordManager() {
         if (wordManager == null) {
             wordManager = getAssetSQLite(AppContext.getInstance());

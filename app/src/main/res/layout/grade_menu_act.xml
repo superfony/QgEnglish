@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/menu_bg"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/menu1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="小学课程"
+            android:background="@drawable/item_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp25"
+
+            />
+
+        <Button
+            android:id="@+id/menu2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:text="初中课程"
+            android:background="@drawable/item_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp25"
+
+            />
+
+        <Button
+            android:id="@+id/menu3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:text="高中课程"
+
+            android:textColor="@color/white"
+            android:background="@drawable/item_bg"
+            android:textSize="@dimen/dp25" />
+
+        <Button
+            android:id="@+id/menu4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:text="四级单词"
+            android:background="@drawable/item_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp25" />
+
+        <Button
+            android:id="@+id/menu5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:text="六级课程"
+            android:background="@drawable/item_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp25" />
+
+        <Button
+            android:id="@+id/menu6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:text="托福单词"
+            android:background="@drawable/item_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp25" />
+
+        <Button
+            android:id="@+id/menu7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp40"
+            android:text="雅思课程"
+            android:background="@drawable/item_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp25" />
+    </LinearLayout>
+</LinearLayout>
