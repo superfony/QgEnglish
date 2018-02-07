@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,8 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.pagination.PageBean;
 import com.baiyang.android.util.basic.ToastHelper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,14 +31,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
+import qge.cn.com.qgenglish.RequestUrls;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.PaginationWidget;
+import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.TableName;
+import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
 import qge.cn.com.qgenglish.app.word.table.Word_unskilled;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
 import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.cache.CacheManager;
 import qge.cn.com.qgenglish.db.DBManager;
+import qge.cn.com.qgenglish.iciba.SentBean;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 
@@ -48,7 +58,6 @@ public class SjWordAct extends BaseActivity {
     ListView sjLv;
     @Bind(R.id.sj_root)
     RelativeLayout sjRoot;
-
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.graspNum)
@@ -68,8 +77,11 @@ public class SjWordAct extends BaseActivity {
     private int current = 0;// 当前页
     protected EntryPopWindow entryPopWindow;
     protected EntryPopListener listener;
-    RelativeLayout paginationWidgetCtrl;
+    private RelativeLayout paginationWidgetCtrl;
     private FonyApplication.QGTYPE qgtype;
+    private Word_niujinban_7_1 wordBeanOld;
+    private TextView phonetic_tv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +96,10 @@ public class SjWordAct extends BaseActivity {
         title.setText(cpointBean.name);
         getAlreadyNum(cpointBean.tablename);
         switchCls(clsName);
-        initData();
-        initPaginationWidget(count);
+        initPaginationWidget(cpointBean.wordcount);
         initAdpater();
-        initTextToSpeek();
+        initData();
+//        initTextToSpeek();
         qgtype = ((FonyApplication) activity.getApplication()).qgtype;
 
     }
@@ -112,9 +124,15 @@ public class SjWordAct extends BaseActivity {
     }
 
     private void initData() {
-        long countlong = DBManager.getWordManager().getCount(cls);
-        count = (int) countlong;
+        //long countlong = DBManager.getWordManager().getCount(cls); // 查询本地的
         wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, SjWordAct.pageSize); // 第一页
+        if (wordBeanOldList == null || wordBeanOldList.size() == 0) {
+            String url = String.format(RequestUrls.CONTENTURL, cpointBean.id).toString();
+            RequestParams requestParams = new RequestParams();
+            startHttpGet(url, null);
+        } else {
+            wordHandler.sendEmptyMessage(1);
+        }
     }
 
     private void initPaginationWidget(int count) {
@@ -135,14 +153,39 @@ public class SjWordAct extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
-                interpretationLay.setVisibility(View.VISIBLE);
-                Word_niujinban_7_1 wordBeanOld = wordBeanOldList.get(position);
+                phonetic_tv = (TextView) interpretationLay.findViewById(R.id.phonetic);
+                wordBeanOld = wordBeanOldList.get(position);
+                String queue = wordBeanOld.queue;
+                if (!TextUtils.isEmpty(queue)) {
+                    if (queue.equals("1")) {
+                        wordBeanOld.queue = "2";
+                        interpretationLay.setVisibility(View.INVISIBLE);
+                    } else if (queue.equals("2")) {
+                        wordBeanOld.queue = "3";
+                        interpretationLay.setVisibility(View.VISIBLE);
+                    } else if (queue.equals("3")) {
+                        wordBeanOld.queue = "4";
+                        interpretationLay.setVisibility(View.INVISIBLE);
+                    } else if (queue.equals("4")) {
+                        wordBeanOld.queue = "1";
+                        interpretationLay.setVisibility(View.INVISIBLE);
+                    }
+                } else {
+                    wordBeanOld.queue = "2";
+                    interpretationLay.setVisibility(View.INVISIBLE);
+                }
                 String word = wordBeanOld.english;
                 switch (qgtype) {
                     case WORD:
                         icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
                         break;
                     case PHRASE:
+                        if (word.contains("sth.")) {
+                            word = word.replace("sth.", "something");
+                        }
+                        if (word.contains("sb.")) {
+                            word = word.replace("sb.", "somebody");
+                        }
                         textToSpeek(word);
                         break;
 
@@ -177,11 +220,12 @@ public class SjWordAct extends BaseActivity {
                                 wordunskilled.queue = wordBeanOld.queue;
                                 wordunskilled.sen = wordBeanOld.sen;
                                 wordunskilled.szh = wordBeanOld.szh;
-//                                User user=(User) CacheManager.readObject(activity, "user");
-//                                wordunskilled.user_id=user.getUserinfo().getUserid();
-                                wordunskilled.user_id = "101";
-                                DBManager.getWordManager().insert(wordunskilled, "word_unskilled");
-                                Toast.makeText(activity, "添加成功", Toast.LENGTH_SHORT).show();
+                                wordunskilled.sense = wordBeanOld.sense;
+
+                                UserInfo user = (UserInfo) CacheManager.readObject(activity, "userinfo");
+                                wordunskilled.user_id = user.getUserInfo().getId();
+                                wordunskilled.belong = getWordType();
+                                DBManager.getWordManager().insert(wordunskilled, TableName.word_unskilled);
                             }
                         });
                         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -225,7 +269,6 @@ public class SjWordAct extends BaseActivity {
     }
 
     public Handler wordHandler = new Handler() {
-
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -234,10 +277,28 @@ public class SjWordAct extends BaseActivity {
                 String word = wordBean.getKey();
                 String psE_value = wordBean.getPsE();
                 String psA_value = wordBean.getPsA();
+                String pronA = wordBean.getPronA();//  美式发音
                 String acceptation_value = wordBean.getAcceptation();
-                mp3Play(word, Mp3Player.USA_ACCENT);//
+                if (TextUtils.isEmpty(wordBeanOld.phonetic)) {
+                    SentBean sentBean = new SentBean();
+                    ArrayList<SentBean> sentBeanArrayList = wordBean.sentBeanArrayList;
+                    if (sentBeanArrayList != null && sentBeanArrayList.size() > 0) {
+                        sentBean = sentBeanArrayList.get(0);
+                        wordBeanOld.sen = sentBean.orig;
+                        wordBeanOld.szh = sentBean.trans;
+                    }
+                    phonetic_tv.setText("/" + psA_value + "/");
+                    wordBeanOld.phonetic = psA_value;
+                    String sql = String.format("update %s set phonetic='%s' , sen='%s' , szh='%s'  %s", cpointBean.tablename, "/" + psA_value + "/", sentBean.orig, sentBean.trans, " where english='" + word + "'").toString();
+                    DBManager.getWordManager().update(cpointBean.tablename, sql);
+                }
+                if (!TextUtils.isEmpty(pronA)) {
+                    mp3Play(word, Mp3Player.USA_ACCENT);
+                } else {
+                    textToSpeek(word);
+                }
             } else if (msg.what == 1) {
-
+                sjwordAdapter.updateListView(wordBeanOldList);
             } else if (msg.what == 100) {
                 // 这里来判断 页数不能
                 //   下一页
@@ -245,11 +306,18 @@ public class SjWordAct extends BaseActivity {
                 if (pageBean.getCurrentPage() <= ((current - 1) * 2 + 2) && pageBean.getCurrentPage() >= (current - 1) * 2 + 1) {
                     wordBeanOldList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
                             .get(cls, "_id", "asc", (pageBean.getCurrentPage() - 1) * (pageBean.getPageSize()), pageBean.getPageSize());
+
+                    if (wordBeanOldList == null || wordBeanOldList.size() == 0) {
+                        //
+                        String url = String.format(RequestUrls.CONTENTURL, cpointBean.id).toString();
+                        startHttpGet(url, null);
+                        return;
+                    }
                 } else if (pageBean.getCurrentPage() == ((current - 1) * 2 + 3)) {
+
                     wordBeanOldList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
                             .get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, pageBean.getPageSize() * 2);
                 } else {
-                    //
                     return;
                 }
                 sjwordAdapter.updateListView(wordBeanOldList);
@@ -260,10 +328,18 @@ public class SjWordAct extends BaseActivity {
             } else if (msg.what == 102) {  // 通关的操作
                 // 通关的操作 pop
                 // 隐藏 翻页按钮
-
-                ToastHelper.toast(activity, "通关了");
+                // 播放音乐
+                // 获取路径
+                if (current > 5 && current % 3 == 0 && current % 2 == 0) {
+                    mp3Playend(R.raw.o);
+                } else if (current > 2 && current % 3 == 0 && current % 2 == 1) {
+                    mp3Playend(R.raw.j);
+                } else {
+                    mp3Playend(R.raw.el);
+                }
                 entryPopWindow = new EntryPopWindow(activity, listener, cpointBean);// TODO
                 entryPopWindow.show(sjRoot);
+                sjLv.setEnabled(false);
                 paginationWidgetCtrl.setVisibility(View.INVISIBLE);
 
             }
@@ -275,7 +351,8 @@ public class SjWordAct extends BaseActivity {
             @Override
             public void doQuery(String req) {
                 // 操作数据库 记录关卡状态
-                ToastHelper.toast(activity, "操作数据库 记录关卡状态");
+                stopMp3();
+                sjLv.setEnabled(true);
                 cpointBean.state = 1;
                 DBManager.getInstance().update(TableName.cpointBean, "state", 1, "where tablename='" + cpointBean.tablename + "' and code=" + cpointBean.code);
                 cpointBean = DBManager.getInstance().getT(CpointBean.class, "where tablename='" + cpointBean.tablename + "' and code=" + (cpointBean.code + 1));
@@ -288,8 +365,27 @@ public class SjWordAct extends BaseActivity {
                 paginationWidget.getPageBean().setCurrentPage((current - 1) * 2 + 1);
                 wordHandler.obtainMessage(100, paginationWidget.getPageBean()).sendToTarget();
                 paginationWidgetCtrl.setVisibility(View.VISIBLE);
+                // 请求第二页数据
             }
         };
     }
 // 今天掌握 28个/已掌握28个/ 共729个
+
+
+    @Override
+    protected void onFailureBase(Throwable throwable, String s) {
+        super.onFailureBase(throwable, s);
+    }
+
+    @Override
+    protected void onSuccessBase(String s) {
+        Gson gson = new Gson();
+        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Word_niujinban_7_1>>>() {
+        }.getType());
+        ArrayList arrayList = (ArrayList) result.getData();
+        DBManager.getWordManager().insertTransaction(arrayList, cpointBean.tablename);
+        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, SjWordAct.pageSize); // 第一页
+        wordHandler.sendEmptyMessage(1);
+        super.onSuccessBase(s);
+    }
 }

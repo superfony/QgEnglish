@@ -367,7 +367,7 @@ class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * 更新字段
+     * 更新字段 一个字段
      *
      * @param table  表
      * @param column 字段
@@ -382,6 +382,22 @@ class DBHelper extends SQLiteOpenHelper {
         try {
             db = getReadableDatabase();
             String sql = String.format("UPDATE %s SET %s='%s' %s", table, column, value.toString(), where);
+            db.execSQL(sql);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // 根据表名 sql语句直接更新
+    public boolean update(String table, String sql) {
+        if (!isExist(table)) {
+            return false;
+        }
+        SQLiteDatabase db;
+        try {
+            db = getReadableDatabase();
             db.execSQL(sql);
             return true;
         } catch (Exception e) {

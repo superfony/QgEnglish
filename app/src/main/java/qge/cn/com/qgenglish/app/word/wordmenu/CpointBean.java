@@ -33,6 +33,18 @@ public class CpointBean implements Serializable {
     public int type; //当前关卡的类型  1 识记,2 复习 ,3 检查
     @Column(column = "state")
     public int state; //当前关卡学习状态  0 未通关,1 通关
-
-
+    @Column(column = "child")
+    public String child;  //
+    @Column(column = "id")
+    public String id;  //
+    @Column(column = "menuName")
+    public String menuName;  //
+    @Column(column = "menuType")
+    public String menuType;  //
+    @Column(column = "pmenuId")
+    public String pmenuId;  //
+    @Column(column = "sortIndex")
+    public String sortIndex;  //
+    @Column(column = "wordcount")
+    public int wordcount;  // 当前所在表的单词数量
 }

@@ -76,6 +76,7 @@ public class CheckChooseAct extends BaseActivity {
     private int score = 0;
     private String answer = null;
     private String chl = null;
+    private String des = null;
     private CheckChooseJson.DataBean dataBean;
     private Userinfo userinfo;
 
@@ -190,28 +191,53 @@ public class CheckChooseAct extends BaseActivity {
                     chl = "100-200";
                 } else if (score >= 11 && score <= 20) {
                     chl = "200-300";
+                    des = "您的词汇量约200-300,相当于小学三四年级水平,只能认识部分生活中简单的名词,无法进行交流/阅读" +
+                            "/写作,建议背诵小学词汇和初中词汇。";
                 } else if (score >= 21 && score <= 30) {
                     chl = "300-500";
+                    des = "您的词汇量约300-500,相当于小学五六年级水平,只能认识生活中简单的名称和部分最基本的词汇,能进行简单" +
+                            "的听说交流,基本无阅读和写作能力,建议背诵初中词汇和高中初级词汇。";
                 } else if (score >= 31 && score <= 40) {
                     chl = "500-800";
+                    des = "您的词汇量约500-800，相当于初一水平，只能认识生活中简单的名词和部分最基本的词汇，" +
+                            "能进行简单的听说交流，能写出几个简单的句子，" +
+                            "基本无阅读能力，考试时完形填空和阅读理解后两篇感觉困难，建议背诵初中词汇和高中初级词汇。";
                 } else if (score >= 41 && score <= 50) {
                     chl = "800-1000";
+                    des = "您的词汇量约800-1000,相当于初二水平,只能认识简单的名称和部分生活中最基本的词汇,能进行简单的听说交流,可与阅读故事类简单的" +
+                            "文章,考试时完型填空和阅读理解后两篇感觉困难,写作中缺少高级词汇,建议背诵初中词汇和高中初级/中级词汇。";
                 } else if (score >= 51 && score <= 60) {
                     chl = "1000-1500";
+                    des = "您的词汇量约1000-1500，相当于初三一般水平，能认识生活中的简单词汇,能进行简单的听说交流," +
+                            "写出简单的句子，但完型填空和阅读理解稍有难度时感觉吃力，" +
+                            "写作中缺少高级词汇,缺少两点突破，建议背诵高中初级/中级/高级词汇。";
+
                 } else if (score >= 61 && score <= 70) {
                     chl = "1600-1800";
+                    des = "您的词汇量约1600-1800,相当于高一 一般水平,能认识生活中的简单词汇,能进行简单的听说交流,写出简单句子,但完形填空和阅读" +
+                            "理解稍有难度时感觉吃力,写作中缺少高级词汇,缺少两点突破,建议背诵高中初级/中级/高级词汇。";
                 } else if (score >= 71 && score <= 80) {
                     chl = "1800-2000";
+
+                    des = "您的词汇量1800-2000,相当于高二一般水平,能认识生活中的简单词汇,能进行简单的听说交流,写出简单的句子,但" +
+                            "完型填空和阅读理解稍有难度时感觉吃力,写作中缺少高级词汇,缺少两点突破,建议背诵高中中级/高级词汇" +
+                            "和托福初级词汇。";
                 } else if (score >= 81 && score <= 90) {
                     chl = "2000-2500";
+                    des = "您的词汇量2000-2500,相当于高三 一般水平,能认识生活中的简单词汇,能进行简单的听说交流," +
+                            "写出简单句子和简单的复合句,但完型阅读理解稍有难度时感觉吃力,写作中缺少高级词汇,缺少两点" +
+                            "突破,建议背诵高中高级词汇和托福初级词汇。";
                 } else if (score >= 91 && score <= 100) {
                     chl = "2600-3000";
+                    des = "您词汇量2600-3000,相当于高三较高或以上水平,能认识生活中的简单词汇,能进行简单" +
+                            "的听说交流,写出简单句子和简单的符合句,但完型阅读稍有难度时感觉吃力,写作中缺少高级" +
+                            "词汇,缺少两点突破,建议背诵高中以上词汇,如托福或雅思词汇";
                 }
                 resultName.setText(userinfo.username);
                 sSj.setText(userinfo.city + userinfo.area);
                 resultSchool.setText(userinfo.school);
                 resultScore.setText(String.format("您的词汇量检测成绩是 %s 分", score));
-                resultAns.setText(String.format("您的词汇量约 %s ,相当于小学三四年级水平,只能认识部分生活中简单的名词,无法进行交流/阅读/x写作,建议背诵小学词汇和初中词汇", chl));
+                resultAns.setText(des);//String.format("您的词汇量约 %s ,相当于小学三四年级水平,只能认识部分生活中简单的名词,无法进行交流/阅读/x写作,建议背诵小学词汇和初中词汇", chl)
                 checkRlay.setVisibility(View.GONE);
                 checkResultRlay.setVisibility(View.VISIBLE);
 

@@ -9,7 +9,6 @@ public class TableName {
     // 小学
     public static String word_small = "word_small";
 
-
     // 初中
     // 初中全部
     public static String word_junior = "word_junior";
@@ -80,7 +79,10 @@ public class TableName {
     public static String word_renjiao_compulsory_7 = "word_renjiao_compulsory_7";
     public static String word_renjiao_compulsory_8 = "word_renjiao_compulsory_8";
     //  四级  // 缺少
+    public static String word_four = "word_four";
     //  六级  // 缺少
+    public static String word_six = "word_six";
+
     //  托福
     public static String word_toefl1 = "word_toefl1";
     public static String word_toefl2 = "word_toefl2";
@@ -89,16 +91,16 @@ public class TableName {
     public static String word_ielts1 = "word_ielts1";
     public static String word_ielts2 = "word_ielts2";
     public static String word_ielts3 = "word_ielts3";
-
-
     //
-
     public static String cpointBean = "cpointBean";
-
-
     // 小学短语
 
     public static String phrase_small = "phrase_small";
     public static String phrase_middle = "phrase_middle";
     public static String phrase_high = "phrase_high";
+    // 生词本
+    public static String word_unskilled = "word_unskilled";
+    //"word_unskilled"
+    public static String question = "question";
+
 }

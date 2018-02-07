@@ -98,14 +98,12 @@ public class CheckAct extends BaseActivity {
         }
 
         List<String> arrayList = new ArrayList<>();
-
         List<CheckJson.DataBean> dataBeanList = checkJson.getData();
         CheckJson.DataBean dataBean = dataBeanList.get(position);
         List<CheckJson.DataBean.CityBean> cityBeanList = dataBean.getCity();
         for (int i = 0; i < cityBeanList.size(); i++) {
             CheckJson.DataBean.CityBean cityBean = cityBeanList.get(i);
             arrayList.add(cityBean.getCityName());
-
         }
         dialog(arrayList, 2);
 

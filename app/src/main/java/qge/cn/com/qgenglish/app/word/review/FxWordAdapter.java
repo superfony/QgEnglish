@@ -25,8 +25,6 @@ public class FxWordAdapter extends BaseAdapter {
     private List<WordBeanOlds> wordBeanOldLists = null;
     private Context mContext;
     public int chooseNum = 0;
-    //
-    private HashMap<Integer, View> lmap = new HashMap<Integer, View>();
 
     public void setChooseWordListion(ChooseWordListion chooseWordListion) {
         this.chooseWordListion = chooseWordListion;
@@ -64,10 +62,8 @@ public class FxWordAdapter extends BaseAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.fx_adapter, null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
-//            lmap.put(position,view);
 
         } else {
-//            view=lmap.get(position);
             viewHolder = (ViewHolder) view.getTag();
         }
         viewHolder.word_value.setText(wordBeanOlds.wordBeanOld.english);
@@ -111,20 +107,22 @@ public class FxWordAdapter extends BaseAdapter {
         viewHolder.exp_rela.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wordBeanOlds.isShow)
+                if (wordBeanOlds.isShow) {
                     wordBeanOlds.isShow = false;
-                else
+                } else {
                     wordBeanOlds.isShow = true;
+                }
                 chooseWordListion.switchChose(position, v, wordBeanOlds.isShow);
             }
         });
         viewHolder.exp_rela1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wordBeanOlds.isShow1)
+                if (wordBeanOlds.isShow1) {
                     wordBeanOlds.isShow1 = false;
-                else
+                } else {
                     wordBeanOlds.isShow1 = true;
+                }
                 chooseWordListion.switchChose1(position, v, wordBeanOlds.isShow1);
             }
         });

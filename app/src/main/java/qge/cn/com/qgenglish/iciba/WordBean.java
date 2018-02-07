@@ -58,11 +58,13 @@ public class WordBean implements Serializable {
     private String acceptation;
 
 
+    public ArrayList<SentBean> sentBeanArrayList;
+
     public WordBean(WorldResp worldResp) {
         this.key = worldResp.key;
         ArrayList<PosBean> posBeanArrayList = worldResp.posBeanArrayList;
         ArrayList<PsPronBean> psPronBeanArrayList = worldResp.psPronBeanArrayList;
-        ArrayList<SentBean> sentBeanArrayList = worldResp.sentBeanArrayList;
+        sentBeanArrayList = worldResp.sentBeanArrayList;
         if (psPronBeanArrayList.size() == 1) {
             this.psA = psPronBeanArrayList.get(0).ps;
             this.pronA = psPronBeanArrayList.get(0).pron;

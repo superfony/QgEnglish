@@ -81,7 +81,6 @@ public class ExpChoseWordAct extends BaseActivity {
 //                icibaHttp(word, wordHandler);
 //            }
 //        });
-
 //
         sureBtn.setOnClickListener(new View.OnClickListener() {
             @Override

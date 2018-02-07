@@ -14,10 +14,13 @@ import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.articel.ArticelMenuAct;
 import qge.cn.com.qgenglish.app.highschool.HighMenuAdapter;
+import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
 import qge.cn.com.qgenglish.app.phrase.PhraseAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
 import qge.cn.com.qgenglish.app.word.WordMenuFAct;
+import qge.cn.com.qgenglish.app.word.table.Phrase_middle;
 import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.db.DBManager;
 
 /**
  * 初中
@@ -56,6 +59,9 @@ public class MiddleMenu extends BaseActivity {
                         break;
                     case 1:
                         ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.PHRASE;
+                        if (!DBManager.getWordManager().isExist(TableName.phrase_middle)) {
+                            DBManager.getWordManager().create(Phrase_middle.class, DBManager.getWordManager().getReadableDatabase());
+                        }
                         intent.putExtra("tableName", TableName.phrase_middle);
                         intent.setClass(activity, WordAct.class);
                         activity.startActivity(intent);
@@ -80,6 +86,9 @@ public class MiddleMenu extends BaseActivity {
                     case 8:
                         break;
                     case 9:
+
+                        intent.setClass(activity, NewWordChoseAct.class);
+                        activity.startActivity(intent);
                         break;
                     default:
                         break;

@@ -49,12 +49,19 @@ public class EntryPopWindow {
         layoutInflater = (LayoutInflater) mActivity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         popView = LayoutInflater.from(mActivity).inflate(R.layout.entrypop, null);
+
+        popView.setFocusable(false); // 这个很重要
+        popView.setFocusableInTouchMode(false);
+
         popupWindow = new PopupWindow(popView, LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT, true);
         ColorDrawable dw = new ColorDrawable(-00000);
         popupWindow.setBackgroundDrawable(dw);
         popupWindow.setFocusable(false);
+        popupWindow.setTouchable(true);
+        // popupWindow.set
         popupWindow.setOutsideTouchable(false);
+
         popupWindow.setAnimationStyle(R.style.UpInAndOutAnimation);
         popupWindow.update();
         TextView cpoincode_tv = (TextView) popView.findViewById(R.id.cpoincode);

@@ -15,6 +15,12 @@ public class FonyApplication extends AppContext {
     private static final String CONFIG_READ_STATE_PRE = "CONFIG_READ_STATE_PRE_";
     public static boolean exercise = true;
     public QGTYPE qgtype;
+    public WordType wordType;
+    public String tocken = "";
+
+    public enum WordType {
+        Small, Middle, High, FourLeve, SixLeve, Receiving, ThinkSeleg
+    }
 
     public enum QGTYPE {
         WORD, PHRASE

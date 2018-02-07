@@ -20,7 +20,11 @@ import android.widget.RelativeLayout;
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.common.AsyncBase;
 import com.baiyang.android.http.common.AsyncHttp;
+import com.baiyang.android.util.basic.ToastHelper;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,9 +34,12 @@ import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Pub_method;
 import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.bean.User;
+import qge.cn.com.qgenglish.app.schoolinfo.SchoolInfo;
 import qge.cn.com.qgenglish.app.word.GradeMenuAct;
 import qge.cn.com.qgenglish.app.word.WordMenuSecAct;
 import qge.cn.com.qgenglish.application.AppContext;
+import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.cache.CacheManager;
 
 /**
  * 学校账号登录页
@@ -85,81 +92,53 @@ public class LoginActivity extends BaseActivity {
         }
 
         RequestParams requestParams = new RequestParams();
-        requestParams.put("userName", "school");
-        requestParams.put("password", "test");
+        requestParams.put("userName", username);
+        requestParams.put("password", pwd);
         requestParams.put("padId", Pub_method.getDeviceID(activity));//
-//        http = new AsyncHttp(this);
-//        pd = new ProgressDialog(this);
-//        pd.show();
-//        http.setDebug(true);
-//        http.setRequestCallback(requestCallback);
-//        http.setDataType(AsyncBase.ResponseDataType.JSON);
-//        http.post(RequestUrls.login, requestParams, null, null);
-//        startIService();//开启服务
+        startHttpPost(RequestUrls.schoollogin, requestParams);
 
-
-        Intent intent = new Intent();
-        intent.setClass(activity, GradeMenuAct.class);
-        activity.startActivity(intent);
 
     }
 
-    AsyncBase.RequestCallback requestCallback = new AsyncBase.RequestCallback() {
-        @Override
-        public void onSuccess(String json) {
-            Log.i(TAG, json);
-//            JSONObject jsonObj = null;
-//            try {
-//                jsonObj = new JSONObject(json);
-//                code = jsonObj.getInt("code");
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-            Gson gson = new Gson();
-//            Type typeToken= new TypeToken<Result<User>>() {}.getType();
-//            Result<User> result = gson.fromJson(json, typeToken);
-            Result result = gson.fromJson(json, Result.class);
-            int code = result.getCode();
-            String message = result.getMessage();
-            Log.i(TAG, "" + code + "message=" + message);
-            if (code == 200) {  // 200返回正确的结果
-//                User user = gson.fromJson(json, User.class);
-//                User user= result.getData();
-//                Log.i(TAG, user.toString());
-//                CacheManager.saveObject(activity, user, "user");
-//                user = (User) CacheManager.readObject(activity, "user");
-                User user = new User();
-                Log.i(TAG, user.toString());
-                handler.obtainMessage(1, user).sendToTarget();
-            } else {
-                handler.obtainMessage(0, result.getMessage()).sendToTarget();
-            }
-        }
 
-        @Override
-        public void onFailure(Throwable throwable, String s) {
+    @Override
+    protected void handMessage(Message msg) {
+        super.handMessage(msg);
+        switch (msg.what) {
+            case 0:
+                ToastHelper.toast(activity, msg.obj.toString());
+                break;
+            case 1:
+                startIService();//开启服务
+                Intent intent = new Intent();
+                intent.setClass(activity, GradeMenuAct.class);
+                activity.startActivity(intent);
+                ;
+                break;
 
-            handler.obtainMessage(0, s).sendToTarget();
         }
-    };
+    }
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            pd.cancel();
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    AppContext.showToast(msg.obj.toString());
-                    break;
-                case 1:
-                    Intent intent = new Intent();
-                    intent.setClass(activity, WordMenuSecAct.class);
-                    activity.startActivity(intent);
-                    break;
-            }
-        }
-    };
+    @Override
+    protected void onSuccessBase(String s) {
+        super.onSuccessBase(s);
+        Gson gson = new Gson();
+        Type typeToken = new TypeToken<Result<SchoolInfo>>() {
+        }.getType();
+        Result<SchoolInfo> result = gson.fromJson(s, typeToken);
+        SchoolInfo schoolInfo = result.getData();
+        ((FonyApplication) activity.getApplication()).tocken = schoolInfo.getToken();
+        CacheManager.saveObject(activity, schoolInfo, "schoolinfo");
+        handlerBase.obtainMessage(1, "").sendToTarget();
+
+
+    }
+
+    @Override
+    protected void onFailureBase(Throwable throwable, String s) {
+        super.onFailureBase(throwable, s);
+    }
+
 
     @OnClick(R.id.regist_btn)
     void regist() {
@@ -203,6 +182,6 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         SQLiteStudioService.instance().start(this);
-//          stopIService();
+        stopIService();
     }
 }

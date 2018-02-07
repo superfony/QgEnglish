@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:paddingTop="@dimen/dp15"
+        android:paddingBottom="@dimen/dp15"
         android:orientation="horizontal">
 
         <TextView
@@ -17,7 +19,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:layout_marginLeft="@dimen/dp30"
-            android:textSize="@dimen/dp20" />
+            android:textSize="@dimen/dp30" />
 
         <LinearLayout
             android:id="@+id/interpretation_lay"
@@ -32,14 +34,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp30"
-                android:textSize="@dimen/dp20"
+                android:textSize="@dimen/dp25"
                 />
             <TextView
                 android:id="@+id/sense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp30"
-                android:textSize="@dimen/dp20"
+                android:layout_marginLeft="@dimen/dp20"
+                android:textSize="@dimen/dp25"
                 />
         </LinearLayout>
 

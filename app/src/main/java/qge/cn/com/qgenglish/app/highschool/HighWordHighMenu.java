@@ -19,15 +19,14 @@ import qge.cn.com.qgenglish.app.word.WordAct;
  */
 
 public class HighWordHighMenu extends BaseActivity {
-    private String TAG = "ThreeMenuAct";
+    private String TAG = "HighWordHighMenu";
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.ckxz_lv)
     ListView ckxzLv;
     private HighMenuAdapter wordMenuThAdapter;
 
-    private String[] menuArr = {"高中初级", "高中中级", "高中高级"
-    };
+    private String[] menuArr = {"高中初级", "高中中级", "高中高级"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

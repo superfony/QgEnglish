@@ -60,6 +60,7 @@
             android:layout_marginLeft="@dimen/dp50"
             android:textColor="@color/black"
             android:textSize="@dimen/dp20"
+            android:visibility="gone"
             android:text="已检查0/错误0/正确率100%" />
 
         <Button

@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
+import qge.cn.com.qgenglish.RequestUrls;
 import qge.cn.com.qgenglish.WordActivity;
 import qge.cn.com.qgenglish.app.bean.Error;
 import qge.cn.com.qgenglish.app.bean.User;
@@ -41,6 +42,8 @@ import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 import qge.cn.com.qgenglish.service.IActivitySupport;
 import qge.cn.com.qgenglish.service.ReConnectService;
 import qge.cn.com.qgenglish.service.TimerService;
+
+import static qge.cn.com.qgenglish.application.FonyApplication.WordType.Small;
 
 /**
  * Created by fony
@@ -59,14 +62,24 @@ public class BaseActivity extends Activity implements IActivitySupport {
     protected final static String iciba_key = "41DFE6A573E4538D2AB79EA55479D466";
     protected final static String icibaurl = "http://dict-co.iciba.com/api/dictionary.php";
     protected ChooseWordListion chooseWordListion;
-    //protected Handler handlerAct;
     private Intent timerService, reConnectService;
+    protected TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
         initNet();
+        textToSpeech = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    Log.w("base", "000000000");
+                } else {
+                    Toast.makeText(activity, "初始化失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -93,26 +106,14 @@ public class BaseActivity extends Activity implements IActivitySupport {
             params.put("key", iciba_key);
             pd = new ProgressDialog(this);
             pd.show();
+//            http=new AsyncHttp(activity);
+            http.setRequestCallback(null);
+            http.setDataType(AsyncBase.ResponseDataType.XML);
             http.get(icibaurl, params, new WorldHandler(),
                     baseProcessor);
         }
     }
 
-    protected void initTextToSpeek() {
-        textToSpeech = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                } else {
-                    Toast.makeText(activity, "初始化失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-    }
-
-    private TextToSpeech textToSpeech = null;
 
     protected void textToSpeek(String w) {
         textToSpeech.setLanguage(Locale.ENGLISH); // 设置语言
@@ -162,6 +163,7 @@ public class BaseActivity extends Activity implements IActivitySupport {
      */
     protected synchronized void mp3Play(final String word, final int type) {
 
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -174,6 +176,23 @@ public class BaseActivity extends Activity implements IActivitySupport {
         }).start();
     }
 
+
+    protected synchronized void mp3Playend(final int r) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (mp3Box == null)
+                    mp3Box = new Mp3Player(activity);
+                mp3Box.soundMp3(r);
+            }
+        }).start();
+    }
+
+    protected void stopMp3() {
+        if (mp3Box != null) {
+            mp3Box.stopSoundMp3();
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -227,6 +246,34 @@ public class BaseActivity extends Activity implements IActivitySupport {
 
     }
 
+    protected void addHead(String key, String value) {
+        http.addHead(key, value);
+    }
+
+    protected void startHttpPost(String url, RequestParams requestParams) {
+        showPD();
+        http.setRequestCallback(requestCallbackBase);
+        http.setDataType(AsyncBase.ResponseDataType.JSON);
+        http.addHead("authorization", getTocken());
+        http.setDebug(true);
+        http.post(url, requestParams, null, null);
+
+    }
+
+    private String getTocken() {
+        return ((FonyApplication) activity.getApplication()).tocken;
+
+    }
+
+    //
+    protected void startHttpGet(String url, RequestParams requestParams) {
+        showPD();
+        http.setRequestCallback(requestCallbackBase);
+        http.setDataType(AsyncBase.ResponseDataType.JSON);
+        http.setDebug(true);
+        http.get(url, requestParams, null, null);
+    }
+
     //   数据回调的统一的实现
 
     protected AsyncBase.RequestCallback requestCallbackBase = new AsyncBase.RequestCallback() {
@@ -242,17 +289,14 @@ public class BaseActivity extends Activity implements IActivitySupport {
             String request = null;
             try {
                 jsonObj = new JSONObject(s);
-                request = jsonObj.getString("request");
+                request = jsonObj.getString("code");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.i(TAG, request);
-            if ("1".equals(request)) {
-                onSuccess(s);
-            } else if ("0".equals(request)) {
-                Gson gson = new Gson();
-                Error error = gson.fromJson(s, Error.class);
-                handlerBase.obtainMessage(0, error).sendToTarget();
+            if ("200".equals(request)) {
+                onSuccessBase(s);
+            } else {
+                handlerBase.obtainMessage(0, s).sendToTarget(); // 错误信息
             }
 
 
@@ -261,13 +305,12 @@ public class BaseActivity extends Activity implements IActivitySupport {
 
     // 请求失败
     protected void onFailureBase(Throwable throwable, String s) {
-
-
+        hidePD();
     }
 
     // 有结果
     protected void onSuccessBase(String s) {
-
+        hidePD();
     }
 
     @Override
@@ -325,4 +368,39 @@ public class BaseActivity extends Activity implements IActivitySupport {
         Log.w("AsyncHttpRequset", "项目文件内容=" + result);
         return result;
     }
+
+    protected String getWordType() {
+        String type = null;
+        FonyApplication.WordType wordType = ((FonyApplication) activity.getApplication()).wordType;
+
+        switch (wordType) {
+            case Small:
+                type = TableName.word_small;
+                break;
+            case Middle:
+                type = TableName.word_junior;
+                break;
+            case High:
+                type = TableName.word_high1;
+                break;
+            case FourLeve:
+                type = TableName.word_four;
+                break;
+            case SixLeve:
+                type = TableName.word_six;
+                break;
+            case ThinkSeleg:
+                type = TableName.word_toefl1;
+                break;
+            case Receiving:
+                type = TableName.word_ielts1;
+                break;
+        }
+        return type;
+    }
+
+
+    // 实现一个计数器
+    //
+
 }

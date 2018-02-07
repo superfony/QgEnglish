@@ -18,7 +18,11 @@ import android.widget.RelativeLayout;
 
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.common.AsyncBase;
+import com.baiyang.android.util.basic.ToastHelper;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,11 +36,15 @@ import qge.cn.com.qgenglish.app.fourlevel.FourLevelMenu;
 import qge.cn.com.qgenglish.app.highschool.HighMenu;
 import qge.cn.com.qgenglish.app.middleschool.MiddleMenu;
 import qge.cn.com.qgenglish.app.receiving.ReceivingMenu;
+import qge.cn.com.qgenglish.app.schoolinfo.SchoolInfo;
+import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
 import qge.cn.com.qgenglish.app.sixlevel.SixLevelMenu;
 import qge.cn.com.qgenglish.app.thinkselegantly.ThinkSelegMenu;
 import qge.cn.com.qgenglish.app.word.GradeMenuAct;
 import qge.cn.com.qgenglish.app.word.WordMenuSecAct;
 import qge.cn.com.qgenglish.application.AppContext;
+import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.cache.CacheManager;
 
 /**
  * 学生登录页
@@ -65,12 +73,12 @@ public class StuLoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_stu);
         ButterKnife.bind(this);
         registBtn.setVisibility(View.VISIBLE);
-
         Intent intent = this.getIntent();
         grade = intent.getIntExtra("grade", 0);
+
     }
 
     private void init() {
@@ -78,61 +86,59 @@ public class StuLoginActivity extends BaseActivity {
 
     @OnClick(R.id.login_btn)
     void login() {
-
         String username = usernameEt.getText().toString();
         String pwd = passwordEt.getText().toString();
-
-
         if (TextUtils.isEmpty(username)) {
             AppContext.showToast("请填写姓名");
             return;
         }
-
         if (TextUtils.isEmpty(pwd)) {
             AppContext.showToast("请输入密码");
             return;
         }
-
         RequestParams requestParams = new RequestParams();
-        requestParams.put("userName", "school");
-        requestParams.put("password", "test");
+        requestParams.put("userName", username);
+        requestParams.put("password", pwd);
         requestParams.put("padId", Pub_method.getDeviceID(activity));//
-//        http = new AsyncHttp(this);
-//        pd = new ProgressDialog(this);
-//        pd.show();
-//        http.setDebug(true);
-//        http.setRequestCallback(requestCallback);
-//        http.setDataType(AsyncBase.ResponseDataType.JSON);
-//        http.post(RequestUrls.login, requestParams, null, null);
-//        startIService();//开启服务
+        //  SchoolInfo schoolInfo = (SchoolInfo) CacheManager.readObject(activity, "schoolinfo");
+        startHttpPost(RequestUrls.studentlogin, requestParams);
 
+        // startIService();//开启服务
 // 学生登录成功后进行分离
         /**
          * 传递点击标示
          */
+    }
 
+    private void reactAct() {
         Intent intent = new Intent();
-
         switch (grade) {
             case 1:
+                ((FonyApplication) activity.getApplication()).wordType = FonyApplication.WordType.Small;
                 intent.setClass(activity, EleMenu.class);
                 break;
             case 2:
+                ((FonyApplication) activity.getApplication()).wordType = FonyApplication.WordType.Middle;
                 intent.setClass(activity, MiddleMenu.class);
                 break;
             case 3:
+                ((FonyApplication) activity.getApplication()).wordType = FonyApplication.WordType.High;
                 intent.setClass(activity, HighMenu.class);
                 break;
             case 4:
+                ((FonyApplication) activity.getApplication()).wordType = FonyApplication.WordType.FourLeve;
                 intent.setClass(activity, FourLevelMenu.class);
                 break;
             case 5:
+                ((FonyApplication) activity.getApplication()).wordType = FonyApplication.WordType.SixLeve;
                 intent.setClass(activity, SixLevelMenu.class);
                 break;
             case 6:
+                ((FonyApplication) activity.getApplication()).wordType = FonyApplication.WordType.Receiving;
                 intent.setClass(activity, ReceivingMenu.class);
                 break;
             case 7:
+                ((FonyApplication) activity.getApplication()).wordType = FonyApplication.WordType.ThinkSeleg;
                 intent.setClass(activity, ThinkSelegMenu.class);
                 break;
             default:
@@ -140,65 +146,42 @@ public class StuLoginActivity extends BaseActivity {
         }
 
         activity.startActivity(intent);
-
     }
 
-    AsyncBase.RequestCallback requestCallback = new AsyncBase.RequestCallback() {
-        @Override
-        public void onSuccess(String json) {
-            Log.i(TAG, json);
-//            JSONObject jsonObj = null;
-//            try {
-//                jsonObj = new JSONObject(json);
-//                code = jsonObj.getInt("code");
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-            Gson gson = new Gson();
-//            Type typeToken= new TypeToken<Result<User>>() {}.getType();
-//            Result<User> result = gson.fromJson(json, typeToken);
-            Result result = gson.fromJson(json, Result.class);
-            int code = result.getCode();
-            String message = result.getMessage();
-            Log.i(TAG, "" + code + "message=" + message);
-            if (code == 200) {  // 200返回正确的结果
-//                User user = gson.fromJson(json, User.class);
-//                User user= result.getData();
-//                Log.i(TAG, user.toString());
-//                CacheManager.saveObject(activity, user, "user");
-//                user = (User) CacheManager.readObject(activity, "user");
-                User user = new User();
-                Log.i(TAG, user.toString());
-                handler.obtainMessage(1, user).sendToTarget();
-            } else {
-                handler.obtainMessage(0, result.getMessage()).sendToTarget();
-            }
-        }
 
-        @Override
-        public void onFailure(Throwable throwable, String s) {
+    @Override
+    protected void handMessage(Message msg) {
+        super.handMessage(msg);
+        switch (msg.what) {
+            case 0:
+                ToastHelper.toast(activity, msg.obj.toString());
+                break;
+            case 1:
+                textToSpeek("");
+                reactAct();
+                break;
 
-            handler.obtainMessage(0, s).sendToTarget();
         }
-    };
+    }
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            pd.cancel();
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    AppContext.showToast(msg.obj.toString());
-                    break;
-                case 1:
-                    Intent intent = new Intent();
-                    intent.setClass(activity, WordMenuSecAct.class);
-                    activity.startActivity(intent);
-                    break;
-            }
-        }
-    };
+
+    @Override
+    protected void onFailureBase(Throwable throwable, String s) {
+        super.onFailureBase(throwable, s);
+    }
+
+    @Override
+    protected void onSuccessBase(String s) {
+        super.onSuccessBase(s);
+        Gson gson = new Gson();
+        Type typeToken = new TypeToken<Result<UserInfo>>() {
+        }.getType();
+        Result<UserInfo> result = gson.fromJson(s, typeToken);
+        UserInfo userInfo = result.getData();
+        CacheManager.saveObject(activity, userInfo, "userinfo");
+        ((FonyApplication) activity.getApplication()).tocken = userInfo.getToken();
+        handlerBase.obtainMessage(1, "").sendToTarget();
+    }
 
     @OnClick(R.id.regist_btn)
     void regist() {
@@ -207,40 +190,10 @@ public class StuLoginActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
-    // 获取设备屏幕信息
-    private void getAndroiodScreenProperty() {
-        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;         // 屏幕宽度（像素）
-        int height = dm.heightPixels;       // 屏幕高度（像素）
-        float density = dm.density;         // 屏幕密度（0.75 / 1.0 / 1.5）
-        int densityDpi = dm.densityDpi;     // 屏幕密度dpi（120 / 160 / 240）
-        // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
-        int screenWidth = (int) (width / density);   // 屏幕宽度(dp)
-        int screenHeight = (int) (height / density); // 屏幕高度(dp)
 
-        Log.d("h_bl", "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
-        Log.d("h_bl", "屏幕宽度（像素）：" + width);
-        Log.d("h_bl", "屏幕高度（像素）：" + height);
-        Log.d("h_bl", "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
-        Log.d("h_bl", "屏幕密度dpi（120 / 160 / 240）：" + densityDpi);
-        Log.d("h_bl", "屏幕宽度（dp）：" + screenWidth);
-        Log.d("h_bl", "屏幕高度（dp）：" + screenHeight);
-    }
-
-    // 隐藏虚拟按键
-    private void hiddNAVIGATION() {
-        Window _window;
-        _window = getWindow();
-        WindowManager.LayoutParams params = _window.getAttributes();
-        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
-        _window.setAttributes(params);
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//          stopIService();
     }
 }

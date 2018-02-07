@@ -46,6 +46,8 @@ public class GradeMenuAct extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grade_menu_act);
         ButterKnife.bind(this);
+
+
     }
 
     //小学
@@ -62,7 +64,7 @@ public class GradeMenuAct extends BaseActivity {
     void onclicMenu2() {
         Intent intent = new Intent();
         intent.putExtra("grade", 2);
-        intent.setClass(activity, StuLoginActivity.class); //  阅读理解
+        intent.setClass(activity, StuLoginActivity.class);
         activity.startActivity(intent);
     }
 
@@ -72,7 +74,7 @@ public class GradeMenuAct extends BaseActivity {
 
         Intent intent = new Intent();
         intent.putExtra("grade", 3);
-        intent.setClass(activity, StuLoginActivity.class); // 生词本
+        intent.setClass(activity, StuLoginActivity.class);
         activity.startActivity(intent);
     }
 

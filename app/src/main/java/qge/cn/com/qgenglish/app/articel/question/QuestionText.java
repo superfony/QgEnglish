@@ -8,6 +8,7 @@ import qge.cn.com.qgenglish.db.Table;
 
 /**
  * Created by fony on 2017/11/22.
+ * 文章的
  */
 @Table(tableName = "question_text")
 public class QuestionText {

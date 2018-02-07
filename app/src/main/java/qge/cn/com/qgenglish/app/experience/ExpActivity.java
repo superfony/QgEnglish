@@ -9,7 +9,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
-import qge.cn.com.qgenglish.app.word.SjWordAct;
 
 /**
  * 超级记单词体验
@@ -19,6 +18,8 @@ import qge.cn.com.qgenglish.app.word.SjWordAct;
  */
 
 public class ExpActivity extends BaseActivity {
+    @Bind(R.id.menu4)
+    Button menu4;
     private String TAG = "ExpActivity";
     @Bind(R.id.menu1)
     Button menu1;
@@ -50,6 +51,13 @@ public class ExpActivity extends BaseActivity {
 
     @OnClick(R.id.menu3)
     void onclicMenu3() {//托福雅思单词
+        Intent intent = new Intent();
+        intent.setClass(activity, ExpChoseWordAct.class);
+        activity.startActivity(intent);
+    }
+
+    @OnClick(R.id.menu4)
+    void onclicMenu4() {//托福雅思单词
         Intent intent = new Intent();
         intent.setClass(activity, ExpChoseWordAct.class);
         activity.startActivity(intent);

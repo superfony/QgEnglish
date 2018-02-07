@@ -100,33 +100,34 @@ public class NewWordAdapter extends BaseAdapter {
                     wordBeanOlds.state1 = false;
                     chooseNum--;
                 }
-
                 chooseWordListion.chooseCount();
-
             }
         });
 
         viewHolder.exp_rela.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wordBeanOlds.isShow)
+                if (wordBeanOlds.isShow) {
                     wordBeanOlds.isShow = false;
-                else
+                } else {
                     wordBeanOlds.isShow = true;
+                }
                 chooseWordListion.switchChose(position, v, wordBeanOlds.isShow);
             }
         });
         viewHolder.exp_rela1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (wordBeanOlds.isShow1)
+                if (wordBeanOlds.isShow1) {
                     wordBeanOlds.isShow1 = false;
-                else
+                } else {
                     wordBeanOlds.isShow1 = true;
+                }
                 chooseWordListion.switchChose1(position, v, wordBeanOlds.isShow1);
             }
         });
-
+        viewHolder.expCbox.setChecked(wordBeanOlds.state);
+        viewHolder.expCbox1.setChecked(wordBeanOlds.state1);
         return view;
     }
 

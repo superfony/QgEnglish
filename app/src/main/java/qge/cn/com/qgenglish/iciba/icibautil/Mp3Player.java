@@ -5,9 +5,11 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.InputStream;
 
+import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.db.DBManager;
 
 /**
@@ -20,7 +22,8 @@ public class Mp3Player {
     public final static int ENGLISH_ACCENT = 0;
     public final static int USA_ACCENT = 1;
     public Context context = null;
-    public MediaPlayer mediaPlayer = null;
+    public MediaPlayer mediaPlayer;
+    public MediaPlayer mp;
     FileUtils fileU = null;
 
     public boolean isMusicPermitted = true;     //用于对是否播放音乐进行保护性设置，当该变量为false时，可以阻止一次音乐播放
@@ -84,24 +87,71 @@ public class Mp3Player {
         if (isMusicPermitted == false) {
             return;
         }
-
         try {
-            if (mediaPlayer != null) {
-                if (mediaPlayer.isPlaying())
-                    mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;     //为了防止mediaPlayer多次调用stop release，这里置空还是有必要
+            Uri uri = Uri.parse("file://" + fileU.getSDRootPath()
+                    + path + initialCharacter + "/-$-" + word + ".mp3");
+
+            if (mediaPlayer == null) {
+                mediaPlayer = MediaPlayer.create(context, uri);
+            } else {
+                mediaPlayer.setDataSource(context, uri);
             }
 
-            mediaPlayer = MediaPlayer.create(context, Uri.parse("file://" + fileU.getSDRootPath()
-                    + path + initialCharacter + "/-$-" + word + ".mp3"));
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
             mediaPlayer.start();
-
         } catch (Exception e) {
+            mediaPlayer.reset();
             mediaPlayer.release();
             e.printStackTrace();
         }
 
     }
 
+
+    public void soundMp3(int r) {
+        try {
+
+            mp = MediaPlayer.create(context, r);
+            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mp.release();
+                }
+            });
+            mp.start();
+
+        } catch (Exception e) {
+            if (mp != null)
+                mp.release();
+            e.printStackTrace();
+        }
+    }
+
+    public void stopSoundMp3() {
+
+        if (mp != null) {
+            if (mp.isPlaying()) {
+                mp.stop();
+            }
+            mp.reset();
+            mp.release();
+        }
+    }
 }

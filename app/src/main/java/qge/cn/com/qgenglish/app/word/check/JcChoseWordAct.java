@@ -25,6 +25,7 @@ import qge.cn.com.qgenglish.app.word.SjWordAct;
 import qge.cn.com.qgenglish.app.word.review.FxSjWordAct;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
+import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
@@ -52,6 +53,7 @@ public class JcChoseWordAct extends BaseActivity {
     private ArrayList<Word_niujinban_7_1> wordBeanOldListSj = new ArrayList<Word_niujinban_7_1>();
     private ArrayList<WordBeanOlds> wordBeanOldsArrayList = new ArrayList<WordBeanOlds>();
     private int allWordsNum;
+    private FonyApplication.QGTYPE qgtype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class JcChoseWordAct extends BaseActivity {
         ButterKnife.bind(this);
         activity = this;
         initData();
+        qgtype = ((FonyApplication) activity.getApplication()).qgtype;
     }
 
     private void initData() {
@@ -139,10 +142,27 @@ public class JcChoseWordAct extends BaseActivity {
                 textView.setVisibility(View.VISIBLE);
                 phonetic.setVisibility(View.GONE);
             }
-            Word_niujinban_7_1 wordBeanOld = wordBeanOldList.get(position);
+            Word_niujinban_7_1 wordBeanOld = wordBeanOldList.get(2 * position);
             String word = wordBeanOld.english;
             wordHandler.obtainMessage(2).sendToTarget();
-            icibaHttp(word, wordHandler);
+
+
+            //icibaHttp(word, wordHandler);
+
+            switch (qgtype) {
+                case WORD:
+                    icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
+                    break;
+                case PHRASE:
+                    if (word.contains("sth.")) {
+                        word = word.replace("sth.", "something");
+                    } else if (word.contains("sb.")) {
+                        word = word.replace("sb.", "somebody");
+                    }
+                    textToSpeek(word);
+                    break;
+
+            }
 
         }
 
@@ -161,10 +181,24 @@ public class JcChoseWordAct extends BaseActivity {
                 textView.setVisibility(View.VISIBLE);
                 phonetic1.setVisibility(View.GONE);
             }
-            Word_niujinban_7_1 wordBeanOld = wordBeanOldList.get(position + 1);
+            Word_niujinban_7_1 wordBeanOld = wordBeanOldList.get(2 * position + 1);
             String word = wordBeanOld.english;
             wordHandler.obtainMessage(2).sendToTarget();
-            icibaHttp(word, wordHandler);
+            //icibaHttp(word, wordHandler);
+            switch (qgtype) {
+                case WORD:
+                    icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
+                    break;
+                case PHRASE:
+                    if (word.contains("sth.")) {
+                        word = word.replace("sth.", "something");
+                    } else if (word.contains("sb.")) {
+                        word = word.replace("sb.", "somebody");
+                    }
+                    textToSpeek(word);
+                    break;
+
+            }
 
         }
 

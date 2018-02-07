@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,13 +36,18 @@ import qge.cn.com.qgenglish.app.word.SjwordAdapter;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
 import qge.cn.com.qgenglish.app.word.table.Word_unskilled;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
+import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 
+import static qge.cn.com.qgenglish.application.FonyApplication.QGTYPE.PHRASE;
+import static qge.cn.com.qgenglish.application.FonyApplication.QGTYPE.WORD;
+
 /**
  * 识记
- * 复习 跳转识记的地方
+ * 复习  检查 公用
+ * 跳转识记的地方
  */
 public class FxSjWordAct extends BaseActivity {
     @Bind(R.id.sj_lv)
@@ -68,6 +74,7 @@ public class FxSjWordAct extends BaseActivity {
     protected EntryPopWindow entryPopWindow;
     protected EntryPopListener listener;
     RelativeLayout paginationWidgetCtrl;
+    private FonyApplication.QGTYPE qgtype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,23 +83,11 @@ public class FxSjWordAct extends BaseActivity {
         ButterKnife.bind(this);
         activity = this;
         paginationWidgetCtrl = (RelativeLayout) sjRoot.findViewById(R.id.pagination_widget_ctrl);
-//        cpointBean = (CpointBean) activity.getIntent().getSerializableExtra("cpointBean");
-//        clsName = cpointBean.tablename;
-//        current = cpointBean.code; //关卡
         title.setText("重新识记");
         initData();
-
-
+        qgtype = ((FonyApplication) activity.getApplication()).qgtype;
     }
 
-    //    private void switchCls(String clsName) {
-//        try {
-//            clsName = clsName.substring(0, 1).toUpperCase() + clsName.substring(1);
-//            cls = Class.forName("qge.cn.com.qgenglish.app.word.table." + clsName);
-//        } catch (Exception e) {
-//
-//        }
-//    }
     // 获取已经掌握的单词的个数
     private void getAlreadyNum(String tableName) {
         long allCount = DBManager.getInstance().getCount(tableName);
@@ -134,10 +129,44 @@ public class FxSjWordAct extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
-                interpretationLay.setVisibility(View.VISIBLE);
+                // interpretationLay.setVisibility(View.VISIBLE);
                 Word_niujinban_7_1 wordBeanOld = fxWordList.get(position);
                 String word = wordBeanOld.english;
-                icibaHttp(word, wordHandler);// 读取发音
+                String queue = wordBeanOld.queue;
+                if (!TextUtils.isEmpty(queue)) {
+                    if (queue.equals("1")) {
+                        wordBeanOld.queue = "2";
+                        interpretationLay.setVisibility(View.INVISIBLE);
+                    } else if (queue.equals("2")) {
+                        wordBeanOld.queue = "3";
+                        interpretationLay.setVisibility(View.VISIBLE);
+                    } else if (queue.equals("3")) {
+                        wordBeanOld.queue = "4";
+                        interpretationLay.setVisibility(View.INVISIBLE);
+                    } else if (queue.equals("4")) {
+                        wordBeanOld.queue = "1";
+                        interpretationLay.setVisibility(View.INVISIBLE);
+                    }
+                } else {
+                    wordBeanOld.queue = "2";
+                    interpretationLay.setVisibility(View.INVISIBLE);
+                }
+
+
+                switch (qgtype) {
+                    case WORD:
+                        icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
+                        break;
+                    case PHRASE:
+                        if (word.contains("sth.")) {
+                            word = word.replace("sth.", "something");
+                        } else if (word.contains("sb.")) {
+                            word = word.replace("sb.", "somebody");
+                        }
+                        textToSpeek(word);
+                        break;
+                }
+//                icibaHttp(word, wordHandler);// 读取发音
             }
         });
 
@@ -170,7 +199,7 @@ public class FxSjWordAct extends BaseActivity {
                                 wordunskilled.szh = wordBeanOld.szh;
 //                                User user=(User) CacheManager.readObject(activity, "user");
 //                                wordunskilled.user_id=user.getUserinfo().getUserid();
-                                wordunskilled.user_id = "101";
+                                wordunskilled.user_id = 101;
                                 DBManager.getWordManager().insert(wordunskilled, "word_unskilled");
                                 Toast.makeText(activity, "添加成功", Toast.LENGTH_SHORT).show();
                             }

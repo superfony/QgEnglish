@@ -11,21 +11,32 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.baiyang.android.http.basic.RequestParams;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import qge.cn.com.qgenglish.R;
+import qge.cn.com.qgenglish.RequestUrls;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Common;
+import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.TableName;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
+import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
 import qge.cn.com.qgenglish.app.word.check.JcChoseWordAct;
 import qge.cn.com.qgenglish.app.word.check.JcCpointAdapter;
 import qge.cn.com.qgenglish.app.word.review.FxChoseWordAct;
 import qge.cn.com.qgenglish.app.word.review.FxCpointAdapter;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointAdapter;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
+import qge.cn.com.qgenglish.cache.CacheManager;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.view.ScrollLayout;
 
@@ -61,6 +72,32 @@ public class WordAct extends BaseActivity {
     ListView fx_word_lv;
     @Bind(R.id.fx_btn)
     Button fx_btn;
+    @Bind(R.id.tv_name)
+    TextView tvName;
+    @Bind(R.id.tv_mobile)
+    TextView tvMobile;
+    @Bind(R.id.tv_school)
+    TextView tvSchool;
+    @Bind(R.id.tv_grade)
+    TextView tvGrade;
+    @Bind(R.id.tv_area)
+    TextView tvArea;
+    @Bind(R.id.tv_level)
+    TextView tvLevel;
+    @Bind(R.id.tv_already)
+    TextView tvAlready;
+    @Bind(R.id.tv_timeused)
+    TextView tvTimeused;
+    @Bind(R.id.tv_average)
+    TextView tvAverage;
+    @Bind(R.id.tv_rest)
+    TextView tvRest;
+    @Bind(R.id.tv_timeneed)
+    TextView tvTimeneed;
+    @Bind(R.id.tv_result)
+    TextView tvResult;
+    @Bind(R.id.tv_coin)
+    TextView tvCoin;
     private int mViewCount;
     private int mCurSel;// 设置底部焦点索引
     private RadioButton[] mButtons;
@@ -73,6 +110,9 @@ public class WordAct extends BaseActivity {
     private List<CpointBean> cpointBeanListFx = new ArrayList<CpointBean>();
     private FxCpointAdapter cpointAdapterFx;
     private String tableName;// 操作的那张表
+    private ArrayList<Menu> arrayList = new ArrayList<Menu>(); // 网络菜单
+    private int allCount = 0;
+    private UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +120,7 @@ public class WordAct extends BaseActivity {
         setContentView(R.layout.word_act);
         ButterKnife.bind(this);
         activity = this;
+        userInfo = (UserInfo) CacheManager.readObject(activity, "userinfo");
         initPageScroll();
         initData();
     }
@@ -90,30 +131,57 @@ public class WordAct extends BaseActivity {
         if (tableName == null)
             return;
         // 查询关卡表 没有表关卡则第一次需要插入
-        //有则取数据库数据
+        // 根据表名查询关卡选项  有则取数据库数据
         boolean isHave = DBManager.getInstance().isCpoinHave(tableName);
         if (isHave) {
             cpointBeanList = DBManager.getInstance().get(CpointBean.class, " where tablename='" + tableName + "'");
             cpointBeanListJc = cpointBeanList;
             cpointBeanListFx = cpointBeanList;
         } else {
-            long wordSize = DBManager.getWordManager().getWordCount(tableName);
-            int copintSize = (int) Math.ceil((double) ((float) wordSize / (float) 14));
+            // 四六级单词进行网络请求  其它的读取本地数据库
+            if (TableName.word_six.equals(tableName)) {
+                RequestParams requestParams = new RequestParams();
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.word_six).toString(); //
+                startHttpGet(url, requestParams);
 
+            } else if (TableName.word_four.equals(tableName)) {
+                RequestParams requestParams = new RequestParams();
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.word_four).toString();
+                startHttpGet(url, requestParams);
+            } else if (TableName.phrase_small.equals(tableName)) {
+                RequestParams requestParams = new RequestParams();
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.phrase_small).toString(); //
+                startHttpGet(url, requestParams);
 
-            for (int i = 1; i <= copintSize; i++) {
-                CpointBean cpointBean = new CpointBean();
-                cpointBean.name = "第" + i + "关";
-                cpointBean.tablename = tableName;
-                cpointBean.code = i;
-                cpointBean.isPromiss = 1;
-                cpointBean.ischecked = 0;
-                cpointBean.state = 0;
-                cpointBeanList.add(cpointBean); // 识记
-                cpointBeanListJc.add(cpointBean); // 检查
-                cpointBeanListFx.add(cpointBean); // 复习
-                DBManager.getInstance().insert(cpointBean, TableName.cpointBean);
+            } else if (TableName.phrase_middle.equals(tableName)) {
+                RequestParams requestParams = new RequestParams();
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.phrase_middle).toString();
+                startHttpGet(url, requestParams);
+
+            } else if (TableName.phrase_high.equals(tableName)) {
+                RequestParams requestParams = new RequestParams();
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.phrase_high).toString();
+                startHttpGet(url, requestParams);
+
+            } else {
+                long wordSize = DBManager.getWordManager().getWordCount(tableName);
+                int copintSize = (int) Math.ceil((double) ((float) wordSize / (float) 14));
+                for (int i = 1; i <= copintSize; i++) {
+                    CpointBean cpointBean = new CpointBean();
+                    cpointBean.name = "第" + i + "关";
+                    cpointBean.tablename = tableName;
+                    cpointBean.code = i;
+                    cpointBean.isPromiss = 1;
+                    cpointBean.ischecked = 0;
+                    cpointBean.state = 0;
+                    cpointBean.wordcount = (int) wordSize;
+                    cpointBeanList.add(cpointBean); // 识记
+                    cpointBeanListJc.add(cpointBean); // 检查
+                    cpointBeanListFx.add(cpointBean); // 复习
+                    DBManager.getInstance().insert(cpointBean, TableName.cpointBean);
+                }
             }
+
         }
 
         cpointAdapter = new CpointAdapter(activity, cpointBeanList);
@@ -123,6 +191,12 @@ public class WordAct extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 CpointBean cpointBean = (CpointBean) cpointAdapter.getItem(position);
+                if (position > 0) {
+                    CpointBean cpointBean1 = (CpointBean) cpointAdapter.getItem(position - 1);
+                    if (cpointBean1.state == 0) {
+                        return;
+                    }
+                }
                 intent.putExtra("cpointBean", cpointBean);
                 intent.setClass(activity, SjWordAct.class);  //  单词识记的
                 activity.startActivity(intent);
@@ -242,7 +316,7 @@ public class WordAct extends BaseActivity {
                             case 2:
                                 // 检查
                                 break;
-                            case 3: //  统计
+                            case 3: // 统计
                                 break;
                         }
                         setCurPoint(viewIndex);
@@ -290,13 +364,64 @@ public class WordAct extends BaseActivity {
     } //Phrase
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
         cpointBeanList = DBManager.getInstance().get(CpointBean.class, " where tablename='" + tableName + "'");
         cpointBeanListJc = cpointBeanList;
         cpointBeanListFx = cpointBeanList;
         cpointAdapter.updateListView(cpointBeanList);
         cpointAdapterJc.updateListView(cpointBeanListJc);
         cpointAdapterFx.updateListView(cpointBeanListFx);
+    }
+
+
+    // 处理成功返回的json
+    @Override
+    protected void onSuccessBase(String s) {
+        Gson gson = new Gson();
+        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Menu>>>() {
+        }.getType());
+        String wordNum = result.getMessage();
+        allCount = Integer.parseInt(wordNum);
+        ArrayList arrayList = (ArrayList) result.getData();
+        int copintSize = arrayList.size();
+        for (int i = 1; i <= copintSize; i++) {
+            Menu menu = (Menu) arrayList.get(i - 1);
+            CpointBean cpointBean = new CpointBean();
+            cpointBean.name = "第" + i + "关";
+            cpointBean.tablename = tableName;
+            cpointBean.code = i;
+            cpointBean.isPromiss = 1;
+            cpointBean.ischecked = 0;
+            cpointBean.state = 0;
+            cpointBean.id = menu.id;
+            cpointBean.menuName = menu.menuName;
+            cpointBean.pmenuId = menu.pmenuId;
+            cpointBean.menuType = menu.menuType;
+            cpointBean.sortIndex = menu.sortIndex;
+            cpointBean.child = menu.child;
+            cpointBean.wordcount = allCount;
+            cpointBeanList.add(cpointBean);   //识记
+            cpointBeanListJc.add(cpointBean); //检查
+            cpointBeanListFx.add(cpointBean); // 复习
+            DBManager.getInstance().insert(cpointBean, TableName.cpointBean);
+        }
+        cpointAdapter.updateListView(cpointBeanList);
+        cpointAdapterJc.updateListView(cpointBeanListJc);
+        cpointAdapterFx.updateListView(cpointBeanListFx);
+        super.onSuccessBase(s);
+    }
+
+    @Override
+    protected void onFailureBase(Throwable throwable, String s) {
+        super.onFailureBase(throwable, s);
+    }
+
+
+    private void initTJdata() {
+        UserInfo.UserInfoBean user = userInfo.getUserInfo();
+        tvName.setText(user.getUserName());
+        //tvArea.setText(user);
+
     }
 }

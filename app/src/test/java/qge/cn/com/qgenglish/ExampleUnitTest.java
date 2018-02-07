@@ -84,204 +84,6 @@ public class ExampleUnitTest {
                 "      \"voicePath\": \"\"\n" +
                 "    },\n" +
                 "    {\n" +
-                "      \"english\": \"aboard\",\n" +
-                "      \"id\": 4,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"在船(车)上;上船\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"absolute\",\n" +
-                "      \"id\": 5,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"绝对的;纯粹的\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"absolutely\",\n" +
-                "      \"id\": 6,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"完全地;绝对地\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"absorb\",\n" +
-                "      \"id\": 7,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"吸收;使专心\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"abstract\",\n" +
-                "      \"id\": 8,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"摘要\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"abundant\",\n" +
-                "      \"id\": 9,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"丰富的;大量的\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"academic\",\n" +
-                "      \"id\": 10,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"学院的;学术的\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accelerate\",\n" +
-                "      \"id\": 11,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"(使)加快;促进\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"access\",\n" +
-                "      \"id\": 12,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"接近;通道，入口\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accidental\",\n" +
-                "      \"id\": 13,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"偶然的;非本质的\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accommodate\",\n" +
-                "      \"id\": 14,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"容纳;供应，供给\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accommodation\",\n" +
-                "      \"id\": 15,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"招待设备;预定铺位\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accompany\",\n" +
-                "      \"id\": 16,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"陪伴，陪同;伴随\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accomplish\",\n" +
-                "      \"id\": 17,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"达到(目的);完成\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accordance\",\n" +
-                "      \"id\": 18,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"一致;和谐;授予\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accordingly\",\n" +
-                "      \"id\": 19,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"因此，所以;照着\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"account\",\n" +
-                "      \"id\": 20,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"记述;解释;帐目\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"english\": \"accuracy\",\n" +
-                "      \"id\": 21,\n" +
-                "      \"pass\": null,\n" +
-                "      \"phonetic\": \"\",\n" +
-                "      \"queue\": null,\n" +
-                "      \"sen\": \"\",\n" +
-                "      \"sense\": \"准确(性);准确度\",\n" +
-                "      \"szh\": \"\",\n" +
-                "      \"voicePath\": \"\"\n" +
-                "    },\n" +
-                "    {\n" +
                 "      \"english\": \"accurate\",\n" +
                 "      \"id\": 22,\n" +
                 "      \"pass\": null,\n" +
@@ -304,7 +106,6 @@ public class ExampleUnitTest {
         ArrayList arrayList = (ArrayList) student.getData();
         int size = arrayList.size();
         // Object object = arrayList.get(0);
-
     }
 
 
@@ -343,5 +144,15 @@ public class ExampleUnitTest {
             s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
         }
         return s;
+    }
+
+    @Test
+    public void testString() {
+
+        String url = String.format(RequestUrls.COMMONURL, 2490).toString();
+        System.out.println(url);
+        String str = "aaaaa\nbbbbb";
+        String str2 = str.replaceAll("\n", "  ");
+        System.out.println(str2);
     }
 }

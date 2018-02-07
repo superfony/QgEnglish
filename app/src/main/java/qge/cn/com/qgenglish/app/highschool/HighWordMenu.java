@@ -32,7 +32,7 @@ public class HighWordMenu extends BaseActivity {
     private HighMenuAdapter wordMenuThAdapter;
 
     private String[] menuArr = {"北师版", "牛津版", "人教版",
-            "外研版", "高中词汇"};
+            "外研版"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +59,6 @@ public class HighWordMenu extends BaseActivity {
                         break;
                     case 3:
                         intent.setClass(activity, HighWordWyMenu.class);
-                        break;
-                    case 4:
-                        intent.setClass(activity, HighWordHighMenu.class);
                         break;
                     default:
                         break;

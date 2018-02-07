@@ -16,7 +16,9 @@ import qge.cn.com.qgenglish.app.highschool.HighMenuAdapter;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
 import qge.cn.com.qgenglish.app.word.WordMenuFAct;
+import qge.cn.com.qgenglish.app.word.table.Word_six;
 import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.db.DBManager;
 
 /**
  * 英语六级
@@ -45,8 +47,11 @@ public class SixLevelMenu extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 if (position == 0) {
+                    if (!DBManager.getWordManager().isExist(TableName.word_six)) {
+                        DBManager.getWordManager().create(Word_six.class, DBManager.getWordManager().getReadableDatabase());
+                    }
                     ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
-                    intent.putExtra("tableName", TableName.word_junior);
+                    intent.putExtra("tableName", TableName.word_six);
                     intent.setClass(activity, WordAct.class);
                 } else if (position == 1) {
                     intent.setClass(activity, NewWordChoseAct.class);

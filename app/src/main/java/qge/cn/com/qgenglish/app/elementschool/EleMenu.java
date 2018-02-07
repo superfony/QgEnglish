@@ -12,10 +12,14 @@ import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.TableName;
+import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
 import qge.cn.com.qgenglish.app.phrase.PhraseAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
 import qge.cn.com.qgenglish.app.word.WordMenuFAct;
+import qge.cn.com.qgenglish.app.word.table.Phrase_middle;
+import qge.cn.com.qgenglish.app.word.table.Phrase_small;
 import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.db.DBManager;
 
 /**
  * 小学的
@@ -30,7 +34,7 @@ public class EleMenu extends BaseActivity {
     private EleMenuAdapter wordMenuThAdapter;
 
     private String[] menuArr = {"小学单词", "小学短语", "小学写作",
-            "小学语法", "重点句型"};
+            "小学语法", "重点句型", "我的生词本"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +54,15 @@ public class EleMenu extends BaseActivity {
                     ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
                     intent.putExtra("tableName", TableName.word_small);
                     intent.setClass(activity, WordAct.class);
+                    activity.startActivity(intent);
                 } else if (position == 1) {
                     ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.PHRASE;
+                    if (!DBManager.getWordManager().isExist(TableName.phrase_small)) {
+                        DBManager.getWordManager().create(Phrase_small.class, DBManager.getWordManager().getReadableDatabase());
+                    }
                     intent.putExtra("tableName", TableName.phrase_small);
                     intent.setClass(activity, WordAct.class);
+                    activity.startActivity(intent);
                 } else if (position == 2) {
                     return;
 
@@ -63,8 +72,13 @@ public class EleMenu extends BaseActivity {
                 } else if (position == 4) {
                     return;
 
+                } else if (position == 5) { // 我的生词本
+                    intent.setClass(activity, NewWordChoseAct.class);
+                    activity.startActivity(intent);
+                    return;
+
                 }
-                activity.startActivity(intent);
+
 
             }
         });

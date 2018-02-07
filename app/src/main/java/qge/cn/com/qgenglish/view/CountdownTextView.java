@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import qge.cn.com.qgenglish.app.highschool.HighMenu;
+
 /**
  * Created by fony on 2017/11/16.
  */
@@ -25,6 +27,7 @@ public class CountdownTextView extends TextView {
     TimerTask mTimerTask;
     final int what_count_down_tick = 1;
     String TAG = "CountdownTextView";
+    private Handler backHandler;
 
     public CountdownTextView(Context context) {
         super(context);
@@ -47,8 +50,9 @@ public class CountdownTextView extends TextView {
      * @param format  例如：剩余%s
      * @param seconds
      */
-    public void init(String format, long seconds) {
+    public void init(String format, long seconds, Handler backHandler) {
         mTimerMap = new HashMap<>();
+        this.backHandler = backHandler;
         if (!TextUtils.isEmpty(format)) {
             mStrFormat = format;
         }
@@ -78,6 +82,7 @@ public class CountdownTextView extends TextView {
                 case what_count_down_tick:
                     if (mSeconds <= 0) {
                         setText(String.format(mStrFormat, "00:00:00"));
+                        backHandler.sendEmptyMessage(1);
                     } else {
                         // Log.e(TAG,"mSeconds="+mSeconds+"#what_count_down_tick:"+second2TimeSecond(mSeconds)+"#"+String.format(mStrFormat,second2TimeSecond(mSeconds)));
                         setText(mStrFormat == null ? second2TimeSecond(mSeconds) : String.format(mStrFormat, second2TimeSecond(mSeconds)));

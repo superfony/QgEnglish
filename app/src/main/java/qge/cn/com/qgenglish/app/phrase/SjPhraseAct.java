@@ -194,7 +194,7 @@ public class SjPhraseAct extends BaseActivity {
                                 wordunskilled.szh = wordBeanOld.szh;
 //                                User user=(User) CacheManager.readObject(activity, "user");
 //                                wordunskilled.user_id=user.getUserinfo().getUserid();
-                                wordunskilled.user_id = "101";
+                                wordunskilled.user_id = 101;
                                 DBManager.getWordManager().insert(wordunskilled, "word_unskilled");
                                 Toast.makeText(activity, "添加成功", Toast.LENGTH_SHORT).show();
                             }

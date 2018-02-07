@@ -70,6 +70,7 @@ public class DBManager extends DBHelper {
                 InputStream is = context.getAssets().open("word.db");
                 inputStreamToFile(is, path);
             }
+
             return new DBManager(context, "qg_data.db");
         } catch (IOException e) {
             e.printStackTrace();

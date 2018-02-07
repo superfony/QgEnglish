@@ -3,7 +3,6 @@ package qge.cn.com.qgenglish.app.articel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
@@ -112,8 +111,8 @@ public class ArticelAct extends BaseActivity {
     ImageView question4Result;
     @Bind(R.id.title_num)
     TextView titleNum;
-
-
+    @Bind(R.id.articel_root)
+    RelativeLayout articelRoot;
     private String TAG = "ArticelAct";
     private QuestionText questionText;
     private String answer_value1, answer_value2, answer_value3, answer_value4;
@@ -122,8 +121,12 @@ public class ArticelAct extends BaseActivity {
     private Question question1, question2, question3, question4;
     private List<QuestionText> questionTextList;
     private int guanqi;// 关卡计数
-    private int count;//当前关卡文章计数
+    private int count = 0;//当前关卡文章计数 四篇文章为一关
     private String titleStr;
+    protected ArticelPopWindow articelPopWindow;
+    protected ArticelPopListener articelPopListener;
+    private int rightCount = 0;
+
 
 
     public final static String linkCss = "<script type=\"text/javascript\" " +
@@ -160,18 +163,17 @@ public class ArticelAct extends BaseActivity {
         setContentView(R.layout.articel_act);
         ButterKnife.bind(this);
         activity = this;
-        initUI();
+
         Intent intent = getIntent();
-        guanqi = intent.getIntExtra("guanqi", 0);
-        count = intent.getIntExtra("count", 0);
-        timeCount.init("%s", 3600);
+        guanqi = intent.getIntExtra("guanqi", 0);// 关卡
+        timeCount.init("%s", 3600, bachHandler);
         timeCount.start(1);
-        questionTextList = getQuestionTextList(guanqi * 4, 4, 0);
-        initData(count);
-        titleNum.setText("(" + (count + 1) + ")");
+        initLis();
+        questionTextList = getQuestionTextList(guanqi * 4, 4, 0);  // 获取当前关的四篇文章
+        initData(0);
     }
 
-    private void initUI() {
+    private void initLis() {
         radioGroup1.setOnCheckedChangeListener(onCheckedChangeListener);
         radioGroup2.setOnCheckedChangeListener(onCheckedChangeListener);
         radioGroup3.setOnCheckedChangeListener(onCheckedChangeListener);
@@ -179,17 +181,19 @@ public class ArticelAct extends BaseActivity {
     }
 
     private void initData(int i) {
-
-        QuestionText questionText = getQuestionText(i);
-        articelContent.setText(Html.fromHtml(questionText.questionBody));
-
-
-        StringBuffer body = new StringBuffer();
-        body.append(WEB_STYLE).append(WEB_LOAD_IMAGES);
-        body.append(getWebViewBodyString());
-        body.append(questionText.questionBody);
-        // 封尾
-        body.append("</div></body>");
+        titleNum.setText("(" + (count + 1) + ")");
+        title.setText("第" + (guanqi + 1) + "关");
+        QuestionText questionText = getQuestionText(i);  // 获取
+        System.out.println(questionText);
+        String content = questionText.questionBody;
+        content = content.replaceAll("\\\\n", " ");
+        articelContent.setText(content);
+//        StringBuffer body = new StringBuffer();
+//        body.append(WEB_STYLE).append(WEB_LOAD_IMAGES);
+//        body.append(getWebViewBodyString());
+//        body.append(questionText.questionBody);
+//        // 封尾
+//        body.append("</div></body>");
 //        articel_webview.loadDataWithBaseURL(null,
 //                WEB_STYLE + body.toString(), "text/html",
 //                "utf-8", null);
@@ -217,8 +221,6 @@ public class ArticelAct extends BaseActivity {
             }
         }
         answer_value1 = question1.answer;
-
-
         question2 = questionList.get(1);//第二个问题
         question2_tv.setText(question2.questionBody);
         questionItemList = getQuestionItemList(question2);
@@ -240,8 +242,6 @@ public class ArticelAct extends BaseActivity {
             }
         }
         answer_value2 = question2.answer;
-
-
         question3 = questionList.get(2);//第三个问题
         question3_tv.setText(question3.questionBody);
         questionItemList = getQuestionItemList(question3);
@@ -287,6 +287,7 @@ public class ArticelAct extends BaseActivity {
         answer_value4 = question4.answer;
     }
 
+
     // 答案提交
     @OnClick(R.id.submit_btn)
     void submitOnClick() {
@@ -303,57 +304,72 @@ public class ArticelAct extends BaseActivity {
         DBManager.getWordManager().update("question", "userAnswer", answer3, "where questionID=" + question3.questionID);
         DBManager.getWordManager().update("question", "userAnswer", answer4, "where questionID=" + question4.questionID);
         if (answer1.equals(question1.answer)) {
+            rightCount++;
             submit_right(radioGroup1, question1Result);
         } else {
             submit_answer_wrong(question1, radioGroup1, question1Result);
         }
 
         if (answer2.equals(question2.answer)) {
+            rightCount++;
             submit_right(radioGroup2, question2Result);
         } else {
             submit_answer_wrong(question2, radioGroup2, question2Result);
         }
 
         if (answer3.equals(question3.answer)) {
+            rightCount++;
             submit_right(radioGroup3, question3Result);
         } else {
             submit_answer_wrong(question3, radioGroup3, question3Result);
         }
 
         if (answer4.equals(question4.answer)) {
+            rightCount++;
             submit_right(radioGroup4, question4Result);
         } else {
             submit_answer_wrong(question4, radioGroup4, question4Result);
         }
-
         submitBtn.setVisibility(View.GONE);
         lookBtn.setVisibility(View.GONE);
         nextT.setVisibility(View.VISIBLE);
-
-
+        if (count == 3) {
+            popShow();
+        }
     }
 
-
+    // 下一题
     @OnClick(R.id.next_t)
     void nextT() {
         count++;
         if (count < 4) {
-            Intent intent = new Intent();
-            intent.putExtra("guanqi", guanqi);
-            intent.putExtra("count", count);
-            intent.setClass(activity, ArticelAct.class);
-            activity.startActivity(intent);
-            activity.finish();
-        } else {
-            //  下一关的操作  统计查看答题分数
-//            Intent intent = new Intent();
-//            intent.putExtra("guanqi", ++guanqi);
-//            intent.putExtra("count", 0);
-//            intent.setClass(activity, ArticelAct.class);
-//            activity.startActivity(intent);
-//            activity.finish();
+            clearRadioGroup();
+            initData(count);
+
         }
     }
+
+    private void popShow() {
+        submitBtn.setVisibility(View.GONE);
+        lookBtn.setVisibility(View.GONE);
+        nextT.setVisibility(View.GONE);
+        mp3Playend(R.raw.el);
+        articelPopWindow = new ArticelPopWindow(activity, articelPopListener, guanqi + 1, rightCount);// TODO
+        articelPopWindow.show(articelRoot);
+    }
+
+    {
+        articelPopListener = new ArticelPopListener() {
+            @Override
+            public void doQuery(String req) {
+                stopMp3();
+                activity.finish();
+
+            }
+        };
+
+    }
+
 
     private void submit_right(RadioGroup radioGroup, ImageView imageView) {
         ((RadioButton) findViewById(radioGroup.getCheckedRadioButtonId())).setButtonDrawable(R.mipmap.right);
@@ -484,14 +500,48 @@ public class ArticelAct extends BaseActivity {
 
     public void disableRadioGroup(RadioGroup radioGroup) {
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
-            // radioGroup.getChildAt(i).setEnabled(false); // 隐藏
             radioGroup.getChildAt(i).setClickable(false);
         }
     }
 
     public void enableRadioGroup(RadioGroup radioGroup) {
+
         for (int i = 0; i < radioGroup.getChildCount(); i++) {
             radioGroup.getChildAt(i).setClickable(true);
+            ((RadioButton) radioGroup.getChildAt(i)).setButtonDrawable(R.drawable.rediobtn_check);
         }
     }
+
+    /**
+     * 状态还原
+     */
+    private void clearRadioGroup() {
+        enableRadioGroup(radioGroup1);
+        enableRadioGroup(radioGroup2);
+        enableRadioGroup(radioGroup3);
+        enableRadioGroup(radioGroup4);
+        radioGroup1.clearCheck();
+        radioGroup2.clearCheck();
+        radioGroup3.clearCheck();
+        radioGroup4.clearCheck();
+        question1Result.setVisibility(View.INVISIBLE);
+        question2Result.setVisibility(View.INVISIBLE);
+        question3Result.setVisibility(View.INVISIBLE);
+        question4Result.setVisibility(View.INVISIBLE);
+        submitBtn.setVisibility(View.VISIBLE);
+        lookBtn.setVisibility(View.VISIBLE);
+        nextT.setVisibility(View.GONE);
+    }
+
+    Handler bachHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                // 计时结束的操作
+            }
+        }
+    };
+
+
 }

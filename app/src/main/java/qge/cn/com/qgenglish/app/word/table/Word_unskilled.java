@@ -18,8 +18,8 @@ public class Word_unskilled implements Serializable {
     @PrimaryKey(autoincrement = true, column = "_id")
     @SerializedName("index")
     private int _id;
-    @Column(column = "user_id")
-    public String user_id;
+    @Column(column = "user_id")  // 用户id
+    public int user_id;
     @Column(column = "english")
     public String english;
     @Column(column = "phonetic")
@@ -36,6 +36,7 @@ public class Word_unskilled implements Serializable {
     public String pass;
     @Column(column = "queue")
     public String queue;
-    @Column(column = "belong")
+    @Column(column = "belong")  //  区分 类别
     public String belong;
+
 }

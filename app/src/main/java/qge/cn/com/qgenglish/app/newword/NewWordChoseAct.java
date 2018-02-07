@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.PaginationWidget;
 import qge.cn.com.qgenglish.app.word.SjWordAct;
+import qge.cn.com.qgenglish.app.word.review.FxSjWordAct;
 import qge.cn.com.qgenglish.app.word.table.Word_unskilled;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
@@ -45,7 +47,7 @@ public class NewWordChoseAct extends BaseActivity {
     private NewWordAdapter newWordAdapter;
     private List<Word_unskilled> word_unskilledList = new ArrayList<Word_unskilled>();
     private ArrayList<Word_unskilled> wordBeanOldListSj = new ArrayList<Word_unskilled>();
-    ArrayList<NewWordbeanS> wordBeanOldsArrayList = new ArrayList<NewWordbeanS>();
+    private ArrayList<NewWordbeanS> wordBeanOldsArrayList = new ArrayList<NewWordbeanS>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,33 +55,24 @@ public class NewWordChoseAct extends BaseActivity {
         setContentView(R.layout.new_word_act);
         ButterKnife.bind(this);
         activity = this;
+
         initData();
     }
 
     private void initData() {
-        long count = DBManager.getWordManager().getCount(Word_unskilled.class);
+        long count = DBManager.getWordManager().getCount(Word_unskilled.class, "where belong='" + getWordType() + "'  and user_id=" + 101);//"where belong='"+ tableName +"'  and user_id=" +101
         paginationWidget = new PaginationWidget();
         paginationWidget.init(activity, newRoot);
         paginationWidget.getPageBean().setAllCount((int) count);
         paginationWidget.setPageSize(22);
         paginationWidget.setPageIndicator((int) count);
         paginationWidget.setHandler(wordHandler);
-        word_unskilledList = DBManager.getWordManager().get(Word_unskilled.class, 0, paginationWidget.getPageBean().getPageSize());
+        //过滤当前用户跟表名
+        word_unskilledList = DBManager.getWordManager().get(Word_unskilled.class, "where belong='" + getWordType() + "'  and user_id=" + 101);
         // 查询出来的单词列表变为两列的数据方式
         newWordAdapter = new NewWordAdapter(activity, toWordBeanOlds(word_unskilledList));
         newWordAdapter.setChooseWordListion(chooseWordListion);
         newLv.setAdapter(newWordAdapter);
-//        sjLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
-//                interpretationLay.setVisibility(View.VISIBLE);
-//                WordBeanOld wordBeanOld = wordBeanOldList.get(position);
-//                String word = wordBeanOld.english;
-//                icibaHttp(word, wordHandler);
-//            }
-//        });
-//
         sureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,10 +84,8 @@ public class NewWordChoseAct extends BaseActivity {
                     if (wordBeanOlds.state1)
                         wordBeanOldListSj.add(wordBeanOlds.wordBeanOld1);
                 }
-
                 Intent intent = new Intent();
-                intent.setClass(activity, SjWordAct.class);
-                // intent.putParcelableArrayListExtra("sjArray",wordBeanOldListSj);
+                intent.setClass(activity, NewSjWordAct.class);
                 intent.putExtra("sjArray", wordBeanOldListSj);
                 activity.startActivity(intent);
             }
