@@ -4,9 +4,8 @@ package qge.cn.com.qgenglish.application;
 import com.baiyang.android.crashexception.AppCrashHandler;
 
 import qge.cn.com.qgenglish.BuildConfig;
-import qge.cn.com.qgenglish.app.elementschool.EleMenu;
+import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
 import qge.cn.com.qgenglish.db.DBManager;
-
 /**
  * Created by qiujuer
  * on 2016/10/27.
@@ -17,6 +16,8 @@ public class FonyApplication extends AppContext {
     public QGTYPE qgtype;
     public WordType wordType;
     public String tocken = "";
+    public UserInfo userinfo;
+    public String tableDes;// 学习模块描述
 
     public enum WordType {
         Small, Middle, High, FourLeve, SixLeve, Receiving, ThinkSeleg

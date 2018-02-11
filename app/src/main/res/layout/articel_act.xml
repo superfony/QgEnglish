@@ -259,7 +259,6 @@
                         style="@style/myReadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         />
 
                     <RadioButton
@@ -267,7 +266,6 @@
                         style="@style/myReadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         />
 
                     <RadioButton
@@ -275,7 +273,6 @@
                         style="@style/myReadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         />
 
                     <RadioButton
@@ -322,8 +319,6 @@
                             android:textSize="@dimen/dp20"
 
                             />
-
-
                     </LinearLayout>
 
                     <ImageView
@@ -451,6 +446,92 @@
 
                     <RadioButton
                         android:id="@+id/radio_btn_D4"
+                        style="@style/myReadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/question5_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp25"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/transparent" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5、"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dp20" />
+
+                        <TextView
+                            android:id="@+id/question5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dp20" />
+
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/question5_result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@color/transparent" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp15">
+
+                    <RadioButton
+                        android:id="@+id/radio_btn_A5"
+                        style="@style/myReadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/radio_btn_B5"
+                        style="@style/myReadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/radio_btn_C5"
+                        style="@style/myReadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/radio_btn_D5"
                         style="@style/myReadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />

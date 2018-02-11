@@ -12,10 +12,11 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baiyang.android.http.basic.RequestParams;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +35,10 @@ import qge.cn.com.qgenglish.app.word.check.JcChoseWordAct;
 import qge.cn.com.qgenglish.app.word.check.JcCpointAdapter;
 import qge.cn.com.qgenglish.app.word.review.FxChoseWordAct;
 import qge.cn.com.qgenglish.app.word.review.FxCpointAdapter;
+import qge.cn.com.qgenglish.app.word.table.Tj;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointAdapter;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
+import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.cache.CacheManager;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.view.ScrollLayout;
@@ -110,9 +113,10 @@ public class WordAct extends BaseActivity {
     private List<CpointBean> cpointBeanListFx = new ArrayList<CpointBean>();
     private FxCpointAdapter cpointAdapterFx;
     private String tableName;// 操作的那张表
-    private ArrayList<Menu> arrayList = new ArrayList<Menu>(); // 网络菜单
+    // private ArrayList<Menu> arrayList = new ArrayList<Menu>(); // 网络菜单
     private int allCount = 0;
     private UserInfo userInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +127,7 @@ public class WordAct extends BaseActivity {
         userInfo = (UserInfo) CacheManager.readObject(activity, "userinfo");
         initPageScroll();
         initData();
+
     }
 
     private void initData() {
@@ -132,37 +137,44 @@ public class WordAct extends BaseActivity {
             return;
         // 查询关卡表 没有表关卡则第一次需要插入
         // 根据表名查询关卡选项  有则取数据库数据
-        boolean isHave = DBManager.getInstance().isCpoinHave(tableName);
+        boolean isHave = DBManager.getInstance().isCpoinHave(tableName, userInfo.getUserInfo().getId() + "");
         if (isHave) {
-            cpointBeanList = DBManager.getInstance().get(CpointBean.class, " where tablename='" + tableName + "'");
+            cpointBeanList = DBManager.getInstance().get(CpointBean.class, " where tablename='" + tableName + "' and userid='" + userInfo.getUserInfo().getId() + "'");
             cpointBeanListJc = cpointBeanList;
             cpointBeanListFx = cpointBeanList;
         } else {
             // 四六级单词进行网络请求  其它的读取本地数据库
             if (TableName.word_six.equals(tableName)) {
-                RequestParams requestParams = new RequestParams();
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.word_six).toString(); //
-                startHttpGet(url, requestParams);
+                startHttpGet(url, null);
 
             } else if (TableName.word_four.equals(tableName)) {
-                RequestParams requestParams = new RequestParams();
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.word_four).toString();
-                startHttpGet(url, requestParams);
+                startHttpGet(url, null);
             } else if (TableName.phrase_small.equals(tableName)) {
-                RequestParams requestParams = new RequestParams();
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.phrase_small).toString(); //
-                startHttpGet(url, requestParams);
+                startHttpGet(url, null);
 
             } else if (TableName.phrase_middle.equals(tableName)) {
-                RequestParams requestParams = new RequestParams();
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.phrase_middle).toString();
-                startHttpGet(url, requestParams);
+                startHttpGet(url, null);
 
             } else if (TableName.phrase_high.equals(tableName)) {
-                RequestParams requestParams = new RequestParams();
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.phrase_high).toString();
-                startHttpGet(url, requestParams);
+                startHttpGet(url, null);
 
+            } else if (TableName.word_small_ty.equals(tableName)) {
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.small_ty).toString();
+                startHttpGet(url, null);
+            } else if (TableName.word_high_ty.equals(tableName)) {
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.high_ty).toString();
+                startHttpGet(url, null);
+            } else if (TableName.word_middle_ty.equals(tableName)) {
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.middle_ty).toString();
+                startHttpGet(url, null);
+            } else if (TableName.word_tfys_ty.equals(tableName)) {
+                String url = String.format(RequestUrls.COMMONURL, RequestUrls.tfys_ty).toString();
+                startHttpGet(url, null);
             } else {
                 long wordSize = DBManager.getWordManager().getWordCount(tableName);
                 int copintSize = (int) Math.ceil((double) ((float) wordSize / (float) 14));
@@ -175,13 +187,15 @@ public class WordAct extends BaseActivity {
                     cpointBean.ischecked = 0;
                     cpointBean.state = 0;
                     cpointBean.wordcount = (int) wordSize;
+                    cpointBean.userid = userInfo.getUserInfo().getId() + "";
                     cpointBeanList.add(cpointBean); // 识记
                     cpointBeanListJc.add(cpointBean); // 检查
                     cpointBeanListFx.add(cpointBean); // 复习
                     DBManager.getInstance().insert(cpointBean, TableName.cpointBean);
                 }
-            }
+                initTjdata((int) wordSize);
 
+            }
         }
 
         cpointAdapter = new CpointAdapter(activity, cpointBeanList);
@@ -223,7 +237,22 @@ public class WordAct extends BaseActivity {
 
             }
         });
+    }
 
+    // 第一次初始化才会执行
+    private void initTjdata(int wordSize) {
+        Tj tj = new Tj();
+        tj.tablename = tableName;
+        tj.tabledes = ((FonyApplication) activity.getApplication()).tableDes;
+        tj.allwordcount = (int) wordSize;
+        tj.goldcoin = 0;
+        tj.jccount = 0;
+        tj.jcwrong = 0;
+        tj.lcount = 0;
+        tj.resdual = 0;
+        tj.redudate = (new DecimalFormat("0.0").format(wordSize / 300)) + "天";// 语句剩余时间
+        tj.userid = userInfo.getUserInfo().getId();
+        DBManager.getWordManager().insert(tj, TableName.tongj);
     }
 
     // 检查相关的
@@ -239,7 +268,7 @@ public class WordAct extends BaseActivity {
         if (cpointBeenArray.size() <= 0)
             return;
         intent.putExtra("cpointArray", cpointBeenArray);
-
+        intent.putExtra("tableName", tableName);
         intent.setClass(activity, JcChoseWordAct.class);
         activity.startActivity(intent);
 
@@ -317,6 +346,7 @@ public class WordAct extends BaseActivity {
                                 // 检查
                                 break;
                             case 3: // 统计
+                                getTJdata();
                                 break;
                         }
                         setCurPoint(viewIndex);
@@ -366,14 +396,13 @@ public class WordAct extends BaseActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        cpointBeanList = DBManager.getInstance().get(CpointBean.class, " where tablename='" + tableName + "'");
+        cpointBeanList = DBManager.getInstance().get(CpointBean.class, " where tablename='" + tableName + "' and userid='" + userInfo.getUserInfo().getId() + "'");
         cpointBeanListJc = cpointBeanList;
         cpointBeanListFx = cpointBeanList;
         cpointAdapter.updateListView(cpointBeanList);
         cpointAdapterJc.updateListView(cpointBeanListJc);
         cpointAdapterFx.updateListView(cpointBeanListFx);
     }
-
 
     // 处理成功返回的json
     @Override
@@ -401,6 +430,7 @@ public class WordAct extends BaseActivity {
             cpointBean.sortIndex = menu.sortIndex;
             cpointBean.child = menu.child;
             cpointBean.wordcount = allCount;
+            cpointBean.userid = userInfo.getUserInfo().getId() + "";
             cpointBeanList.add(cpointBean);   //识记
             cpointBeanListJc.add(cpointBean); //检查
             cpointBeanListFx.add(cpointBean); // 复习
@@ -409,6 +439,7 @@ public class WordAct extends BaseActivity {
         cpointAdapter.updateListView(cpointBeanList);
         cpointAdapterJc.updateListView(cpointBeanListJc);
         cpointAdapterFx.updateListView(cpointBeanListFx);
+        initTjdata(allCount);
         super.onSuccessBase(s);
     }
 
@@ -417,11 +448,30 @@ public class WordAct extends BaseActivity {
         super.onFailureBase(throwable, s);
     }
 
+    // 统计信息
+    private void getTJdata() {
 
-    private void initTJdata() {
         UserInfo.UserInfoBean user = userInfo.getUserInfo();
         tvName.setText(user.getUserName());
-        //tvArea.setText(user);
+        tvArea.setText(user.getCity() + user.getArea());
+        tvGrade.setText(user.getGrade());
+        tvMobile.setText(user.getPhone());
+        tvSchool.setText(user.getSchoolName());
 
+        Tj tj = DBManager.getWordManager().getT(Tj.class, "where tablename='" + tableName + "' and userid=" + user.getId());
+        if (tj == null)
+            return;
+        tvLevel.setText(tj.tabledes);  // 当前词库
+        tvAlready.setText(tj.lcount + "");// 已识记单词数量
+        tvRest.setText((tj.allwordcount - tj.lcount) + "");// 剩余单词数量
+        tvTimeneed.setText(new DecimalFormat("0.0").format((float) (tj.allwordcount - tj.lcount) / 300) + "天");// 预计所需时间
+
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(2);
+
+        String result = numberFormat.format((float) (tj.jccount - tj.jcwrong) / (float) tj.jccount * 100);
+        tvResult.setText(String.format("已检查 %s /错误 %s /正确率 %s", tj.jccount, tj.jcwrong, result + "%").toString());
+        tvCoin.setText(tj.goldcoin + "");// 金币
+        //
     }
 }

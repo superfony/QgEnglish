@@ -35,9 +35,9 @@ public class CpointBean implements Serializable {
     public int state; //当前关卡学习状态  0 未通关,1 通关
     @Column(column = "child")
     public String child;  //
-    @Column(column = "id")
+    @Column(column = "id")      // 请求url
     public String id;  //
-    @Column(column = "menuName")
+    @Column(column = "menuName")  // 关卡名字
     public String menuName;  //
     @Column(column = "menuType")
     public String menuType;  //
@@ -47,4 +47,6 @@ public class CpointBean implements Serializable {
     public String sortIndex;  //
     @Column(column = "wordcount")
     public int wordcount;  // 当前所在表的单词数量
+    @Column(column = "userid")      // 请求url
+    public String userid;  // 用户id  用户终端切换用户的查询操作
 }

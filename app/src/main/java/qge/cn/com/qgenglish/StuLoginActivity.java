@@ -1,6 +1,8 @@
 package qge.cn.com.qgenglish;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,9 +33,11 @@ import butterknife.OnClick;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Pub_method;
 import qge.cn.com.qgenglish.app.Result;
+import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.bean.User;
 import qge.cn.com.qgenglish.app.elementschool.EleMenu;
 import qge.cn.com.qgenglish.app.fourlevel.FourLevelMenu;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.highschool.HighMenu;
 import qge.cn.com.qgenglish.app.middleschool.MiddleMenu;
 import qge.cn.com.qgenglish.app.receiving.ReceivingMenu;
@@ -42,9 +47,11 @@ import qge.cn.com.qgenglish.app.sixlevel.SixLevelMenu;
 import qge.cn.com.qgenglish.app.thinkselegantly.ThinkSelegMenu;
 import qge.cn.com.qgenglish.app.word.GradeMenuAct;
 import qge.cn.com.qgenglish.app.word.WordMenuSecAct;
+import qge.cn.com.qgenglish.app.word.table.Tj;
 import qge.cn.com.qgenglish.application.AppContext;
 import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.cache.CacheManager;
+import qge.cn.com.qgenglish.db.DBManager;
 
 /**
  * 学生登录页
@@ -69,6 +76,7 @@ public class StuLoginActivity extends BaseActivity {
     ImageView registBtn;
 
     private int grade;
+    //private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +86,17 @@ public class StuLoginActivity extends BaseActivity {
         registBtn.setVisibility(View.VISIBLE);
         Intent intent = this.getIntent();
         grade = intent.getIntExtra("grade", 0);
+        menu = (Menu) intent.getSerializableExtra("menu");
+        initTTS();
+
+        UserInfo userInfo = (UserInfo) CacheManager.readObject(activity, "userinfo");
+        if (userInfo != null) {
+            usernameEt.setText(userInfo.getUserInfo().getUserName());
+            passwordEt.setText(userInfo.getUserInfo().getPassword());
+        }
 
     }
 
-    private void init() {
-    }
 
     @OnClick(R.id.login_btn)
     void login() {
@@ -100,14 +114,9 @@ public class StuLoginActivity extends BaseActivity {
         requestParams.put("userName", username);
         requestParams.put("password", pwd);
         requestParams.put("padId", Pub_method.getDeviceID(activity));//
-        //  SchoolInfo schoolInfo = (SchoolInfo) CacheManager.readObject(activity, "schoolinfo");
         startHttpPost(RequestUrls.studentlogin, requestParams);
 
-        // startIService();//开启服务
-// 学生登录成功后进行分离
-        /**
-         * 传递点击标示
-         */
+
     }
 
     private void reactAct() {
@@ -144,7 +153,7 @@ public class StuLoginActivity extends BaseActivity {
             default:
                 break;
         }
-
+        intent.putExtra("menu", menu);
         activity.startActivity(intent);
     }
 
@@ -180,6 +189,11 @@ public class StuLoginActivity extends BaseActivity {
         UserInfo userInfo = result.getData();
         CacheManager.saveObject(activity, userInfo, "userinfo");
         ((FonyApplication) activity.getApplication()).tocken = userInfo.getToken();
+        ((FonyApplication) activity.getApplication()).userinfo = userInfo;
+        //
+        if (!DBManager.getWordManager().isExist(TableName.tongj)) {
+            DBManager.getWordManager().create(Tj.class, DBManager.getWordManager().getReadableDatabase());
+        }
         handlerBase.obtainMessage(1, "").sendToTarget();
     }
 
@@ -190,10 +204,10 @@ public class StuLoginActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
+
+
 }

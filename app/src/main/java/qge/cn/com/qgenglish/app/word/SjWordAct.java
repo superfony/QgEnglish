@@ -37,6 +37,7 @@ import qge.cn.com.qgenglish.app.PaginationWidget;
 import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
+import qge.cn.com.qgenglish.app.word.table.Tj;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
 import qge.cn.com.qgenglish.app.word.table.Word_unskilled;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
@@ -81,6 +82,7 @@ public class SjWordAct extends BaseActivity {
     private FonyApplication.QGTYPE qgtype;
     private Word_niujinban_7_1 wordBeanOld;
     private TextView phonetic_tv;
+    private UserInfo userInfo;
 
 
     @Override
@@ -93,13 +95,14 @@ public class SjWordAct extends BaseActivity {
         cpointBean = (CpointBean) activity.getIntent().getSerializableExtra("cpointBean");
         clsName = cpointBean.tablename;
         current = cpointBean.code; //关卡
+        userInfo = (UserInfo) CacheManager.readObject(activity, "userinfo");
         title.setText(cpointBean.name);
         getAlreadyNum(cpointBean.tablename);
         switchCls(clsName);
         initPaginationWidget(cpointBean.wordcount);
         initAdpater();
         initData();
-//        initTextToSpeek();
+        initTTS();
         qgtype = ((FonyApplication) activity.getApplication()).qgtype;
 
     }
@@ -146,6 +149,8 @@ public class SjWordAct extends BaseActivity {
         paginationWidget.setHandler(wordHandler);
     }
 
+    int postionCopy = 0;
+
     private void initAdpater() {
         sjwordAdapter = new SjwordAdapter(activity, wordBeanOldList);
         sjLv.setAdapter(sjwordAdapter);
@@ -154,8 +159,16 @@ public class SjWordAct extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
                 phonetic_tv = (TextView) interpretationLay.findViewById(R.id.phonetic);
+
                 wordBeanOld = wordBeanOldList.get(position);
                 String queue = wordBeanOld.queue;
+                // 这里需要修改
+                //每个单词三遍发音
+                if (position != postionCopy) {
+                    wordBeanOldList.get(postionCopy).queue = "1";
+                    postionCopy = position;
+                }
+
                 if (!TextUtils.isEmpty(queue)) {
                     if (queue.equals("1")) {
                         wordBeanOld.queue = "2";
@@ -164,9 +177,6 @@ public class SjWordAct extends BaseActivity {
                         wordBeanOld.queue = "3";
                         interpretationLay.setVisibility(View.VISIBLE);
                     } else if (queue.equals("3")) {
-                        wordBeanOld.queue = "4";
-                        interpretationLay.setVisibility(View.INVISIBLE);
-                    } else if (queue.equals("4")) {
                         wordBeanOld.queue = "1";
                         interpretationLay.setVisibility(View.INVISIBLE);
                     }
@@ -180,11 +190,11 @@ public class SjWordAct extends BaseActivity {
                         icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
                         break;
                     case PHRASE:
-                        if (word.contains("sth.")) {
-                            word = word.replace("sth.", "something");
+                        if (word.contains("sth")) {
+                            word = word.replace("sth", "something");
                         }
-                        if (word.contains("sb.")) {
-                            word = word.replace("sb.", "somebody");
+                        if (word.contains("sb")) {
+                            word = word.replace("sb", "somebody");
                         }
                         textToSpeek(word);
                         break;
@@ -222,10 +232,15 @@ public class SjWordAct extends BaseActivity {
                                 wordunskilled.szh = wordBeanOld.szh;
                                 wordunskilled.sense = wordBeanOld.sense;
 
-                                UserInfo user = (UserInfo) CacheManager.readObject(activity, "userinfo");
-                                wordunskilled.user_id = user.getUserInfo().getId();
+                                wordunskilled.user_id = userInfo.getUserInfo().getId();
                                 wordunskilled.belong = getWordType();
-                                DBManager.getWordManager().insert(wordunskilled, TableName.word_unskilled);
+                                boolean sucess = DBManager.getWordManager().insert(wordunskilled, TableName.word_unskilled);
+                                if (sucess) {
+                                    ToastHelper.toast(activity, "添加成功!");
+                                } else {
+                                    ToastHelper.toast(activity, "添加失败!");
+                                }
+
                             }
                         });
                         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -341,6 +356,16 @@ public class SjWordAct extends BaseActivity {
                 entryPopWindow.show(sjRoot);
                 sjLv.setEnabled(false);
                 paginationWidgetCtrl.setVisibility(View.INVISIBLE);
+                // 跟新获取金币数量
+                if (cpointBean.state == 1)
+                    return;
+                Tj tj = DBManager.getWordManager().getT(Tj.class, "where tablename='" + cpointBean.tablename + "' and userid='" + userInfo.getUserInfo().getId() + "'");
+                tj.lcount = cpointBean.code * 14;
+                if (tj.lcount > tj.allwordcount)
+                    tj.lcount = tj.allwordcount;
+                DBManager.getWordManager().update(TableName.tongj, "lcount", tj.lcount, "where tablename='" + cpointBean.tablename + "'  and userid='" + userInfo.getUserInfo().getId() + "'");
+                tj.goldcoin = tj.goldcoin + 5;
+                DBManager.getWordManager().update(TableName.tongj, "goldcoin", tj.goldcoin, "where tablename='" + cpointBean.tablename + "'  and userid='" + userInfo.getUserInfo().getId() + "'");
 
             }
         }
@@ -354,8 +379,8 @@ public class SjWordAct extends BaseActivity {
                 stopMp3();
                 sjLv.setEnabled(true);
                 cpointBean.state = 1;
-                DBManager.getInstance().update(TableName.cpointBean, "state", 1, "where tablename='" + cpointBean.tablename + "' and code=" + cpointBean.code);
-                cpointBean = DBManager.getInstance().getT(CpointBean.class, "where tablename='" + cpointBean.tablename + "' and code=" + (cpointBean.code + 1));
+                DBManager.getInstance().update(TableName.cpointBean, "state", 1, "where tablename='" + cpointBean.tablename + "' and code=" + cpointBean.code + " and userid='" + userInfo.getUserInfo().getId() + "'");
+                cpointBean = DBManager.getInstance().getT(CpointBean.class, "where tablename='" + cpointBean.tablename + "' and code=" + (cpointBean.code + 1) + " and userid='" + userInfo.getUserInfo().getId() + "'");
                 if (cpointBean == null)
                     return;
                 current = cpointBean.code;

@@ -709,11 +709,11 @@ class DBHelper extends SQLiteOpenHelper {
 
 
     //判断数据库中是否存在某个单词
-    public boolean isCpoinHave(String table) {
+    public boolean isCpoinHave(String table, String userid) {
         Cursor cursor = null;
         SQLiteDatabase db = getWritableDatabase();
         try {
-            cursor = db.query("cpointBean", new String[]{"tablename"}, "tablename=?", new String[]{table}, null, null, null);
+            cursor = db.query("cpointBean", new String[]{"tablename", "userid"}, "tablename=? and userid=?", new String[]{table, userid}, null, null, null);
             if (cursor.getCount() > 0) {
                 cursor.close();
                 return true;

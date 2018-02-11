@@ -9,6 +9,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
+import qge.cn.com.qgenglish.app.TableName;
+import qge.cn.com.qgenglish.app.word.WordAct;
+import qge.cn.com.qgenglish.app.word.table.Word_four;
+import qge.cn.com.qgenglish.app.word.table.Word_high_ty;
+import qge.cn.com.qgenglish.app.word.table.Word_middle_ty;
+import qge.cn.com.qgenglish.app.word.table.Word_small_ty;
+import qge.cn.com.qgenglish.app.word.table.Word_tfys_ty;
+import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.db.DBManager;
 
 /**
  * 超级记单词体验
@@ -36,30 +45,58 @@ public class ExpActivity extends BaseActivity {
     }
 
     @OnClick(R.id.menu1)
-    void onclicMenu1() {  //初中单词
+    void onclicMenu1() {  //初中单词 体验
         Intent intent = new Intent();
-        intent.setClass(activity, ExpChoseWordAct.class);
+        //intent.setClass(activity, ExpChoseWordAct.class);
+        if (!DBManager.getWordManager().isExist(TableName.word_middle_ty)) {
+            DBManager.getWordManager().create(Word_middle_ty.class, DBManager.getWordManager().getReadableDatabase());
+        }
+        ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
+        intent.putExtra("tableName", TableName.word_middle_ty);
+        intent.setClass(activity, WordAct.class);
+
+
         activity.startActivity(intent);
     }
 
     @OnClick(R.id.menu2)
     void onclicMenu2() {//高中单词
         Intent intent = new Intent();
-        intent.setClass(activity, ExpChoseWordAct.class);
+        //intent.setClass(activity, ExpChoseWordAct.class);
+        if (!DBManager.getWordManager().isExist(TableName.word_high_ty)) {
+            DBManager.getWordManager().create(Word_high_ty.class, DBManager.getWordManager().getReadableDatabase());
+        }
+        ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
+        intent.putExtra("tableName", TableName.word_high_ty);
+        intent.setClass(activity, WordAct.class);
         activity.startActivity(intent);
     }
 
     @OnClick(R.id.menu3)
     void onclicMenu3() {//托福雅思单词
         Intent intent = new Intent();
-        intent.setClass(activity, ExpChoseWordAct.class);
+        //intent.setClass(activity, ExpChoseWordAct.class);
+        if (!DBManager.getWordManager().isExist(TableName.word_tfys_ty)) {
+            DBManager.getWordManager().create(Word_tfys_ty.class, DBManager.getWordManager().getReadableDatabase());
+        }
+        ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
+        intent.putExtra("tableName", TableName.word_tfys_ty);
+        intent.setClass(activity, WordAct.class);
+
         activity.startActivity(intent);
     }
 
     @OnClick(R.id.menu4)
-    void onclicMenu4() {//托福雅思单词
+    void onclicMenu4() {// 小学
         Intent intent = new Intent();
-        intent.setClass(activity, ExpChoseWordAct.class);
+        // intent.setClass(activity, ExpChoseWordAct.class);
+
+        if (!DBManager.getWordManager().isExist(TableName.word_small_ty)) {
+            DBManager.getWordManager().create(Word_small_ty.class, DBManager.getWordManager().getReadableDatabase());
+        }
+        ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
+        intent.putExtra("tableName", TableName.word_small_ty);
+        intent.setClass(activity, WordAct.class);
         activity.startActivity(intent);
     }
 }

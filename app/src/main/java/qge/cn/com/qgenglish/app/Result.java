@@ -1,5 +1,6 @@
 package qge.cn.com.qgenglish.app;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Map;
  * @ Date 2016/12/22 11:18
  * @ Description: // 统一API响应结果封装
  */
-public class Result<T> {
+public class Result<T> implements Serializable {
     private int code;
     private String message;
     private T data;

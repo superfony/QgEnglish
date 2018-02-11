@@ -2,15 +2,24 @@ package qge.cn.com.qgenglish.app.fourlevel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baiyang.android.http.basic.RequestParams;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
+import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.highschool.HighMenuAdapter;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
@@ -41,14 +50,21 @@ public class FourLevelMenu extends BaseActivity {
         setContentView(R.layout.ele_menu);
         ButterKnife.bind(this);
         activity = this;
+        initData();
+        reqMenu();
+    }
+
+    private void initData() {
         title.setText("英语四级");
-        wordMenuThAdapter = new HighMenuAdapter(activity, menuArr);
+        wordMenuThAdapter = new HighMenuAdapter(activity, menuArrayList);
         ckxzLv.setAdapter(wordMenuThAdapter);
         ckxzLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
+                intent.putExtra("menu", menuArrayList.get(position));
                 if (position == 0) {
+                    ((FonyApplication) activity.getApplication()).tableDes = "英语四级";
                     if (!DBManager.getWordManager().isExist(TableName.word_four)) {
                         DBManager.getWordManager().create(Word_four.class, DBManager.getWordManager().getReadableDatabase());
                     }
@@ -66,9 +82,45 @@ public class FourLevelMenu extends BaseActivity {
         });
     }
 
-    private void initData() {
+    @Override
+    protected void onSuccessBase(String s) {
+        super.onSuccessBase(s);
+        resultMenu(s);
 
 
+    }
+
+    @Override
+    protected void onFailureBase(Throwable throwable, String s) {
+        super.onFailureBase(throwable, s);
+    }
+
+    @Override
+    protected void handMessage(Message msg) {
+        super.handMessage(msg);
+
+        switch (msg.what) {
+            case 0:
+                break;
+            case 1:
+                wordMenuThAdapter.updateListView(menuArrayList);
+                break;
+            case 3:
+                activity.finish();
+                break;
+
+        }
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            RequestParams requestParams = new RequestParams();
+            stulogoutdialog(requestParams);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

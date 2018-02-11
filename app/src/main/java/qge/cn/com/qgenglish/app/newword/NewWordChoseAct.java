@@ -20,9 +20,11 @@ import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.PaginationWidget;
+import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
 import qge.cn.com.qgenglish.app.word.SjWordAct;
 import qge.cn.com.qgenglish.app.word.review.FxSjWordAct;
 import qge.cn.com.qgenglish.app.word.table.Word_unskilled;
+import qge.cn.com.qgenglish.cache.CacheManager;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
@@ -55,12 +57,13 @@ public class NewWordChoseAct extends BaseActivity {
         setContentView(R.layout.new_word_act);
         ButterKnife.bind(this);
         activity = this;
-
         initData();
     }
 
     private void initData() {
-        long count = DBManager.getWordManager().getCount(Word_unskilled.class, "where belong='" + getWordType() + "'  and user_id=" + 101);//"where belong='"+ tableName +"'  and user_id=" +101
+
+        UserInfo userInfo = (UserInfo) CacheManager.readObject(activity, "userinfo");
+        long count = DBManager.getWordManager().getCount(Word_unskilled.class, "where belong='" + getWordType() + "'  and user_id=" + userInfo.getUserInfo().getId());//"where belong='"+ tableName +"'  and user_id=" +101
         paginationWidget = new PaginationWidget();
         paginationWidget.init(activity, newRoot);
         paginationWidget.getPageBean().setAllCount((int) count);
@@ -68,7 +71,7 @@ public class NewWordChoseAct extends BaseActivity {
         paginationWidget.setPageIndicator((int) count);
         paginationWidget.setHandler(wordHandler);
         //过滤当前用户跟表名
-        word_unskilledList = DBManager.getWordManager().get(Word_unskilled.class, "where belong='" + getWordType() + "'  and user_id=" + 101);
+        word_unskilledList = DBManager.getWordManager().get(Word_unskilled.class, "where belong='" + getWordType() + "'  and user_id=" + userInfo.getUserInfo().getId());
         // 查询出来的单词列表变为两列的数据方式
         newWordAdapter = new NewWordAdapter(activity, toWordBeanOlds(word_unskilledList));
         newWordAdapter.setChooseWordListion(chooseWordListion);
@@ -84,6 +87,8 @@ public class NewWordChoseAct extends BaseActivity {
                     if (wordBeanOlds.state1)
                         wordBeanOldListSj.add(wordBeanOlds.wordBeanOld1);
                 }
+                if (wordBeanOldListSj.size() <= 0)
+                    return;
                 Intent intent = new Intent();
                 intent.setClass(activity, NewSjWordAct.class);
                 intent.putExtra("sjArray", wordBeanOldListSj);

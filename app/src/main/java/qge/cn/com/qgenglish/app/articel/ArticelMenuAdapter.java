@@ -10,17 +10,18 @@ import android.widget.TextView;
 import java.util.List;
 
 import qge.cn.com.qgenglish.R;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 
 public class ArticelMenuAdapter extends BaseAdapter {
-    private List<ArticelMenuBean> articelMenuBeanList = null;
+    private List<Menu> articelMenuBeanList = null;
     private Context mContext;
 
-    public ArticelMenuAdapter(Context mContext, List<ArticelMenuBean> articelMenuBeanList) {
+    public ArticelMenuAdapter(Context mContext, List<Menu> articelMenuBeanList) {
         this.mContext = mContext;
         this.articelMenuBeanList = articelMenuBeanList;
     }
 
-    public void updateListView(List<ArticelMenuBean> articelMenuBeanList) {
+    public void updateListView(List<Menu> articelMenuBeanList) {
         this.articelMenuBeanList = articelMenuBeanList;
         notifyDataSetChanged();
     }
@@ -40,7 +41,7 @@ public class ArticelMenuAdapter extends BaseAdapter {
 
     public View getView(final int position, View view, ViewGroup arg2) {
         ViewHolder viewHolder;
-        ArticelMenuBean articelMenuBean = articelMenuBeanList.get(position);
+        Menu articelMenuBean = articelMenuBeanList.get(position);
         if (view == null) {
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.articelmenu_adapter, null);
@@ -49,7 +50,7 @@ public class ArticelMenuAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.menuName.setText(articelMenuBean.name);
+        viewHolder.menuName.setText(articelMenuBean.menuName);
         return view;
     }
 

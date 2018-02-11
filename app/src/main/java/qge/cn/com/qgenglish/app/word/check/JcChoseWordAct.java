@@ -20,12 +20,16 @@ import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.PaginationWidget;
+import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.experience.WordBeanOlds;
+import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
 import qge.cn.com.qgenglish.app.word.SjWordAct;
 import qge.cn.com.qgenglish.app.word.review.FxSjWordAct;
+import qge.cn.com.qgenglish.app.word.table.Tj;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
 import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.cache.CacheManager;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
@@ -54,6 +58,8 @@ public class JcChoseWordAct extends BaseActivity {
     private ArrayList<WordBeanOlds> wordBeanOldsArrayList = new ArrayList<WordBeanOlds>();
     private int allWordsNum;
     private FonyApplication.QGTYPE qgtype;
+    private UserInfo userInfo;
+    private String tableName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class JcChoseWordAct extends BaseActivity {
         setContentView(R.layout.jc_word_act);
         ButterKnife.bind(this);
         activity = this;
+        userInfo = (UserInfo) CacheManager.readObject(activity, "userinfo");
         initData();
         qgtype = ((FonyApplication) activity.getApplication()).qgtype;
     }
@@ -69,6 +76,7 @@ public class JcChoseWordAct extends BaseActivity {
 
         Intent intent = activity.getIntent();
         cpointBeanList = (ArrayList<CpointBean>) intent.getSerializableExtra("cpointArray");
+        tableName = intent.getStringExtra("tableName");
         if (cpointBeanList == null)
             return;
         int n = cpointBeanList.size();
@@ -154,10 +162,11 @@ public class JcChoseWordAct extends BaseActivity {
                     icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
                     break;
                 case PHRASE:
-                    if (word.contains("sth.")) {
-                        word = word.replace("sth.", "something");
-                    } else if (word.contains("sb.")) {
-                        word = word.replace("sb.", "somebody");
+                    if (word.contains("sth")) {
+                        word = word.replace("sth", "something");
+                    }
+                    if (word.contains("sb")) {
+                        word = word.replace("sb", "somebody");
                     }
                     textToSpeek(word);
                     break;
@@ -190,10 +199,11 @@ public class JcChoseWordAct extends BaseActivity {
                     icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
                     break;
                 case PHRASE:
-                    if (word.contains("sth.")) {
-                        word = word.replace("sth.", "something");
-                    } else if (word.contains("sb.")) {
-                        word = word.replace("sb.", "somebody");
+                    if (word.contains("sth")) {
+                        word = word.replace("sth", "something");
+                    }
+                    if (word.contains("sb")) {
+                        word = word.replace("sb", "somebody");
                     }
                     textToSpeek(word);
                     break;
@@ -235,6 +245,8 @@ public class JcChoseWordAct extends BaseActivity {
         return wordBeanOldsArrayList;
     }
 
+    int checkedNumCop = 0;
+    int chooseNumCopy = 0;
 
     public Handler wordHandler = new Handler() {
 
@@ -254,10 +266,19 @@ public class JcChoseWordAct extends BaseActivity {
                 if (jcWordAdapter.checkedNum == 0)
                     return;
                 //
+
+                Tj tj = DBManager.getWordManager().getT(Tj.class, "where tablename='" + tableName + "' and userid='" + userInfo.getUserInfo().getId() + "'");
+
+                tj.jccount = jcWordAdapter.checkedNum + tj.jccount - checkedNumCop;
+                tj.jcwrong = jcWordAdapter.chooseNum + tj.jcwrong - chooseNumCopy;
+                checkedNumCop = jcWordAdapter.checkedNum;
+                chooseNumCopy = jcWordAdapter.chooseNum;
                 NumberFormat numberFormat = NumberFormat.getInstance();
                 numberFormat.setMaximumFractionDigits(2);
-                String result = numberFormat.format((float) (jcWordAdapter.checkedNum - jcWordAdapter.chooseNum) / (float) jcWordAdapter.checkedNum * 100);
-                choosedNum.setText(String.format("已检查 %s /错误 %s /正确率 %s", jcWordAdapter.checkedNum, jcWordAdapter.chooseNum, result + "%").toString());
+                String result = numberFormat.format((float) (tj.jccount - tj.jcwrong) / (float) tj.jccount * 100);
+                choosedNum.setText(String.format("已检查 %s /错误 %s /正确率 %s", tj.jccount, tj.jcwrong, result + "%").toString());
+                DBManager.getWordManager().update(TableName.tongj, "jccount", tj.jccount, "where tablename='" + tableName + "'  and userid='" + userInfo.getUserInfo().getId() + "'");
+                DBManager.getWordManager().update(TableName.tongj, "jcwrong", tj.jcwrong, "where tablename='" + tableName + "'  and userid='" + userInfo.getUserInfo().getId() + "'");
 
             }
         }

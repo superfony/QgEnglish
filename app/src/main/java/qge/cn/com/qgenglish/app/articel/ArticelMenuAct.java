@@ -30,9 +30,6 @@ public class ArticelMenuAct extends BaseActivity {
     @Bind(R.id.articel_menu_lv)
     ListView articel_menu_lv;
     private ArticelMenuAdapter articelMenuAdapter;
-    private List<ArticelMenuBean> articelMenuBeanList = new ArrayList<ArticelMenuBean>();
-    private int articleTyp = 0; // 1 初中 2  高中
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,33 +37,19 @@ public class ArticelMenuAct extends BaseActivity {
         setContentView(R.layout.articelmenu_act);
         ButterKnife.bind(this);
         activity = this;
-        articleTyp = activity.getIntent().getIntExtra("articleType", 0);
         initData();
+        reqMenu();
     }
     private void initData() {
-        //
-        if (articleTyp == 1) {
-            for (int i = 1; i < 20; i++) {
-                ArticelMenuBean articelMenuBean = new ArticelMenuBean();
-                articelMenuBean.name = "初中阅读训练第" + i + "关";
-                articelMenuBeanList.add(articelMenuBean);
-            }
-        } else if (articleTyp == 2) {
-            for (int i = 1; i < 20; i++) {
-                ArticelMenuBean articelMenuBean = new ArticelMenuBean();
-                articelMenuBean.name = "高中阅读训练第" + i + "关";
-                articelMenuBeanList.add(articelMenuBean);
-            }
-        }
 
-
-        articelMenuAdapter = new ArticelMenuAdapter(activity, articelMenuBeanList);
+        articelMenuAdapter = new ArticelMenuAdapter(activity, menuArrayList);
         articel_menu_lv.setAdapter(articelMenuAdapter);
         articel_menu_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-                intent.putExtra("guanqi", position);// 默认从0开始  // 作为数据库中的起始主键进行查询
+                intent.putExtra("menu", menuArrayList.get(position));
+
                 intent.setClass(activity, ArticelAct.class);
                 activity.startActivity(intent);
             }
@@ -76,14 +59,7 @@ public class ArticelMenuAct extends BaseActivity {
     @Override
     protected void onSuccessBase(String s) {
         super.onSuccessBase(s);
-
-        Gson gson = new Gson();
-        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Menu>>>() {
-        }.getType());
-        String article = result.getMessage();
-
-        //  更新阅读理解菜单
-        articelMenuAdapter.updateListView(articelMenuBeanList);
+        resultMenu(s);
 
     }
 
@@ -101,8 +77,8 @@ public class ArticelMenuAct extends BaseActivity {
                 ToastHelper.toast(activity, msg.obj.toString());
                 break;
             case 1:
-
-
+                articelMenuAdapter.updateListView(menuArrayList);
+                break;
         }
     }
 }

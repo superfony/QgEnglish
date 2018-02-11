@@ -1,7 +1,9 @@
 package qge.cn.com.qgenglish.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,12 +14,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.baiyang.android.cache.CacheManager;
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.common.AsyncBase;
 import com.baiyang.android.http.common.AsyncHttp;
 import com.baiyang.android.http.common.ResponseProcessor;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,14 +27,11 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Locale;
 
-import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.RequestUrls;
-import qge.cn.com.qgenglish.WordActivity;
-import qge.cn.com.qgenglish.app.bean.Error;
-import qge.cn.com.qgenglish.app.bean.User;
-import qge.cn.com.qgenglish.app.phrase.FxChoosePhraseAct;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.WordBean;
@@ -42,8 +41,6 @@ import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 import qge.cn.com.qgenglish.service.IActivitySupport;
 import qge.cn.com.qgenglish.service.ReConnectService;
 import qge.cn.com.qgenglish.service.TimerService;
-
-import static qge.cn.com.qgenglish.application.FonyApplication.WordType.Small;
 
 /**
  * Created by fony
@@ -64,12 +61,18 @@ public class BaseActivity extends Activity implements IActivitySupport {
     protected ChooseWordListion chooseWordListion;
     private Intent timerService, reConnectService;
     protected TextToSpeech textToSpeech;
+    protected ArrayList<Menu> menuArrayList = new ArrayList<Menu>(); // 网络菜单
+    protected Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
         initNet();
+
+    }
+
+    protected void initTTS() {
         textToSpeech = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -260,6 +263,18 @@ public class BaseActivity extends Activity implements IActivitySupport {
 
     }
 
+    // 用于学生 学校登出的操作
+    protected void logout(String url, RequestParams requestParams, AsyncBase.RequestCallback requestCallback) {
+        showPD();
+        http.setRequestCallback(requestCallback);
+        http.setDataType(AsyncBase.ResponseDataType.JSON);
+        http.addHead("authorization", getTocken());
+        http.setDebug(true);
+        http.post(url, requestParams, null, null);
+
+    }
+
+
     private String getTocken() {
         return ((FonyApplication) activity.getApplication()).tocken;
 
@@ -288,6 +303,11 @@ public class BaseActivity extends Activity implements IActivitySupport {
             JSONObject jsonObj = null;
             String request = null;
             try {
+                System.out.println("request=" + s);
+                if (TextUtils.isEmpty(s)) {
+                    handlerBase.obtainMessage(0, "没有此用户信息!").sendToTarget(); //
+                    return;
+                }
                 jsonObj = new JSONObject(s);
                 request = jsonObj.getString("code");
             } catch (JSONException e) {
@@ -296,16 +316,15 @@ public class BaseActivity extends Activity implements IActivitySupport {
             if ("200".equals(request)) {
                 onSuccessBase(s);
             } else {
-                handlerBase.obtainMessage(0, s).sendToTarget(); // 错误信息
+                onFailureBase(null, s);
             }
-
-
         }
     };
 
     // 请求失败
     protected void onFailureBase(Throwable throwable, String s) {
         hidePD();
+        handlerBase.obtainMessage(0, s).sendToTarget();
     }
 
     // 有结果
@@ -399,8 +418,68 @@ public class BaseActivity extends Activity implements IActivitySupport {
         return type;
     }
 
+    /**
+     * 获取菜单的 方法仅请求菜单的地方调用
+     */
+    protected void reqMenu() {
+        menu = (Menu) activity.getIntent().getSerializableExtra("menu");
+        startHttpGet(String.format(RequestUrls.COMMONURL, menu.id), null);// 请求菜单
+    }
+
+    protected void resultMenu(String s) {
+
+        Gson gson = new Gson();
+        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Menu>>>() {
+        }.getType());
+        String menus = result.getMessage();
+        menuArrayList = (ArrayList) result.getData();
+        handlerBase.obtainMessage(1, "").sendToTarget();
+    }
 
     // 实现一个计数器
     //
+
+    //学生登出的操作
+
+    protected void stulogoutdialog(final RequestParams requestParams) {
+//          AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//          builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//              @Override
+//              public void onClick(DialogInterface dialog, int which) {
+//                  dialog.cancel();
+//              }
+//          }).setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//              @Override
+//              public void onClick(DialogInterface dialog, int which) {
+//
+//                  // 收集本地用户信息并上传
+//
+//              }
+//          });
+//          builder.setTitle("是否确认退出当前学生账号");
+//          builder.create().show();
+
+        stuloginout(requestParams);
+
+
+    }
+
+
+    AsyncBase.RequestCallback requestCallback = new AsyncBase.RequestCallback() {
+        @Override
+        public void onSuccess(String s) {
+            handlerBase.obtainMessage(3, s).sendToTarget();// 登出的操作
+        }
+
+        @Override
+        public void onFailure(Throwable throwable, String s) {
+            handlerBase.obtainMessage(0, s).sendToTarget();//
+        }
+    };
+
+    private void stuloginout(RequestParams requestParams) {
+        logout(RequestUrls.studentlogout, requestParams, requestCallback);
+
+    }
 
 }

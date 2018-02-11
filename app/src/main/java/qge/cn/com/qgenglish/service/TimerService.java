@@ -57,7 +57,7 @@ public class TimerService extends Service {
             public void run() {
                 while (FonyApplication.exercise) {
                     try {
-                        Thread.sleep(20 * 1000);//
+                        Thread.sleep(60 * 10 * 1000);//
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

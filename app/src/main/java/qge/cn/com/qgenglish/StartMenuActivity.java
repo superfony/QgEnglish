@@ -10,6 +10,7 @@ import butterknife.OnClick;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.CheckAct;
 import qge.cn.com.qgenglish.app.experience.ExpActivity;
+import qge.cn.com.qgenglish.app.update.UpdateManager;
 
 /**
  * 首页菜单
@@ -34,6 +35,7 @@ public class StartMenuActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startmenu);
         ButterKnife.bind(this);
+        UpdateManager.getUpdateManager().checkAppUpdate(this, false);// 检查是否更新
     }
 
     @OnClick(R.id.menu1)

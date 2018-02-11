@@ -14,7 +14,7 @@ import qge.cn.com.qgenglish.db.Table;
  * 外研版
  */
 @SuppressWarnings("all")
-@Table(tableName = "word_compulsory_11")
+@Table(tableName = "word_niujin_compulsory_11")
 public class Word_niujin_compulsory_11 implements Serializable {
     @PrimaryKey(autoincrement = true, column = "_id")
     @SerializedName("index")

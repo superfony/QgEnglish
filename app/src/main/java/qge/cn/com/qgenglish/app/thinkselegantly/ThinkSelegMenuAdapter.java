@@ -7,28 +7,31 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import qge.cn.com.qgenglish.R;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 
 public class ThinkSelegMenuAdapter extends BaseAdapter {
-    private String[] menuArray = null;
+    private ArrayList<Menu> menuArray = null;
     private Context mContext;
 
-    public ThinkSelegMenuAdapter(Context mContext, String[] menuArray) {
+    public ThinkSelegMenuAdapter(Context mContext, ArrayList<Menu> menuArray) {
         this.mContext = mContext;
         this.menuArray = menuArray;
     }
 
-    public void updateListView(String[] menuArray) {
+    public void updateListView(ArrayList<Menu> menuArray) {
         this.menuArray = menuArray;
         notifyDataSetChanged();
     }
 
     public int getCount() {
-        return menuArray.length;
+        return menuArray.size();
     }
 
     public Object getItem(int position) {
-        return menuArray[position];
+        return menuArray.get(position);
     }
 
     public long getItemId(int position) {
@@ -38,6 +41,7 @@ public class ThinkSelegMenuAdapter extends BaseAdapter {
 
     public View getView(final int position, View view, ViewGroup arg2) {
         ViewHolder viewHolder;
+        Menu menu = menuArray.get(position);
         if (view == null) {
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.threemenu_adapter, null);
@@ -46,7 +50,7 @@ public class ThinkSelegMenuAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.menuName.setText(menuArray[position]);
+        viewHolder.menuName.setText(menu.menuName);
         return view;
     }
 

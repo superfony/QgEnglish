@@ -52,17 +52,17 @@ public class TableName {
     public static String word_bnu_selective_7 = "word_bnu_selective_7";
     public static String word_bnu_selective_8 = "word_bnu_selective_8";
     //  牛津版 高中
-    public static String word_compulsory_1 = "word_compulsory_1";
-    public static String word_compulsory_2 = "word_compulsory_2";
-    public static String word_compulsory_3 = "word_compulsory_3";
-    public static String word_compulsory_4 = "word_compulsory_4";
-    public static String word_compulsory_5 = "word_compulsory_5";
-    public static String word_compulsory_6 = "word_compulsory_6"; // 选修
-    public static String word_compulsory_7 = "word_compulsory_7";
-    public static String word_compulsory_8 = "word_compulsory_8";
-    public static String word_compulsory_9 = "word_compulsory_9";
-    public static String word_compulsory_10 = "word_compulsory_10";
-    public static String word_compulsory_11 = "word_compulsory_11";
+    public static String word_compulsory_1 = "word_niujin_compulsory_1";
+    public static String word_compulsory_2 = "word_niujin_compulsory_2";
+    public static String word_compulsory_3 = "word_niujin_compulsory_3";
+    public static String word_compulsory_4 = "word_niujin_compulsory_4";
+    public static String word_compulsory_5 = "word_niujin_compulsory_5";
+    public static String word_compulsory_6 = "word_niujin_compulsory_6"; // 选修
+    public static String word_compulsory_7 = "word_niujin_compulsory_7";
+    public static String word_compulsory_8 = "word_niujin_compulsory_8";
+    public static String word_compulsory_9 = "word_niujin_compulsory_9";
+    public static String word_compulsory_10 = "word_niujin_compulsory_10";
+    public static String word_compulsory_11 = "word_niujin_compulsory_11";
     //  外研 高中
     public static String word_waiyanshe_compulsory_1 = "word_waiyanshe_compulsory_1";
     public static String word_waiyanshe_compulsory_2 = "word_waiyanshe_compulsory_2";
@@ -102,5 +102,15 @@ public class TableName {
     public static String word_unskilled = "word_unskilled";
     //"word_unskilled"
     public static String question = "question";
+
+    // 体验
+    public static String word_small_ty = "word_small_ty";
+    public static String word_middle_ty = "word_middle_ty";
+    public static String word_high_ty = "word_high_ty";
+    public static String word_tfys_ty = "word_tfys_ty";
+
+    // 统计
+    public static String tongj = "tj";
+
 
 }

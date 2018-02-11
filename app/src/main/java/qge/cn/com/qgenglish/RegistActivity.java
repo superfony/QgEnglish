@@ -38,6 +38,7 @@ import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.schoolinfo.SchoolInfo;
 import qge.cn.com.qgenglish.app.word.table.Userinfo;
 import qge.cn.com.qgenglish.application.AppContext;
+import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.cache.CacheManager;
 
 /**
@@ -73,7 +74,6 @@ public class RegistActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resgit);
         ButterKnife.bind(this);
-
         Gson gson = new Gson();
         String checkStr = getFileToStr("provincecity.txt");
         checkJson = gson.fromJson(checkStr, CheckJson.class);
@@ -146,6 +146,7 @@ public class RegistActivity extends BaseActivity {
             return;
         }
 
+
         if (!pattern.matcher(phone).find()) {
             AppContext.showToast("请填写正确的手机号码");
             return;
@@ -180,8 +181,9 @@ public class RegistActivity extends BaseActivity {
         requestParams.put("school_name", school_name);//学校名字
 
         SchoolInfo schoolInfo = (SchoolInfo) CacheManager.readObject(activity, "schoolinfo");
-        addHead("authorization", schoolInfo.getToken());
-        startHttpPost(RequestUrls.studentRegist, requestParams);
+        // addHead("authorization", schoolInfo.getToken());
+        ((FonyApplication) activity.getApplication()).tocken = schoolInfo.getToken();
+        startHttpPost(RequestUrls.studentRegist, requestParams);//  学生注册
 
     }
 
@@ -189,12 +191,13 @@ public class RegistActivity extends BaseActivity {
     @Override
     protected void handMessage(Message msg) {
         super.handMessage(msg);
-        hidePD();
         switch (msg.what) {
             case 1:
-                Intent intent = new Intent();
-                intent.setClass(activity, StuLoginActivity.class);  // 注册成功后的跳转
-                activity.startActivity(intent);
+                ToastHelper.toast(activity, msg.obj.toString());
+//                Intent intent = new Intent();
+//                intent.setClass(activity, StuLoginActivity.class);  // 注册成功后的跳转
+//                activity.startActivity(intent);
+                finish();
                 break;
             case 0:
                 AppContext.showToast(msg.toString());

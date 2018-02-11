@@ -85,7 +85,6 @@ public class ExpChoseWordAct extends BaseActivity {
         sureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 for (int i = 0; i < wordBeanOldsArrayList.size(); i++) {
                     WordBeanOlds wordBeanOlds = wordBeanOldsArrayList.get(i);
                     if (wordBeanOlds.state)
@@ -95,8 +94,7 @@ public class ExpChoseWordAct extends BaseActivity {
                 }
 
                 Intent intent = new Intent();
-                intent.setClass(activity, FxSjWordAct.class);  //
-                // intent.putParcelableArrayListExtra("sjArray",wordBeanOldListSj);
+                intent.setClass(activity, FxSjWordAct.class);
                 intent.putExtra("sjArray", wordBeanOldListSj);
                 activity.startActivity(intent);
             }

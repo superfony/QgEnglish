@@ -94,7 +94,7 @@ public class PhraseAct extends BaseActivity {
             return;
         // 查询关卡表 没有表关卡则第一次需要插入
         //有则取数据库数据
-        boolean isHave = DBManager.getInstance().isCpoinHave(tableName);
+        boolean isHave = DBManager.getInstance().isCpoinHave(tableName, "101");// TODO 测试
         if (isHave) {
             cpointBeanList = DBManager.getInstance().get(CpointBean.class, " where tablename='" + tableName + "'");
             cpointBeanListJc = cpointBeanList;

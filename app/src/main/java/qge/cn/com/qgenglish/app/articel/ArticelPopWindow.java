@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import qge.cn.com.qgenglish.R;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.word.EntryPopListener;
 import qge.cn.com.qgenglish.app.word.wordmenu.CpointBean;
 
@@ -31,7 +32,7 @@ public class ArticelPopWindow {
     private ArticelPopListener listener;
     private final static int DIALOG = 1;
 
-    public ArticelPopWindow(final Activity activity, final ArticelPopListener listener, int guanqi, int rightCount) {
+    public ArticelPopWindow(final Activity activity, final ArticelPopListener listener, Menu menu, int rightCount) {
         this.mActivity = activity;
         this.listener = listener;
         layoutInflater = (LayoutInflater) mActivity

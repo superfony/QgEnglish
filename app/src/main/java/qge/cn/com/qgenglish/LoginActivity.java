@@ -1,7 +1,9 @@
 package qge.cn.com.qgenglish;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +11,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,12 +32,12 @@ import java.lang.reflect.Type;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Pub_method;
 import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.bean.User;
 import qge.cn.com.qgenglish.app.schoolinfo.SchoolInfo;
+import qge.cn.com.qgenglish.app.update.UpdateManager;
 import qge.cn.com.qgenglish.app.word.GradeMenuAct;
 import qge.cn.com.qgenglish.app.word.WordMenuSecAct;
 import qge.cn.com.qgenglish.application.AppContext;
@@ -68,7 +71,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        SQLiteStudioService.instance().start(this);
+        //SQLiteStudioService.instance().start(this);
+
     }
 
     private void init() {
@@ -113,9 +117,7 @@ public class LoginActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setClass(activity, GradeMenuAct.class);
                 activity.startActivity(intent);
-                ;
                 break;
-
         }
     }
 
@@ -130,13 +132,12 @@ public class LoginActivity extends BaseActivity {
         ((FonyApplication) activity.getApplication()).tocken = schoolInfo.getToken();
         CacheManager.saveObject(activity, schoolInfo, "schoolinfo");
         handlerBase.obtainMessage(1, "").sendToTarget();
-
-
     }
 
     @Override
     protected void onFailureBase(Throwable throwable, String s) {
         super.onFailureBase(throwable, s);
+
     }
 
 
@@ -181,7 +182,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SQLiteStudioService.instance().start(this);
+        // SQLiteStudioService.instance().start(this);
         stopIService();
     }
+
+
 }

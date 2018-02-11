@@ -53,6 +53,43 @@ public class UserInfo implements Serializable {
         private String phone;
         private String type;
         private String userName;
+        private String area;
+        private String city;
+        private String grade;
+
+        public String getSchoolName() {
+            return schoolName;
+        }
+
+        public void setSchoolName(String schoolName) {
+            this.schoolName = schoolName;
+        }
+
+        private String schoolName;
+
+        public String getArea() {
+            return area;
+        }
+
+        public void setArea(String area) {
+            this.area = area;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public String getGrade() {
+            return grade;
+        }
+
+        public void setGrade(String grade) {
+            this.grade = grade;
+        }
 
         public long getCreateDate() {
             return createDate;

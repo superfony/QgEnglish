@@ -145,10 +145,11 @@ public class NewSjWordAct extends BaseActivity {
                         icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
                         break;
                     case PHRASE:
-                        if (word.contains("sth.")) {
-                            word = word.replace("sth.", "something");
-                        } else if (word.contains("sb.")) {
-                            word = word.replace("sb.", "somebody");
+                        if (word.contains("sth")) {
+                            word = word.replace("sth", "something");
+                        }
+                        if (word.contains("sb")) {
+                            word = word.replace("sb", "somebody");
                         }
                         textToSpeek(word);
                         break;

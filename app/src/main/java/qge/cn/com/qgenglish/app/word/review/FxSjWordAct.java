@@ -83,9 +83,9 @@ public class FxSjWordAct extends BaseActivity {
         ButterKnife.bind(this);
         activity = this;
         paginationWidgetCtrl = (RelativeLayout) sjRoot.findViewById(R.id.pagination_widget_ctrl);
-        title.setText("重新识记");
-        initData();
         qgtype = ((FonyApplication) activity.getApplication()).qgtype;
+        initData();
+        initTTS();
     }
 
     // 获取已经掌握的单词的个数
@@ -99,6 +99,7 @@ public class FxSjWordAct extends BaseActivity {
     }
 
     private void initData() {
+        title.setText("重新识记");
         Intent intent = this.getIntent();
         wordBeanOldList = (ArrayList<Word_niujinban_7_1>) intent.getSerializableExtra("sjArray");  // 接收传递的单词的总的
         if (wordBeanOldList != null) {
@@ -118,6 +119,8 @@ public class FxSjWordAct extends BaseActivity {
         paginationWidget.setHandler(wordHandler);
     }
 
+    int postionCopy;
+
     private void initAdpater() {
         if (count >= 7)
             fxWordList = wordBeanOldList.subList(0, 7);
@@ -131,6 +134,11 @@ public class FxSjWordAct extends BaseActivity {
                 LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
                 // interpretationLay.setVisibility(View.VISIBLE);
                 Word_niujinban_7_1 wordBeanOld = fxWordList.get(position);
+                if (position != postionCopy) {
+                    fxWordList.get(postionCopy).queue = "1";
+                    postionCopy = position;
+                }
+
                 String word = wordBeanOld.english;
                 String queue = wordBeanOld.queue;
                 if (!TextUtils.isEmpty(queue)) {
@@ -141,9 +149,6 @@ public class FxSjWordAct extends BaseActivity {
                         wordBeanOld.queue = "3";
                         interpretationLay.setVisibility(View.VISIBLE);
                     } else if (queue.equals("3")) {
-                        wordBeanOld.queue = "4";
-                        interpretationLay.setVisibility(View.INVISIBLE);
-                    } else if (queue.equals("4")) {
                         wordBeanOld.queue = "1";
                         interpretationLay.setVisibility(View.INVISIBLE);
                     }
@@ -152,16 +157,16 @@ public class FxSjWordAct extends BaseActivity {
                     interpretationLay.setVisibility(View.INVISIBLE);
                 }
 
-
                 switch (qgtype) {
                     case WORD:
                         icibaHttp(word, wordHandler);// 读取发音  这里区分单词还是短语 发音
                         break;
                     case PHRASE:
-                        if (word.contains("sth.")) {
-                            word = word.replace("sth.", "something");
-                        } else if (word.contains("sb.")) {
-                            word = word.replace("sb.", "somebody");
+                        if (word.contains("sth")) {
+                            word = word.replace("sth", "something");
+                        }
+                        if (word.contains("sb")) {
+                            word = word.replace("sb", "somebody");
                         }
                         textToSpeek(word);
                         break;
