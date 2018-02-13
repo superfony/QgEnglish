@@ -11,6 +11,7 @@ import qge.cn.com.qgenglish.db.Table;
 /**
  * Created by fony on 2017/11/21.
  * 四级
+ * @PrimaryKey(autoincrement = true, column = "_id")
  */
 @SuppressWarnings("all")
 @Table(tableName = "word_four")

@@ -46,7 +46,7 @@ import qge.cn.com.qgenglish.view.ScrollLayout;
 /**
  * 单词选关界面    识记  复习  检查  统计
  */
-public class WordAct extends BaseActivity {
+public class WordActC extends BaseActivity {
     @Bind(R.id.word_title)
     TextView wordTitle;
     @Bind(R.id.word_title_header_lay)
@@ -211,7 +211,7 @@ public class WordAct extends BaseActivity {
 //                    }
 //                }
                 intent.putExtra("cpointBean", cpointBean);
-                intent.setClass(activity, SjWordAct.class);  //  单词识记的
+                intent.setClass(activity, SjWordActC.class);  //  单词识记的
                 activity.startActivity(intent);
             }
         });

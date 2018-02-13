@@ -40,6 +40,7 @@ class DBHelper extends SQLiteOpenHelper {
     DBHelper(Context context, String name) {
         super(context, name, null, DB_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 在此位置创建数据库表
@@ -209,7 +210,63 @@ class DBHelper extends SQLiteOpenHelper {
                         Column column = field.getAnnotation(Column.class);
                         String name = column.column();
                         Object object = field.get(obj);
+
                         values.put(name, object == null ? "" : object.toString());
+                    } else if (field.isAnnotationPresent(PrimaryKey.class)) {
+                        PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
+                        boolean isAutoincrement = primaryKey.autoincrement();
+                        String name = primaryKey.column();
+                        if (!isAutoincrement) {
+                            Object object = field.get(obj);
+                            values.put(name, object == null ? "" : object.toString());
+                        }
+                    }
+                }
+                db.insert(tableName, "", values);
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (db.isOpen()) {
+                db.endTransaction();
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * 事务插入
+     *
+     * @param lists     数据
+     * @param tableName tableName
+     * @return <T>
+     */
+    public <T> boolean insertListWithCoptionid(List<T> lists, String tableName, int coptionid) {
+        if (!isExist(tableName)) {
+            return false;
+        }
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (Object obj : lists) {
+                Class<?> cls = obj.getClass();
+                ContentValues values = new ContentValues();
+                Field[] fields = cls.getDeclaredFields();
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    if (field.isAnnotationPresent(Column.class)) {
+                        Column column = field.getAnnotation(Column.class);
+                        String name = column.column();
+                        Object object = field.get(obj);
+                        if (name.equals("pass")) {
+                            values.put(name, coptionid);
+                        } else {
+                            values.put(name, object == null ? "" : object.toString());
+                        }
+
                     } else if (field.isAnnotationPresent(PrimaryKey.class)) {
                         PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
                         boolean isAutoincrement = primaryKey.autoincrement();
@@ -575,8 +632,6 @@ class DBHelper extends SQLiteOpenHelper {
             sql = sb.toString();
             System.out.println("sql=" + sql);
             cursor = db.rawQuery(sql, null);
-
-
             // 返回相同的对象TODO
             if (!("question_text".equals(tableName) || "question".equals(tableName) || "question_item".equals(tableName) || "word_unskilled".equals(tableName) || "cpointBean".equals(tableName)))
                 cls = (Class<T>) Word_niujinban_7_1.class;
@@ -617,6 +672,73 @@ class DBHelper extends SQLiteOpenHelper {
         }
         return list;
     }
+
+    // 根据关卡查询
+    public <T> List<T> getC(Class<T> cls, String where, String orderColumn, String orderType, int limit, int offset) {
+        String tableName = getTableName(cls);// 这个地方添加分离操作
+        if (!isExist(tableName))
+            return null;
+        List<T> list = new ArrayList<>();
+        SQLiteDatabase db;
+        Cursor cursor = null;
+        try {
+            db = getReadableDatabase();
+            String sql = String.format("SELECT * from %s", tableName);
+            String whereAre = TextUtils.isEmpty(where) ? null : " " + where;
+            String orderBy = TextUtils.isEmpty(orderColumn) ? null : String.format(" ORDER BY %s %s", orderColumn, orderType);
+            String limitStr = limit == 0 ? null : String.format(" limit %s offset %s", String.valueOf(limit), String.valueOf(offset));
+            //  String offsetStr = offset == 0 ? null : String.format(" offset %s", String.valueOf(offset));
+            StringBuilder sb = new StringBuilder();
+            sb.append(sql);
+            sb.append(TextUtils.isEmpty(whereAre) ? "" : whereAre);
+            sb.append(TextUtils.isEmpty(orderBy) ? "" : orderBy);
+            sb.append(TextUtils.isEmpty(limitStr) ? "" : limitStr);
+            // sb.append(TextUtils.isEmpty(offsetStr) ? "" : offsetStr);
+
+            sql = sb.toString();
+            System.out.println("sql=" + sql);
+            cursor = db.rawQuery(sql, null);
+            // 返回相同的对象TODO
+            if (!("question_text".equals(tableName) || "question".equals(tableName) || "question_item".equals(tableName) || "word_unskilled".equals(tableName) || "cpointBean".equals(tableName)))
+                cls = (Class<T>) Word_niujinban_7_1.class;
+            Field[] fields = cls.getDeclaredFields();
+            while (cursor.moveToNext()) {
+                T t = cls.newInstance();
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    String name = "";
+                    if (field.isAnnotationPresent(Column.class))
+                        name = field.getAnnotation(Column.class).column();
+                    else if (field.isAnnotationPresent(PrimaryKey.class))
+                        name = field.getAnnotation(PrimaryKey.class).column();
+                    if (!TextUtils.isEmpty(name)) {
+                        Class<?> type = field.getType();
+                        if (type.equals(int.class)) {
+                            field.set(t, cursor.getInt(cursor.getColumnIndex(name)));
+                        } else if (type.equals(String.class)) {
+                            field.set(t, cursor.getString(cursor.getColumnIndex(name)));
+                        } else if (type.equals(long.class)) {
+                            field.set(t, cursor.getLong(cursor.getColumnIndex(name)));
+                        } else if (type.equals(float.class)) {
+                            field.set(t, cursor.getFloat(cursor.getColumnIndex(name)));
+                        } else if (type.equals(double.class)) {
+                            field.set(t, cursor.getDouble(cursor.getColumnIndex(name)));
+                        }
+                    }
+                }
+                list.add(t);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return list;
+    }
+
 
     /**
      * 删除数据

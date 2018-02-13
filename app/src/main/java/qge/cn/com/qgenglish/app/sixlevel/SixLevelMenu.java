@@ -26,6 +26,7 @@ import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.highschool.HighMenuAdapter;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
+import qge.cn.com.qgenglish.app.word.WordActC;
 import qge.cn.com.qgenglish.app.word.WordMenuFAct;
 import qge.cn.com.qgenglish.app.word.table.Word_six;
 import qge.cn.com.qgenglish.application.FonyApplication;
@@ -72,7 +73,7 @@ public class SixLevelMenu extends BaseActivity {
                     }
                     ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
                     intent.putExtra("tableName", TableName.word_six);
-                    intent.setClass(activity, WordAct.class);
+                    intent.setClass(activity, WordActC.class);
                 } else if (position == 1) {
                     intent.setClass(activity, NewWordChoseAct.class);
                 }

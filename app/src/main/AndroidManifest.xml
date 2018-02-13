@@ -78,6 +78,8 @@
         <activity android:name=".app.CheckChooseAct"></activity>
         <activity android:name=".app.highschool.HighMenus"></activity>
         <activity android:name=".app.newword.NewSjWordAct"></activity>
+        <activity android:name=".app.word.SjWordActC"></activity>
+        <activity android:name=".app.word.WordActC"></activity>
 
 
         <service

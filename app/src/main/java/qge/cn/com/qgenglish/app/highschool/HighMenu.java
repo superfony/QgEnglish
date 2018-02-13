@@ -21,6 +21,7 @@ import qge.cn.com.qgenglish.app.articel.ArticelMenuAct;
 import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
+import qge.cn.com.qgenglish.app.word.WordActC;
 import qge.cn.com.qgenglish.app.word.table.Phrase_high;
 import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.db.DBManager;
@@ -74,7 +75,7 @@ public class HighMenu extends BaseActivity {
                             DBManager.getWordManager().create(Phrase_high.class, DBManager.getWordManager().getReadableDatabase());
                         }
                         intent.putExtra("tableName", TableName.phrase_high);
-                        intent.setClass(activity, WordAct.class);
+                        intent.setClass(activity, WordActC.class);
                         activity.startActivity(intent);
                         break;
                     case 2:

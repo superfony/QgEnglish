@@ -3,10 +3,8 @@ package qge.cn.com.qgenglish.app.word;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.pagination.PageBean;
@@ -34,6 +31,7 @@ import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.RequestUrls;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.PaginationWidget;
+import qge.cn.com.qgenglish.app.PaginationWidgetC;
 import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.schoolinfo.UserInfo;
@@ -48,13 +46,11 @@ import qge.cn.com.qgenglish.iciba.SentBean;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 
-import static qge.cn.com.qgenglish.application.FonyApplication.QGTYPE.WORD;
-
 /**
  * 识记
  * 单词识记通用类  // 添加短语的
  */
-public class SjWordAct extends BaseActivity {
+public class SjWordActC extends BaseActivity {
     @Bind(R.id.sj_lv)
     ListView sjLv;
     @Bind(R.id.sj_root)
@@ -67,7 +63,7 @@ public class SjWordAct extends BaseActivity {
     TextView alreadyNum;
     private int curPage;// 当前页数
     private int allCount;// 总页数
-    private PaginationWidget paginationWidget;
+    private PaginationWidgetC paginationWidget;
     private SjwordAdapter sjwordAdapter;
     private List<Word_niujinban_7_1> wordBeanOldList = new ArrayList<Word_niujinban_7_1>();
     private int count;
@@ -128,10 +124,9 @@ public class SjWordAct extends BaseActivity {
 
     private void initData() {
         //long countlong = DBManager.getWordManager().getCount(cls); // 查询本地的
-        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, SjWordAct.pageSize); // 第一页
+        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().getC(cls, "where pass=" + cpointBean.code, "_id", "asc", SjWordActC.pageSize, 0); // 第一页
         if (wordBeanOldList == null || wordBeanOldList.size() == 0) {
             String url = String.format(RequestUrls.CONTENTURL, cpointBean.id).toString();
-            RequestParams requestParams = new RequestParams();
             startHttpGet(url, null);
         } else {
             wordHandler.sendEmptyMessage(1);
@@ -139,10 +134,10 @@ public class SjWordAct extends BaseActivity {
     }
 
     private void initPaginationWidget(int count) {
-        paginationWidget = new PaginationWidget();
+        paginationWidget = new PaginationWidgetC();
         paginationWidget.init(activity, sjRoot);
         paginationWidget.getPageBean().setAllCount((int) count);
-        paginationWidget.setPageSize(SjWordAct.pageSize);
+        paginationWidget.setPageSize(SjWordActC.pageSize);
         paginationWidget.getPageBean().setCurrentPage((current - 1) * 2 + 1);
         paginationWidget.setCurrent(current);
         paginationWidget.setPageIndicator((int) count);
@@ -315,23 +310,23 @@ public class SjWordAct extends BaseActivity {
             } else if (msg.what == 1) {
                 sjwordAdapter.updateListView(wordBeanOldList);
             } else if (msg.what == 100) {
-                // 这里来判断 页数不能
-                //   下一页
+                // 下一页的判断 这里针对分页按钮点击 根据current 来控制 offsert 参数值来进行查询当前关卡的单词记录。
+                // 过关后自动加载第一页数据,手动点击下一页按钮 加载第二页数据 。
                 PageBean pageBean = (PageBean) msg.obj;
                 if (pageBean.getCurrentPage() <= ((current - 1) * 2 + 2) && pageBean.getCurrentPage() >= (current - 1) * 2 + 1) {
-                    wordBeanOldList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
-                            .get(cls, "_id", "asc", (pageBean.getCurrentPage() - 1) * (pageBean.getPageSize()), pageBean.getPageSize());
-
+//                    wordBeanOldList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
+//                            .get(cls, "_id", "asc", (pageBean.getCurrentPage() - 1) * (pageBean.getPageSize()), pageBean.getPageSize());
+                    wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager
+                            .getWordManager().getC(cls, "where pass=" + cpointBean.code, "_id", "asc", SjWordActC.pageSize, (pageBean.getCurrentPage() - (current - 1) * 2 - 1) * 7); // 第一页
                     if (wordBeanOldList == null || wordBeanOldList.size() == 0) {
-                        //
                         String url = String.format(RequestUrls.CONTENTURL, cpointBean.id).toString();
                         startHttpGet(url, null);
                         return;
                     }
-                } else if (pageBean.getCurrentPage() == ((current - 1) * 2 + 3)) {
-
-                    wordBeanOldList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
-                            .get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, pageBean.getPageSize() * 2);
+                } else if (pageBean.getCurrentPage() == ((current - 1) * 2 + 3)) {  // 14 个单词全部加载的时候
+//                    wordBeanOldList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
+//                            .get(cls, "_id", "asc", (current - 1) * 2 * SjWordActC.pageSize, pageBean.getPageSize() * 2);
+                    wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().getC(cls, "where pass=" + cpointBean.code, "_id", "asc", SjWordActC.pageSize * 2, 0); // 第一页
                 } else {
                     return;
                 }
@@ -408,8 +403,10 @@ public class SjWordAct extends BaseActivity {
         Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Word_niujinban_7_1>>>() {
         }.getType());
         ArrayList arrayList = (ArrayList) result.getData();
-        DBManager.getWordManager().insertTransaction(arrayList, cpointBean.tablename); //
-        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, SjWordAct.pageSize); // 第一页
+        // 这里插入数据并保存 关卡编号
+        DBManager.getWordManager().insertListWithCoptionid(arrayList, cpointBean.tablename, cpointBean.code); //
+        //加载第一页数据 根据offsert 进行控制分页数据
+        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().getC(cls, "where pass=" + cpointBean.code, "_id", "asc", SjWordActC.pageSize, 0); // 第一页
         wordHandler.sendEmptyMessage(1);
         super.onSuccessBase(s);
     }

@@ -13,7 +13,7 @@ import qge.cn.com.qgenglish.db.Table;
  * 托福高级
  */
 @SuppressWarnings("all")
-@Table(tableName = "word_toefl2")
+@Table(tableName = "word_toefl3")
 public class Word_toefl3 implements Serializable {
     @PrimaryKey(autoincrement = true, column = "_id")
     @SerializedName("index")

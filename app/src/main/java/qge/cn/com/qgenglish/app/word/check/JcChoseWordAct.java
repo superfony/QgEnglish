@@ -69,6 +69,7 @@ public class JcChoseWordAct extends BaseActivity {
         activity = this;
         userInfo = (UserInfo) CacheManager.readObject(activity, "userinfo");
         initData();
+        initTTS();
         qgtype = ((FonyApplication) activity.getApplication()).qgtype;
     }
 
@@ -90,8 +91,19 @@ public class JcChoseWordAct extends BaseActivity {
                 e.printStackTrace();
             }
             // 需要注意最后一页数据
-            List<Word_niujinban_7_1> subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
-                    .get(cls, "_id", "asc", (cpointBean.code - 1) * 2 * 7, 14);
+            List<Word_niujinban_7_1> subWordList;
+//                    = (List<Word_niujinban_7_1>) DBManager.getWordManager()
+//                    .get(cls, "_id", "asc", (cpointBean.code - 1) * 2 * 7, 14);
+
+            if (tableName.equals(TableName.word_four) || tableName.equals(TableName.word_six) || tableName.equals(TableName.phrase_small) || tableName.equals(TableName.phrase_high) || tableName.equals(TableName.phrase_middle)) {
+                subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "where pass=" + cpointBean.code);
+
+            } else {
+                subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
+                        .get(cls, "_id", "asc", (cpointBean.code - 1) * 2 * 7, 14); // 查询当前选中关卡的数据
+            }
+
+
             wordBeanOldList.addAll(subWordList);
         }
 

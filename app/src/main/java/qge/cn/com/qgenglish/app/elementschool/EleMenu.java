@@ -19,6 +19,7 @@ import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
+import qge.cn.com.qgenglish.app.word.WordActC;
 import qge.cn.com.qgenglish.app.word.table.Phrase_small;
 import qge.cn.com.qgenglish.application.FonyApplication;
 import qge.cn.com.qgenglish.db.DBManager;
@@ -71,7 +72,7 @@ public class EleMenu extends BaseActivity {
                         DBManager.getWordManager().create(Phrase_small.class, DBManager.getWordManager().getReadableDatabase());
                     }
                     intent.putExtra("tableName", TableName.phrase_small);
-                    intent.setClass(activity, WordAct.class);
+                    intent.setClass(activity, WordActC.class);
                     activity.startActivity(intent);
                 } else if (position == 2) {
                     return;

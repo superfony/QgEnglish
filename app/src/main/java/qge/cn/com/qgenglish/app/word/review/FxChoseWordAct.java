@@ -20,6 +20,7 @@ import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.ChooseWordListion;
 import qge.cn.com.qgenglish.app.PaginationWidget;
+import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.experience.WordBeanOlds;
 import qge.cn.com.qgenglish.app.word.SjWordAct;
 import qge.cn.com.qgenglish.app.word.table.Word_niujinban_7_1;
@@ -49,6 +50,7 @@ public class FxChoseWordAct extends BaseActivity {
     private ArrayList<WordBeanOlds> wordBeanOldsArrayList = new ArrayList<WordBeanOlds>();
     private ArrayList<CpointBean> cpointBeanList;
     private FonyApplication.QGTYPE qgtype;
+    private String tableName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class FxChoseWordAct extends BaseActivity {
         ButterKnife.bind(this);
         activity = this;
         initData();
+        initTTS();
 
         qgtype = ((FonyApplication) activity.getApplication()).qgtype;
     }
@@ -70,6 +73,7 @@ public class FxChoseWordAct extends BaseActivity {
         int n = cpointBeanList.size();
         for (int i = 0; i < n; i++) {
             CpointBean cpointBean = cpointBeanList.get(i);
+            tableName = cpointBean.tablename;
             cpointBean.tablename = cpointBean.tablename.substring(0, 1).toUpperCase() + cpointBean.tablename.substring(1);
             Class<?> cls = null;
             try {
@@ -77,9 +81,16 @@ public class FxChoseWordAct extends BaseActivity {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            List<Word_niujinban_7_1> subWordList;
             // 需要注意最后一页数据
-            List<Word_niujinban_7_1> subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
-                    .get(cls, "_id", "asc", (cpointBean.code - 1) * 2 * 7, 14);
+            if (tableName.equals(TableName.word_four) || tableName.equals(TableName.word_six) || tableName.equals(TableName.phrase_small) || tableName.equals(TableName.phrase_high) || tableName.equals(TableName.phrase_middle)) {
+                subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "where pass=" + cpointBean.code);
+
+            } else {
+                subWordList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
+                        .get(cls, "_id", "asc", (cpointBean.code - 1) * 2 * 7, 14); // 查询当前选中关卡的数据
+            }
+
             wordBeanOldList.addAll(subWordList);
         }
         // 查询出来的单词列表变为两列的数据方式
