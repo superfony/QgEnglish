@@ -86,7 +86,7 @@ public class TimerService extends Service {
             Result<SurplusTime> result = gson.fromJson(json, typeToken);
             SurplusTime surplusTime = result.getData();
             if (surplusTime.getTimeTotal() < 0) {
-                System.out.println(" 时间到了 ");
+                System.out.println(" 时间剩余为0 ");
                 handler.obtainMessage(1, "").sendToTarget();
 
             }
@@ -98,15 +98,14 @@ public class TimerService extends Service {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == 1) {
-//                    System.exit(0);
-                    //  showDialog();
+                    System.exit(0);
+                    // showDialog();
                 }
             }
         };
 
 
         private void showDialog() {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -127,7 +126,7 @@ public class TimerService extends Service {
         @Override
         public void onFailure(Throwable throwable, String s) {
             Log.w("", s);
-            //       handler.obtainMessage(0,s).sendToTarget();
+            // handler.obtainMessage(0,s).sendToTarget();
         }
     };
 

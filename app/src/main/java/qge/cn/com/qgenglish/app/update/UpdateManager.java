@@ -298,13 +298,13 @@ public class UpdateManager {
         @Override
         public void run() {
             try {
-                String apkName = "wzdp" + mUpdate.getVersionName() + ".apk";
-                String tmpApk = "wzdp" + mUpdate.getVersionName() + ".tmp";
+                String apkName = "spmapp" + mUpdate.getVersionName() + ".apk";
+                String tmpApk = "spmapp" + mUpdate.getVersionName() + ".tmp";
                 // 判断是否挂载了SD卡
                 String storageState = Environment.getExternalStorageState();
                 if (storageState.equals(Environment.MEDIA_MOUNTED)) {
                     savePath = Environment.getExternalStorageDirectory()
-                            .getAbsolutePath() + "/epsmart/updateapp/";
+                            .getAbsolutePath() + "/spm/updateapp/";
                     Log.i("", ".....savePath.>>" + savePath);
                     File file = new File(savePath);
                     if (!file.exists()) {
