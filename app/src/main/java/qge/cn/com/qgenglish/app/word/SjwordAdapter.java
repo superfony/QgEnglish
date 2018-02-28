@@ -55,12 +55,25 @@ public class SjwordAdapter extends BaseAdapter {
         viewHolder.word_value.setText(wordBeanOld.english);
         viewHolder.phonetic.setText(wordBeanOld.phonetic);
         viewHolder.sense.setText(wordBeanOld.sense);
+        viewHolder.word_value1.setText(wordBeanOld.english);
+        viewHolder.phonetic1.setText(wordBeanOld.phonetic);
+        viewHolder.sense1.setText(wordBeanOld.sense);
         viewHolder.interpretationLay.setVisibility(View.INVISIBLE);
+        viewHolder.interpretationLay1.setVisibility(View.INVISIBLE);
+
+        if (wordBeanOld.english.length() > 20) {
+            viewHolder.fristlay.setVisibility(View.GONE);
+            viewHolder.fristlay1.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.fristlay.setVisibility(View.VISIBLE);
+            viewHolder.fristlay1.setVisibility(View.GONE);
+        }
         return view;
     }
 
-
-    class ViewHolder {
+    static class ViewHolder {
+        @Bind(R.id.frist_lay)
+        LinearLayout fristlay;
         @Bind(R.id.word_value)
         TextView word_value;
         @Bind(R.id.phonetic)
@@ -69,9 +82,21 @@ public class SjwordAdapter extends BaseAdapter {
         TextView sense;
         @Bind(R.id.interpretation_lay)
         LinearLayout interpretationLay;
+        @Bind(R.id.word_value1)
+        TextView word_value1;
+        @Bind(R.id.phonetic1)
+        TextView phonetic1;
+        @Bind(R.id.sense1)
+        TextView sense1;
+        @Bind(R.id.frist_lay1)
+        LinearLayout fristlay1;
+        @Bind(R.id.interpretation_lay1)
+        LinearLayout interpretationLay1;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
+
+
 }

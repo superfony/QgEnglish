@@ -3,10 +3,8 @@ package qge.cn.com.qgenglish.app.word;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.pagination.PageBean;
@@ -48,13 +45,11 @@ import qge.cn.com.qgenglish.iciba.SentBean;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 
-import static qge.cn.com.qgenglish.application.FonyApplication.QGTYPE.WORD;
-
 /**
  * 识记
- * 单词识记通用类  // 添加短语的
+ * >> 添加短语的
  */
-public class SjWordAct extends BaseActivity {
+public class DySjWordAct extends BaseActivity {
     @Bind(R.id.sj_lv)
     ListView sjLv;
     @Bind(R.id.sj_root)
@@ -128,7 +123,7 @@ public class SjWordAct extends BaseActivity {
 
     private void initData() {
         //long countlong = DBManager.getWordManager().getCount(cls); // 查询本地的
-        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, SjWordAct.pageSize); // 第一页
+        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * DySjWordAct.pageSize, DySjWordAct.pageSize); // 第一页
         if (wordBeanOldList == null || wordBeanOldList.size() == 0) {
             String url = String.format(RequestUrls.CONTENTURL, cpointBean.id).toString();
             RequestParams requestParams = new RequestParams();
@@ -142,7 +137,7 @@ public class SjWordAct extends BaseActivity {
         paginationWidget = new PaginationWidget();
         paginationWidget.init(activity, sjRoot);
         paginationWidget.getPageBean().setAllCount((int) count);
-        paginationWidget.setPageSize(SjWordAct.pageSize);
+        paginationWidget.setPageSize(DySjWordAct.pageSize);
         paginationWidget.getPageBean().setCurrentPage((current - 1) * 2 + 1);
         paginationWidget.setCurrent(current);
         paginationWidget.setPageIndicator((int) count);
@@ -157,10 +152,9 @@ public class SjWordAct extends BaseActivity {
         sjLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RelativeLayout rootR = (RelativeLayout) view.findViewById(R.id.root_r);
-                LinearLayout interpretationLay = (LinearLayout) rootR.findViewById(R.id.interpretation_lay);
-                LinearLayout interpretationLay1 = (LinearLayout) rootR.findViewById(R.id.interpretation_lay1);
+                LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
                 phonetic_tv = (TextView) interpretationLay.findViewById(R.id.phonetic);
+
                 wordBeanOld = wordBeanOldList.get(position);
                 String queue = wordBeanOld.queue;
                 // 这里需要修改
@@ -174,24 +168,17 @@ public class SjWordAct extends BaseActivity {
                     if (queue.equals("1")) {
                         wordBeanOld.queue = "2";
                         interpretationLay.setVisibility(View.INVISIBLE);
-                        interpretationLay1.setVisibility(View.INVISIBLE);
-
                     } else if (queue.equals("2")) {
                         wordBeanOld.queue = "3";
                         interpretationLay.setVisibility(View.VISIBLE);
-                        interpretationLay1.setVisibility(View.VISIBLE);
                     } else if (queue.equals("3")) {
                         wordBeanOld.queue = "1";
                         interpretationLay.setVisibility(View.INVISIBLE);
-                        interpretationLay1.setVisibility(View.INVISIBLE);
                     }
                 } else {
                     wordBeanOld.queue = "2";
                     interpretationLay.setVisibility(View.INVISIBLE);
-                    interpretationLay1.setVisibility(View.INVISIBLE);
                 }
-
-
                 String word = wordBeanOld.english;
                 switch (qgtype) {
                     case WORD:
@@ -239,6 +226,7 @@ public class SjWordAct extends BaseActivity {
                                 wordunskilled.sen = wordBeanOld.sen;
                                 wordunskilled.szh = wordBeanOld.szh;
                                 wordunskilled.sense = wordBeanOld.sense;
+
                                 wordunskilled.user_id = userInfo.getUserInfo().getId();
                                 wordunskilled.belong = getWordType();
                                 boolean sucess = DBManager.getWordManager().insert(wordunskilled, TableName.word_unskilled);
@@ -338,7 +326,7 @@ public class SjWordAct extends BaseActivity {
                 } else if (pageBean.getCurrentPage() == ((current - 1) * 2 + 3)) {
 
                     wordBeanOldList = (List<Word_niujinban_7_1>) DBManager.getWordManager()
-                            .get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, pageBean.getPageSize() * 2);
+                            .get(cls, "_id", "asc", (current - 1) * 2 * DySjWordAct.pageSize, pageBean.getPageSize() * 2);
                 } else {
                     return;
                 }
@@ -416,7 +404,7 @@ public class SjWordAct extends BaseActivity {
         }.getType());
         ArrayList arrayList = (ArrayList) result.getData();
         DBManager.getWordManager().insertTransaction(arrayList, cpointBean.tablename); //
-        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * SjWordAct.pageSize, SjWordAct.pageSize); // 第一页
+        wordBeanOldList = (ArrayList<Word_niujinban_7_1>) DBManager.getWordManager().get(cls, "_id", "asc", (current - 1) * 2 * DySjWordAct.pageSize, DySjWordAct.pageSize); // 第一页
         wordHandler.sendEmptyMessage(1);
         super.onSuccessBase(s);
     }

@@ -48,7 +48,7 @@ import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
 
 /**
  * 识记
- * 单词识记通用类  // 添加短语的
+ *  网络请求分页的的实现
  */
 public class SjWordActC extends BaseActivity {
     @Bind(R.id.sj_lv)
@@ -152,7 +152,9 @@ public class SjWordActC extends BaseActivity {
         sjLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LinearLayout interpretationLay = (LinearLayout) view.findViewById(R.id.interpretation_lay);
+                RelativeLayout rootR = (RelativeLayout) view.findViewById(R.id.root_r);
+                LinearLayout interpretationLay = (LinearLayout) rootR.findViewById(R.id.interpretation_lay);
+                LinearLayout interpretationLay1 = (LinearLayout) rootR.findViewById(R.id.interpretation_lay1);
                 phonetic_tv = (TextView) interpretationLay.findViewById(R.id.phonetic);
 
                 wordBeanOld = wordBeanOldList.get(position);
@@ -168,16 +170,20 @@ public class SjWordActC extends BaseActivity {
                     if (queue.equals("1")) {
                         wordBeanOld.queue = "2";
                         interpretationLay.setVisibility(View.INVISIBLE);
+                        interpretationLay1.setVisibility(View.INVISIBLE);
                     } else if (queue.equals("2")) {
                         wordBeanOld.queue = "3";
                         interpretationLay.setVisibility(View.VISIBLE);
+                        interpretationLay1.setVisibility(View.VISIBLE);
                     } else if (queue.equals("3")) {
                         wordBeanOld.queue = "1";
                         interpretationLay.setVisibility(View.INVISIBLE);
+                        interpretationLay1.setVisibility(View.INVISIBLE);
                     }
                 } else {
                     wordBeanOld.queue = "2";
                     interpretationLay.setVisibility(View.INVISIBLE);
+                    interpretationLay1.setVisibility(View.INVISIBLE);
                 }
                 String word = wordBeanOld.english;
                 switch (qgtype) {
