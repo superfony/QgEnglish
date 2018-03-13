@@ -72,7 +72,6 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         //SQLiteStudioService.instance().start(this);
-
     }
 
     private void init() {
@@ -101,7 +100,6 @@ public class LoginActivity extends BaseActivity {
         requestParams.put("padId", Pub_method.getDeviceID(activity));//
         startHttpPost(RequestUrls.schoollogin, requestParams);
 
-
     }
 
 
@@ -124,6 +122,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onSuccessBase(String s) {
         super.onSuccessBase(s);
+
         Gson gson = new Gson();
         Type typeToken = new TypeToken<Result<SchoolInfo>>() {
         }.getType();
@@ -185,6 +184,4 @@ public class LoginActivity extends BaseActivity {
         // SQLiteStudioService.instance().start(this);
         stopIService();
     }
-
-
 }

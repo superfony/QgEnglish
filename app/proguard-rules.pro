@@ -85,4 +85,8 @@
 
 -keep class qge.cn.com.qgenglish.app.**{*;}
 
+-libraryjars libs/pgyer_sdk_2.8.1.jar
+-dontwarn com.pgyersdk.**
+-keep class com.pgyersdk.** { *; }
+
 # ./gradlew makeJar 命令执行失败时,先Rebuld project 一下,然后在执行

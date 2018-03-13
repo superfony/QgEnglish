@@ -18,6 +18,7 @@ public class FonyApplication extends AppContext {
     public String tocken = "";
     public UserInfo userinfo;
     public String tableDes;// 学习模块描述
+    public ArticleOrListener articleOrListener;
 
     public enum WordType {
         Small, Middle, High, FourLeve, SixLeve, Receiving, ThinkSeleg
@@ -25,6 +26,10 @@ public class FonyApplication extends AppContext {
 
     public enum QGTYPE {
         WORD, PHRASE
+    }
+
+    public enum ArticleOrListener {
+        ARTICLE, LISTENER, ARTICLE_OR_LISTENER
     }
 
     @Override

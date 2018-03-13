@@ -1,4 +1,4 @@
-package qge.cn.com.qgenglish.app.highschool;
+package qge.cn.com.qgenglish.app.sentence;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,68 +18,56 @@ import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Result;
-import qge.cn.com.qgenglish.app.TableName;
-import qge.cn.com.qgenglish.app.articel.ArticelMenuAct;
+import qge.cn.com.qgenglish.app.articel.question.ArticelBean;
 import qge.cn.com.qgenglish.app.fourlevel.Menu;
-import qge.cn.com.qgenglish.app.word.WordAct;
+import qge.cn.com.qgenglish.app.hearing.HearAndLisAct;
 import qge.cn.com.qgenglish.application.FonyApplication;
+import qge.cn.com.qgenglish.cache.CacheManager;
 
 /**
- * 高中词汇  高中课本
+ * Created by fony on 2018/3/12.
  */
 
-public class HighMenus extends BaseActivity {
-    private String TAG = "HighMenus";
+public class SpecialList extends BaseActivity {
+
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.ckxz_lv)
     ListView ckxzLv;
-    private HighMenuAdapter wordMenuThAdapter;
-
-    private String[] menuArr = {"高中词汇", "高中课本"};
+    private SpecialAdapter specialAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ele_menu);
+
+        setContentView(R.layout.special_list);
         ButterKnife.bind(this);
         activity = this;
         initData();
-        reqMenu();
-
+        // reqMenu();
     }
 
     private void initData() {
-        title.setText("高中单词");
-        wordMenuThAdapter = new HighMenuAdapter(activity, menuArrayList);
-        ckxzLv.setAdapter(wordMenuThAdapter);
+        specialAdapter = new SpecialAdapter(activity, menuArrayList);
+        ckxzLv.setAdapter(specialAdapter);
         ckxzLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent();
-                intent.putExtra("menu", menuArrayList.get(position));
-                switch (position) {
-                    case 0:
-                        intent.setClass(activity, HighWordHighMenu.class);
-                        activity.startActivity(intent);
-                        break;
-                    case 1:
-                        intent.setClass(activity, HighWordMenu.class);
-                        activity.startActivity(intent);
-                        break;
-                    default:
-                        break;
-                }
-
 
             }
         });
     }
 
+    // 处理返回的结果
     @Override
     protected void onSuccessBase(String s) {
         super.onSuccessBase(s);
-        resultMenu(s);
+        Gson gson = new Gson();
+        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<ArticelBean>>>() {
+        }.getType());
+        // articelBeanList = (ArrayList) result.getData();
+        handlerBase.obtainMessage(1, "").sendToTarget();
+        CacheManager.saveObject(activity, result, menu.id);
     }
 
     @Override
@@ -87,18 +75,20 @@ public class HighMenus extends BaseActivity {
         super.onFailureBase(throwable, s);
     }
 
+
     @Override
     protected void handMessage(Message msg) {
         super.handMessage(msg);
-
         switch (msg.what) {
             case 0:
                 break;
             case 1:
-                wordMenuThAdapter.updateListView(menuArrayList);
+                specialAdapter.updateListView(menuArrayList);
+                title.setText(menu.menuName);
                 break;
-
+            case 3:
+                activity.finish();
+                break;
         }
     }
-
 }

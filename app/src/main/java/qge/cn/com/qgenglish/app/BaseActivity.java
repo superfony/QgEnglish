@@ -20,6 +20,7 @@ import com.baiyang.android.http.common.AsyncHttp;
 import com.baiyang.android.http.common.ResponseProcessor;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pgyersdk.crash.PgyCrashManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,15 +62,15 @@ public class BaseActivity extends Activity implements IActivitySupport {
     protected ChooseWordListion chooseWordListion;
     private Intent timerService, reConnectService;
     protected TextToSpeech textToSpeech;
-    protected ArrayList<Menu> menuArrayList = new ArrayList<Menu>(); // 网络菜单
-    protected Menu menu;
+    protected ArrayList<Menu> menuArrayList = new ArrayList<Menu>(); //存放下一级菜单结果
+    protected Menu menu;  //  当前菜单
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
+        PgyCrashManager.register(this);
         initNet();
-
     }
 
     protected void initTTS() {
@@ -77,7 +78,6 @@ public class BaseActivity extends Activity implements IActivitySupport {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    Log.w("base", "000000000");
                 } else {
                     Toast.makeText(activity, "初始化失败", Toast.LENGTH_SHORT).show();
                 }
@@ -109,7 +109,6 @@ public class BaseActivity extends Activity implements IActivitySupport {
             params.put("key", iciba_key);
             pd = new ProgressDialog(this);
             pd.show();
-//            http=new AsyncHttp(activity);
             http.setRequestCallback(null);
             http.setDataType(AsyncBase.ResponseDataType.XML);
             http.get(icibaurl, params, new WorldHandler(),
@@ -179,7 +178,7 @@ public class BaseActivity extends Activity implements IActivitySupport {
         }).start();
     }
 
-
+    // 过关播放本地的音乐
     protected synchronized void mp3Playend(final int r) {
         new Thread(new Runnable() {
             @Override
@@ -191,6 +190,7 @@ public class BaseActivity extends Activity implements IActivitySupport {
         }).start();
     }
 
+    // 过关停止播放音乐
     protected void stopMp3() {
         if (mp3Box != null) {
             mp3Box.stopSoundMp3();
@@ -280,7 +280,10 @@ public class BaseActivity extends Activity implements IActivitySupport {
 
     }
 
-    //
+    /**
+     * get 方式通用的请求服务   返回的结果在具体的子类中去处理
+     */
+
     protected void startHttpGet(String url, RequestParams requestParams) {
         showPD();
         http.setRequestCallback(requestCallbackBase);
@@ -288,8 +291,6 @@ public class BaseActivity extends Activity implements IActivitySupport {
         http.setDebug(true);
         http.get(url, requestParams, null, null);
     }
-
-    //   数据回调的统一的实现
 
     protected AsyncBase.RequestCallback requestCallbackBase = new AsyncBase.RequestCallback() {
 
@@ -419,15 +420,15 @@ public class BaseActivity extends Activity implements IActivitySupport {
     }
 
     /**
-     * 获取菜单的 方法仅请求菜单的地方调用
+     * 获取菜单的 方法仅请求菜单的地方调用  请求下一级菜单的 ,没有子菜单 不需要调用reqMenu方法
      */
     protected void reqMenu() {
         menu = (Menu) activity.getIntent().getSerializableExtra("menu");
         startHttpGet(String.format(RequestUrls.COMMONURL, menu.id), null);// 请求菜单
     }
 
+    // 处理请求菜单返回的json数据  在具体的子类中处理返回结果时进行调用
     protected void resultMenu(String s) {
-
         Gson gson = new Gson();
         Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Menu>>>() {
         }.getType());
@@ -436,10 +437,11 @@ public class BaseActivity extends Activity implements IActivitySupport {
         handlerBase.obtainMessage(1, "").sendToTarget();
     }
 
-    // 实现一个计数器
-    //
 
-    //学生登出的操作
+    /**
+     * 处理登出的请求服务
+     * 学生登出的操作
+     */
 
     protected void stulogoutdialog(final RequestParams requestParams) {
 //          AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -464,11 +466,10 @@ public class BaseActivity extends Activity implements IActivitySupport {
 
     }
 
-
     AsyncBase.RequestCallback requestCallback = new AsyncBase.RequestCallback() {
         @Override
         public void onSuccess(String s) {
-            handlerBase.obtainMessage(3, s).sendToTarget();// 登出的操作
+            handlerBase.obtainMessage(3, s).sendToTarget();
         }
 
         @Override

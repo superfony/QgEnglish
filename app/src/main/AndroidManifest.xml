@@ -9,6 +9,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+
+    <!-- 蒲公英设置权限-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />  <!-- 获取设备信息 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 允许程序录制音频 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_LOGS" /> <!-- 获取logcat日志 -->
+
+
     <application
         android:name=".application.FonyApplication"
         android:allowBackup="true"
@@ -16,6 +24,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <meta-data
+            android:name="PGYER_APPID"
+            android:value="9ef29946ca7df9d83fcdaae3341d2e7c"></meta-data>
 
         <!-- //LaunchActivity -->
         <activity android:name=".LaunchActivity">
@@ -80,6 +93,11 @@
         <activity android:name=".app.newword.NewSjWordAct"></activity>
         <activity android:name=".app.word.SjWordActC"></activity>
         <activity android:name=".app.word.WordActC"></activity>
+        <activity android:name=".app.sentence.SentenceAct"></activity>
+        <activity android:name=".app.sentence.RichTextAct"></activity>
+        <activity android:name=".app.hearing.HearingAct"></activity>
+        <activity android:name=".app.hearing.HearAndLisAct"></activity>
+        <!--<activity android:name=".app.sentence.SpecialList"></activity>-->
 
 
         <service

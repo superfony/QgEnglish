@@ -17,7 +17,9 @@ import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.TableName;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
+import qge.cn.com.qgenglish.app.sentence.SentenceAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
 import qge.cn.com.qgenglish.app.word.WordActC;
 import qge.cn.com.qgenglish.app.word.table.Phrase_small;
@@ -36,8 +38,6 @@ public class EleMenu extends BaseActivity {
     ListView ckxzLv;
     private EleMenuAdapter wordMenuThAdapter;
 
-    private String[] menuArr = {"小学单词", "小学短语", "小学写作",
-            "小学语法", "重点句型", "我的生词本"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,6 @@ public class EleMenu extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
-
                 if (position == 0) {
                     ((FonyApplication) activity.getApplication()).tableDes = "小学单词";
                     ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
@@ -75,22 +74,28 @@ public class EleMenu extends BaseActivity {
                     intent.setClass(activity, WordActC.class);
                     activity.startActivity(intent);
                 } else if (position == 2) {
-                    return;
+                    // 小学语法
+                    ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                    Menu menu = menuArrayList.get(position);
+                    intent.putExtra("menu", menu);
+                    intent.setClass(activity, SentenceAct.class);
 
                 } else if (position == 3) {
-                    return;
+                    ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
 
+                    Menu menu = menuArrayList.get(position); // 重点句型
+                    intent.putExtra("menu", menu);
+                    intent.setClass(activity, SentenceAct.class);
                 } else if (position == 4) {
-                    return;
-
+                    ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                    Menu menu = menuArrayList.get(position); // 小学写作
+                    intent.putExtra("menu", menu);
+                    intent.setClass(activity, SentenceAct.class);
                 } else if (position == 5) { // 我的生词本
                     intent.setClass(activity, NewWordChoseAct.class);
                     activity.startActivity(intent);
                     return;
-
                 }
-
-
             }
         });
     }

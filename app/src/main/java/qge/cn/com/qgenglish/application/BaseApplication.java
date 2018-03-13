@@ -11,7 +11,7 @@ import com.baiyang.android.ui.SimplexToast;
 
 
 @SuppressLint("InflateParams")
-public class BaseApplication extends Application {
+public class BaseApplication extends PgyApplication {
     private static final String PREF_NAME = "creativelocker.pref";
     static Context _context;
 

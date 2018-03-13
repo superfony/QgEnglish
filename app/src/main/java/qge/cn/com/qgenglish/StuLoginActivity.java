@@ -76,7 +76,6 @@ public class StuLoginActivity extends BaseActivity {
     ImageView registBtn;
 
     private int grade;
-    //private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

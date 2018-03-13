@@ -3,10 +3,8 @@ package qge.cn.com.qgenglish.app.word;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,18 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.baiyang.android.http.basic.RequestParams;
 import com.baiyang.android.http.pagination.PageBean;
 import com.baiyang.android.util.basic.ToastHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import qge.cn.com.qgenglish.R;
@@ -47,8 +41,6 @@ import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.iciba.SentBean;
 import qge.cn.com.qgenglish.iciba.WordBean;
 import qge.cn.com.qgenglish.iciba.icibautil.Mp3Player;
-
-import static qge.cn.com.qgenglish.application.FonyApplication.QGTYPE.WORD;
 
 /**
  * 识记

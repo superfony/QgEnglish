@@ -25,13 +25,13 @@ public class Menu implements Serializable {
 //    @Column(column = "child")
     public String child;  //是否有子菜单(true/false)
     //    @Column(column = "id")
-    public String id;  // 网络菜单 ()
+    public String id;  //  菜单id
     //    @Column(column = "menuName")
-    public String menuName;  // 名称
+    public String menuName;  // 名称名称
     //    @Column(column = "menuType")
-    public String menuType;  // 网络菜单
+    public String menuType;  // 类型
     //    @Column(column = "pmenuId")
-    public String pmenuId;  // 网络菜单
+    public String pmenuId;  // 父节点id
     //    @Column(column = "sortIndex")
-    public String sortIndex;  // 网络菜单
+    public String sortIndex;  //
 }

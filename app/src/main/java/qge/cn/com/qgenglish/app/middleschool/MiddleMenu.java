@@ -25,6 +25,7 @@ import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.articel.ArticelMenuAct;
 import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
+import qge.cn.com.qgenglish.app.sentence.SentenceAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
 import qge.cn.com.qgenglish.app.word.WordActC;
 import qge.cn.com.qgenglish.app.word.table.Phrase_middle;
@@ -87,30 +88,48 @@ public class MiddleMenu extends BaseActivity {
                         break;
                     case 2:
                         // 初中语法
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 3:
                         // 重点句型
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 4:
                         //初中写作
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 5:
                         // 阅读训练
                         intent.removeExtra("menu");
-                        Menu menu = new Menu();
-                        menu.id = RequestUrls.middle_article;
-                        intent.putExtra("menu", menu);
+                        Menu menus = new Menu();
+                        menus.id = RequestUrls.middle_article;
+                        intent.putExtra("menu", menus);
                         intent.setClass(activity, ArticelMenuAct.class);
                         activity.startActivity(intent);
                         break;
                     case 6:
                         // 专项训练题
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 7:
                         // 初中听力训练
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.LISTENER;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 8:
                         // 中考试卷
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.LISTENER;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 9:
                         // 生词本
@@ -135,8 +154,6 @@ public class MiddleMenu extends BaseActivity {
         String menus = result.getMessage();
         menuArrayList = (ArrayList) result.getData();
         handlerBase.obtainMessage(1, "").sendToTarget();
-
-
     }
 
     @Override

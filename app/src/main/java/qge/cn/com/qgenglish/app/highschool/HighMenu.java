@@ -20,6 +20,7 @@ import qge.cn.com.qgenglish.app.TableName;
 import qge.cn.com.qgenglish.app.articel.ArticelMenuAct;
 import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.newword.NewWordChoseAct;
+import qge.cn.com.qgenglish.app.sentence.SentenceAct;
 import qge.cn.com.qgenglish.app.word.WordAct;
 import qge.cn.com.qgenglish.app.word.WordActC;
 import qge.cn.com.qgenglish.app.word.table.Phrase_high;
@@ -79,30 +80,50 @@ public class HighMenu extends BaseActivity {
                         activity.startActivity(intent);
                         break;
                     case 2:
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         // 高中语法
                         break;
                     case 3:
                         // 重点句型
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
+
                         break;
                     case 4:
+                        // 阅读训练
                         intent.removeExtra("menu");
-                        Menu menu = new Menu();
-                        menu.id = RequestUrls.high_article;
-                        intent.putExtra("menu", menu);
+                        Menu menus = new Menu();
+                        menus.id = RequestUrls.high_article;
+                        intent.putExtra("menu", menus);
                         intent.setClass(activity, ArticelMenuAct.class);
                         activity.startActivity(intent);
                         break;
                     case 5:
                         // 写作
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 6:
                         // 高考听力训练
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.LISTENER;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 7:
                         // 高考试卷
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE_OR_LISTENER;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 8:
                         // 专项训练题
+                        ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
+                        intent.setClass(activity, SentenceAct.class);
+                        activity.startActivity(intent);
                         break;
                     case 9:
                         intent.setClass(activity, NewWordChoseAct.class);

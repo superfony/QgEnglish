@@ -1,4 +1,4 @@
-package qge.cn.com.qgenglish.app.articel;
+package qge.cn.com.qgenglish.app.sentence;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,21 +31,19 @@ import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.RequestUrls;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Result;
+import qge.cn.com.qgenglish.app.articel.ArticelPopListener;
+import qge.cn.com.qgenglish.app.articel.ArticelPopWindow;
 import qge.cn.com.qgenglish.app.articel.question.ArticelBean;
-import qge.cn.com.qgenglish.app.articel.question.Question;
-import qge.cn.com.qgenglish.app.articel.question.QuestionItem;
 import qge.cn.com.qgenglish.app.articel.question.QuestionText;
 import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.cache.CacheManager;
-import qge.cn.com.qgenglish.db.DBManager;
 import qge.cn.com.qgenglish.view.CountdownTextView;
 
 /**
- * 阅读界面
- * 文章阅读 在数据库表里面按排序 读取 4条一关
+ * 专项训练
  */
 
-public class ArticelAct extends BaseActivity {
+public class SpecialAct extends BaseActivity {
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.time_count)
@@ -145,7 +143,7 @@ public class ArticelAct extends BaseActivity {
     private String answer_value1, answer_value2, answer_value3, answer_value4, answer_value5;
     private String answer1, answer2, answer3, answer4, answer5;
     private List<ArticelBean.QuestionsBean> questionsBeanList;
-    private int count = 0;//当前关卡文章计数 四篇文章为一关  //Special training
+    private int count = 0;//
     protected ArticelPopWindow articelPopWindow;
     protected ArticelPopListener articelPopListener;
     private int rightCount = 0;
@@ -154,7 +152,7 @@ public class ArticelAct extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.articel_act);
+        setContentView(R.layout.special_act);
         ButterKnife.bind(this);
         activity = this;
         Intent intent = getIntent();

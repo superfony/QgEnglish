@@ -1,8 +1,14 @@
 package qge.cn.com.qgenglish;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+
+import com.pgyersdk.javabean.AppBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,8 +40,43 @@ public class StartMenuActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startmenu);
+        activity = this;
         ButterKnife.bind(this);
-        UpdateManager.getUpdateManager().checkAppUpdate(this, false);// 检查是否更新
+        // UpdateManager.getUpdateManager().checkAppUpdate(this, false);// 检查是否更新
+        PgyUpdateManager.setIsForced(true); //设置是否强制更新。true为强制更新；false为不强制更新（默认值）。
+        PgyUpdateManager.register(this);
+//        PgyUpdateManager.register(this,
+//                new UpdateManagerListener() {
+//
+//                    @Override
+//                    public void onUpdateAvailable(final String result) {
+//
+//                        // 将新版本信息封装到AppBean中
+//                        final AppBean appBean = getAppBeanFromString(result);
+//                        new AlertDialog.Builder(activity)
+//                                .setTitle("更新")
+//                                .setMessage("")
+//                                .setNegativeButton(
+//                                        "确定",
+//                                        new DialogInterface.OnClickListener() {
+//
+//                                            @Override
+//                                            public void onClick(
+//                                                    DialogInterface dialog,
+//                                                    int which) {
+//                                                startDownloadTask(
+//                                                        activity,
+//                                                        appBean.getDownloadURL());
+//                                            }
+//                                        }).show();
+//                    }
+//
+//                    @Override
+//                    public void onNoUpdateAvailable() {
+//                    }
+//                });
+
+
     }
 
     @OnClick(R.id.menu1)
