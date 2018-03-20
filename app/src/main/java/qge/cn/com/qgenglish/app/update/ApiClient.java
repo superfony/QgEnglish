@@ -47,7 +47,7 @@ public class ApiClient {
         GetMethod httpGet = new GetMethod(url);
         // 设置 请求超时时间
         httpGet.getParams().setSoTimeout(TIMEOUT_SOCKET);
-        httpGet.setRequestHeader("Host", RequestUrls.HOST);//TODO
+        // httpGet.setRequestHeader("Host", RequestUrls.HOST);//TODO
         httpGet.setRequestHeader("Connection", "Keep-Alive");
         return httpGet;
     }

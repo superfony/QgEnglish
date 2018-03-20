@@ -65,7 +65,8 @@ public class GradeMenuAct extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grade_menu_act);
         ButterKnife.bind(this);
-        startHttpGet(String.format(RequestUrls.COMMONURL, RequestUrls.rootid), null);
+        // startHttpGet(String.format(RequestUrls.COMMONURL, RequestUrls.rootid), null);
+        reqMenu();
     }
 
     //小学
@@ -143,11 +144,11 @@ public class GradeMenuAct extends BaseActivity {
     @Override
     protected void onSuccessBase(String s) {
         super.onSuccessBase(s);
-        Gson gson = new Gson();
-        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Menu>>>() {
-        }.getType());
-        String menus = result.getMessage();
-        menuArrayList = (ArrayList) result.getData();
+//        Gson gson = new Gson();
+//        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Menu>>>() {
+//        }.getType());
+//        menuArrayList = (ArrayList) result.getData();
+        resultMenu(s);
     }
 
     @Override
@@ -222,8 +223,5 @@ public class GradeMenuAct extends BaseActivity {
         ((FonyApplication) activity.getApplication()).tocken = schoolInfo.getToken();
         logout(RequestUrls.schoollogout, requestParams, requestCallback);
     }
-
-
-
 
 }

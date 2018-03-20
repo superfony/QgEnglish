@@ -47,7 +47,7 @@ public class LaunchActivity extends Activity {
 //            }
 //        }
         try {
-            Thread.sleep(800);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -45,9 +45,7 @@ public class MiddleMenu extends BaseActivity {
     private MiddleMenuAdapter wordMenuThAdapter;
 
 
-    private String[] menuArr = {"初中单词", "初中短语", "初中写作",
-            "初中语法", "阅读训练", "中考试卷", "重点句型", "专项训练题",
-            "初中听力训练", "我的生词本"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +66,8 @@ public class MiddleMenu extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 intent.putExtra("menu", menuArrayList.get(position));
-
                 switch (position) {
                     case 0:
-
                         ((FonyApplication) activity.getApplication()).qgtype = FonyApplication.QGTYPE.WORD;
                         intent.setClass(activity, MiddleWordMenu.class);
                         activity.startActivity(intent);
@@ -106,11 +102,12 @@ public class MiddleMenu extends BaseActivity {
                         break;
                     case 5:
                         // 阅读训练
-                        intent.removeExtra("menu");
-                        Menu menus = new Menu();
-                        menus.id = RequestUrls.middle_article;
-                        intent.putExtra("menu", menus);
-                        intent.setClass(activity, ArticelMenuAct.class);
+//                        intent.removeExtra("menu");
+//                        Menu menus = new Menu();
+//                        menus.id = RequestUrls.middle_article;
+//                        intent.putExtra("menu", menus);
+//                        intent.setClass(activity, ArticelMenuAct.class);
+                        intent.setClass(activity, SentenceAct.class);
                         activity.startActivity(intent);
                         break;
                     case 6:

@@ -143,7 +143,7 @@ public class WordActC extends BaseActivity {
             cpointBeanListJc = cpointBeanList;
             cpointBeanListFx = cpointBeanList;
         } else {
-            // 四六级单词进行网络请求  其它的读取本地数据库
+            // 四六级单词 短语的 进行网络请求  其它的读取本地数据库
             if (TableName.word_six.equals(tableName)) {
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.word_six).toString(); //
                 startHttpGet(url, null);

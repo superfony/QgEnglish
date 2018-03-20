@@ -94,11 +94,13 @@ public class HighMenu extends BaseActivity {
                         break;
                     case 4:
                         // 阅读训练
-                        intent.removeExtra("menu");
-                        Menu menus = new Menu();
-                        menus.id = RequestUrls.high_article;
-                        intent.putExtra("menu", menus);
-                        intent.setClass(activity, ArticelMenuAct.class);
+//                        intent.removeExtra("menu");
+//                        Menu menus = new Menu();
+//                        menus.id = RequestUrls.high_article;
+//                        intent.putExtra("menu", menus);
+//                        intent.setClass(activity, ArticelMenuAct.class);
+
+                        intent.setClass(activity, SentenceAct.class);
                         activity.startActivity(intent);
                         break;
                     case 5:

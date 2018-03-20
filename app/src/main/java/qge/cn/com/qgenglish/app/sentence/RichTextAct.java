@@ -10,6 +10,9 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,6 +21,7 @@ import qge.cn.com.qgenglish.RequestUrls;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.fourlevel.Menu;
+import qge.cn.com.qgenglish.app.hearing.ModelEssayBean;
 
 /**
  * Created by fony on 2018/3/1.
@@ -39,16 +43,7 @@ public class RichTextAct extends BaseActivity {
         setContentView(R.layout.rich_text_act);
         ButterKnife.bind(this);
         activity = this;
-        //  initData();
-        initWebViewSettings(richTextWb);
-
-        richTextWb.loadData("1234567890sdfghjkl;sdfghjkl;wertyuiopsdfghjkl" +
-                "wsdfghjkasdfghjklasdfghjklfghj" +
-                "asdfghjklsdfghjkdfghj" +
-                "dfghjkfghjkfghj" +
-                "nihao你哈 覅我佛IE发奇偶微积分 佛文件附件饿哦我发" +
-                "金佛文件of就王府井wjfoiwj ojwfojoefjowj fjwojfowj我owjfojw分接哦我就否" +
-                "-;'qdfghjk", "text/html; charset=UTF-8", null);
+        initData();
     }
 
     //
@@ -56,8 +51,7 @@ public class RichTextAct extends BaseActivity {
         Intent intent = activity.getIntent();
         menu = (Menu) intent.getSerializableExtra("menu");
         title.setText(menu.menuName);
-
-        String url = String.format(RequestUrls.COMMONURL, menu.id).toString();
+        String url = String.format(RequestUrls.CONTENTURL, menu.id).toString();
         startHttpGet(url, null);
     }
 
@@ -71,11 +65,11 @@ public class RichTextAct extends BaseActivity {
         super.onSuccessBase(s);
         // 获取 富文本url
         Gson gson = new Gson();
-        // Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Word_niujinban_7_1>>>() {
-        // Word_niujinban_7_1}.getType());
-        // ArrayList arrayList = (ArrayList) result.getData();
-        String url = "";
-        richHandler.obtainMessage(1, url).sendToTarget();
+        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<ModelEssayBean>>>() {
+        }.getType());
+        ArrayList arrayList = (ArrayList) result.getData();
+        String richBody = ((ModelEssayBean) arrayList.get(0)).getContent();
+        richHandler.obtainMessage(1, richBody).sendToTarget();
     }
 
     Handler richHandler = new Handler() {
@@ -86,13 +80,11 @@ public class RichTextAct extends BaseActivity {
             switch (msg.what) {
 
                 case 0:
-                    // web显示数据
 
-                    String url = msg.obj.toString();//
-                    richTextWb.loadUrl(url);
-                    //richTextWb.loadData();
                     break;
                 case 1:
+                    String richBody = msg.obj.toString();//
+                    richTextWb.loadData(richBody, "text/html; charset=UTF-8", "");
                     break;
 
             }

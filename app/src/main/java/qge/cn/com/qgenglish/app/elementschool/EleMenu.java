@@ -79,18 +79,20 @@ public class EleMenu extends BaseActivity {
                     Menu menu = menuArrayList.get(position);
                     intent.putExtra("menu", menu);
                     intent.setClass(activity, SentenceAct.class);
-
+                    activity.startActivity(intent);
                 } else if (position == 3) {
                     ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
 
                     Menu menu = menuArrayList.get(position); // 重点句型
                     intent.putExtra("menu", menu);
                     intent.setClass(activity, SentenceAct.class);
+                    activity.startActivity(intent);
                 } else if (position == 4) {
                     ((FonyApplication) activity.getApplication()).articleOrListener = FonyApplication.ArticleOrListener.ARTICLE;
                     Menu menu = menuArrayList.get(position); // 小学写作
                     intent.putExtra("menu", menu);
                     intent.setClass(activity, SentenceAct.class);
+                    activity.startActivity(intent);
                 } else if (position == 5) { // 我的生词本
                     intent.setClass(activity, NewWordChoseAct.class);
                     activity.startActivity(intent);

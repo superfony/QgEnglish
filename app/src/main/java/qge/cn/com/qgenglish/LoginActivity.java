@@ -36,6 +36,7 @@ import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.Pub_method;
 import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.bean.User;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.schoolinfo.SchoolInfo;
 import qge.cn.com.qgenglish.app.update.UpdateManager;
 import qge.cn.com.qgenglish.app.word.GradeMenuAct;
@@ -71,15 +72,15 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        //SQLiteStudioService.instance().start(this);
+        init();
     }
 
     private void init() {
+        menu = (Menu) this.getIntent().getSerializableExtra("menu");
     }
 
     @OnClick(R.id.login_btn)
     void login() {
-
         String username = usernameEt.getText().toString();
         String pwd = passwordEt.getText().toString();
 
@@ -113,7 +114,8 @@ public class LoginActivity extends BaseActivity {
             case 1:
                 startIService();//开启服务
                 Intent intent = new Intent();
-                intent.setClass(activity, GradeMenuAct.class);
+                intent.putExtra("menu", menu);
+                intent.setClass(activity, GradeMenuAct.class);//超级记单词教学
                 activity.startActivity(intent);
                 break;
         }

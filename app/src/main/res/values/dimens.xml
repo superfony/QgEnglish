@@ -7,6 +7,7 @@
     <dimen name="dp15">15dp</dimen>
     <dimen name="dp18">18dp</dimen>
     <dimen name="dp20">20dp</dimen>
+    <dimen name="dp22">22dp</dimen>
     <dimen name="dp23">23dp</dimen>
     <dimen name="dp25">25dp</dimen>
     <dimen name="dp30">30dp</dimen>

@@ -7,13 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp25"
+        android:layout_marginTop="@dimen/dp10"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/list_item_background_pressed" />
+
 
 
         <RelativeLayout
@@ -30,7 +27,6 @@
                     android:id="@+id/num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1、"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dp20" />
 
@@ -39,8 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:text="How are you???"
-                    android:textSize="@dimen/dp20" />
+                    android:textSize="@dimen/dp22" />
             </LinearLayout>
 
             <ImageView

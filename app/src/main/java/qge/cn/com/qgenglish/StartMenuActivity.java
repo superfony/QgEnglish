@@ -4,18 +4,27 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.widget.Button;
 
+import com.baiyang.android.util.basic.ToastHelper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pgyersdk.javabean.AppBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.CheckAct;
+import qge.cn.com.qgenglish.app.Result;
 import qge.cn.com.qgenglish.app.experience.ExpActivity;
+import qge.cn.com.qgenglish.app.fourlevel.Menu;
 import qge.cn.com.qgenglish.app.update.UpdateManager;
 
 /**
@@ -76,17 +85,19 @@ public class StartMenuActivity extends BaseActivity {
 //                    }
 //                });
 
-
+        startHttpGet(String.format(RequestUrls.COMMONURL, RequestUrls.rootid), null);
     }
 
+    // 超级记单词教学
     @OnClick(R.id.menu1)
     void onclicMenu1() {
         Intent intent = new Intent();
+        intent.putExtra("menu", menuArrayList.get(0));
         intent.setClass(activity, LoginActivity.class);
         activity.startActivity(intent);
     }
 
-    //词汇量检测  收集学生信息
+    // 词汇量检测
     @OnClick(R.id.menu2)
     void onclicMenu2() {
         Intent intent = new Intent();
@@ -94,9 +105,11 @@ public class StartMenuActivity extends BaseActivity {
         activity.startActivity(intent);
     }
 
+    // 超级记单词体验
     @OnClick(R.id.menu3)
     void onclicMenu3() {
         Intent intent = new Intent();
+        intent.putExtra("menu", menuArrayList.get(1));
         intent.setClass(activity, ExpActivity.class);
         activity.startActivity(intent);
     }
@@ -107,4 +120,35 @@ public class StartMenuActivity extends BaseActivity {
 //        intent.setClass(activity, StartMenuActivity.class);
 //        activity.startActivity(intent);
     }
+
+
+    @Override
+    protected void onSuccessBase(String s) {
+        super.onSuccessBase(s);
+        Gson gson = new Gson();
+        Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Menu>>>() {
+        }.getType());
+        menuArrayList = (ArrayList) result.getData();
+    }
+
+    @Override
+    protected void onFailureBase(Throwable throwable, String s) {
+        super.onFailureBase(throwable, s);
+    }
+
+    @Override
+    protected void handMessage(Message msg) {
+        super.handMessage(msg);
+        switch (msg.what) {
+            case 0:
+                ToastHelper.toast(activity, msg.obj.toString());
+                finish();
+            case 1:
+                Log.i("", "获取成功");
+                break;
+
+
+        }
+    }
+
 }

@@ -97,7 +97,8 @@
         <activity android:name=".app.sentence.RichTextAct"></activity>
         <activity android:name=".app.hearing.HearingAct"></activity>
         <activity android:name=".app.hearing.HearAndLisAct"></activity>
-        <!--<activity android:name=".app.sentence.SpecialList"></activity>-->
+        <activity android:name=".app.sentence.HearingList"></activity>
+        <activity android:name=".app.sentence.SpecialList"></activity>
 
 
         <service

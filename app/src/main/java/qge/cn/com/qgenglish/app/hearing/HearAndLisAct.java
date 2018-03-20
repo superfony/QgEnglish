@@ -151,7 +151,6 @@ public class HearAndLisAct extends BaseActivity implements View.OnClickListener,
         try {
             player = new MediaPlayer();
             player.setDataSource(url);
-            // player.prepare();
             player.prepareAsync();
         } catch (Exception e) {
             e.printStackTrace();

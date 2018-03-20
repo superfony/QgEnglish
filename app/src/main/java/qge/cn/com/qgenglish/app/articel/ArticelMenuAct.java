@@ -41,7 +41,6 @@ public class ArticelMenuAct extends BaseActivity {
         reqMenu();
     }
     private void initData() {
-
         articelMenuAdapter = new ArticelMenuAdapter(activity, menuArrayList);
         articel_menu_lv.setAdapter(articelMenuAdapter);
         articel_menu_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -49,7 +48,6 @@ public class ArticelMenuAct extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 intent.putExtra("menu", menuArrayList.get(position));
-
                 intent.setClass(activity, ArticelAct.class);
                 activity.startActivity(intent);
             }
@@ -60,7 +58,6 @@ public class ArticelMenuAct extends BaseActivity {
     protected void onSuccessBase(String s) {
         super.onSuccessBase(s);
         resultMenu(s);
-
     }
 
     @Override
@@ -71,7 +68,6 @@ public class ArticelMenuAct extends BaseActivity {
     @Override
     protected void handMessage(Message msg) {
         super.handMessage(msg);
-
         switch (msg.what) {
             case 0:
                 ToastHelper.toast(activity, msg.obj.toString());

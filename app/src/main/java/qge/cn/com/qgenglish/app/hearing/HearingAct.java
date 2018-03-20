@@ -18,6 +18,7 @@ import qge.cn.com.qgenglish.R;
 import qge.cn.com.qgenglish.RequestUrls;
 import qge.cn.com.qgenglish.app.BaseActivity;
 import qge.cn.com.qgenglish.app.fourlevel.Menu;
+import qge.cn.com.qgenglish.app.sentence.HearBean;
 
 /**
  * Created by fony on 2018/3/1.
@@ -42,6 +43,7 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
     TextView timeFinish;
 
     private String url;
+    private HearBean hearBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,15 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
         activity = this;
         reqData();
         initListener();
-        //initMediaplayer();
     }
 
     //
     private void reqData() {
         Intent intent = activity.getIntent();
-        menu = (Menu) intent.getSerializableExtra("menu");
-        title.setText(menu.menuName);
-        String url = String.format(RequestUrls.COMMONURL, menu.id).toString();
-        startHttpGet(url, null);
+        hearBean = (HearBean) intent.getSerializableExtra("hearBean");
+        title.setText(hearBean.getDisplayName());
+        url = RequestUrls.IP + hearBean.getUrl();
+        initMediaplayer(url);
     }
 
     private void initListener() {
@@ -80,12 +81,12 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
     protected void onSuccessBase(String s) {
         super.onSuccessBase(s);
         // 获取mp3 url
-        Gson gson = new Gson();
+//        Gson gson = new Gson();
 //         Result result = gson.fromJson(s, new TypeToken<Result<ArrayList<Word_niujinban_7_1>>>() {
 //         Word_niujinban_7_1}.getType());
 //         ArrayList arrayList = (ArrayList) result.getData();
 //        String url = "";
-        richHandler.obtainMessage(1, url).sendToTarget();
+//        richHandler.obtainMessage(1, url).sendToTarget();
     }
 
     Handler richHandler = new Handler() {
@@ -97,8 +98,8 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
                     // web显示数据
                     break;
                 case 1:
-                    url = msg.obj.toString();
-                    initMediaplayer(url);
+                    //  url = msg.obj.toString();
+
                     break;
                 default:
                     break;
@@ -125,19 +126,10 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
 
     private void initMediaplayer(String url) {
         try {
-//            showPD();
             player = new MediaPlayer();
             player.setDataSource(url);
-            player.prepare();//
-//            player.prepareAsync();
-//            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                @Override
-//                public void onPrepared(MediaPlayer mp) {
-//                    mHandler.sendEmptyMessage(0);
-//
-//
-//                }
-//            });
+            player.prepareAsync();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,7 +156,6 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
         switch (v.getId()) {
 
             case R.id.start:
-
                 if (!player.isPlaying()) {
                     player.start();
                     int totalTime = Math.round(player.getDuration() / 1000);
@@ -173,14 +164,18 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
                     timeFinish.setText(str);
                     seekbar.setMax(player.getDuration());
                     mHandler.postDelayed(runnable, 1000);
+                    pause.setEnabled(true);
+
                 }
 
                 break;
             case R.id.pause:
                 if (player.isPlaying()) {
                     player.pause();
+                    pause.setText("播  放");
                 } else {
                     player.start();
+                    pause.setText("暂  停");
                 }
                 break;
             case R.id.end:
@@ -188,6 +183,7 @@ public class HearingAct extends BaseActivity implements View.OnClickListener,
                     player.reset();
                     initMediaplayer(url);
                 }
+                pause.setEnabled(false);
                 break;
         }
     }

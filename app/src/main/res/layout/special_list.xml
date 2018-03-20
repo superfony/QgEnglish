@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/menu_bg"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -16,6 +15,25 @@
             android:layout_centerInParent="true"
             android:textColor="@color/black"
             android:textSize="@dimen/dp25" />
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/dp10"
+            android:textColor="@color/red" />
+
+        <Button
+            android:id="@+id/submit_btn"
+            android:layout_below="@id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_common_btn"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:text="提  交" />
+
     </RelativeLayout>
 
 
@@ -23,9 +41,12 @@
         android:id="@+id/ckxz_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
+        android:layout_margin="30dp"
         android:cacheColorHint="#00000000"
         android:divider="@color/transparent"
-        android:dividerHeight="@dimen/dp30"
+        android:dividerHeight="@dimen/dp10"
+
         android:listSelector="#00000000" />
+
+
 </LinearLayout>

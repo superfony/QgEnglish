@@ -146,11 +146,8 @@ public class WordAct extends BaseActivity {
             System.out.print(menu);
             // 四六级单词进行网络请求  其它的读取本地数据库
             if (TableName.word_six.equals(tableName)) {
-                //
-
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.word_six).toString(); //
                 startHttpGet(url, null);
-
             } else if (TableName.word_four.equals(tableName)) {
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.word_four).toString();
                 startHttpGet(url, null);
@@ -179,6 +176,7 @@ public class WordAct extends BaseActivity {
                 String url = String.format(RequestUrls.COMMONURL, RequestUrls.tfys_ty).toString();
                 startHttpGet(url, null);
             } else {
+
                 long wordSize = DBManager.getWordManager().getWordCount(tableName);
                 int copintSize = (int) Math.ceil((double) ((float) wordSize / (float) 14));
                 for (int i = 1; i <= copintSize; i++) {
